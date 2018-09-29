@@ -15,12 +15,8 @@ public class HttpFilter implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		System.out.println("add....start");
 		ThreadUtil.add(request);
 		ThreadUtil.add(response);
-		System.out.println(ThreadUtil.getCurrentResponse());
-		System.out.println(ThreadUtil.getCurrentRequest());
-		System.out.println("add....end");
 		return HandlerInterceptor.super.preHandle(request, response, handler);
 	}
 
@@ -38,10 +34,6 @@ public class HttpFilter implements HandlerInterceptor {
 	}
 
 	public void removeThreadLocalInto() {
-		System.out.println("remove.....start");
 		ThreadUtil.remove();
-		System.out.println(ThreadUtil.getCurrentResponse());
-		System.out.println(ThreadUtil.getCurrentRequest());
-		System.out.println("remove.....end");
 	}
 }

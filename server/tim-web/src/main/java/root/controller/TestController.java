@@ -8,10 +8,14 @@ import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.common.collect.Maps;
+
 import root.bean.JsonResult;
 import root.constant.ResultCode;
 import root.exception.CheckParamException;
 import root.model.User;
+import root.mq.producer.TestProducer;
+import root.mqbean.TestModel;
 import root.redis.RedisOperator;
 import root.service.TestService;
 import root.util.JsonUtils;
@@ -70,4 +74,12 @@ public class TestController {
 		return JsonResult.success();
 	}
 	
+	@Resource
+	private TestProducer testProducer;
+	
+	@GetMapping("/mq")
+	public JsonResult<String> mq() {
+		testProducer.TestModelsend(TestModel.builder().id("1").name("a1").messageId("100").build(), Maps.newHashMap());
+		return JsonResult.<String>success("ok");
+	}
 }
