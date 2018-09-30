@@ -1,7 +1,10 @@
 package root.netty;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -19,20 +22,25 @@ import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshakerFactory;
 import io.netty.util.concurrent.GlobalEventExecutor;
+import root.netty.controller.SocketController;
+import root.netty.dto.SocketData;
+import root.netty.dto.SocketResult;
+import root.util.ApplicationContextUtil;
 import root.util.JsonUtils;
 
 
 public class ChatHandler extends SimpleChannelInboundHandler<TextWebSocketFrame>{
+	
+	private SocketController socketController = new SocketController();
 	
 	// 服务端接收消息
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, TextWebSocketFrame msg) throws Exception {
 		// 获取客户端传输过来的消息
 		String content = msg.text();
-		Channel currentChannel = ctx.channel();
-		NettyStorage.put("1", currentChannel);
-		NettyStorage.output();
-		currentChannel.writeAndFlush(new TextWebSocketFrame(content));
+		SocketData socketData = JsonUtils.jsonToPojo(content, SocketData.class);	
+		Method targetMethod = NettyStorage.mappingTo(socketData.getAction());
+		targetMethod.invoke(socketController, socketData, ctx, msg);
 	}
 	
 	// 当客户端打开服务端之后(连接)

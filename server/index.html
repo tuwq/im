@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title></title>
+	<link rel="stylesheet" href="">
+</head>
+<body>
+	<div>发送消息</div>
+	<input type="text" id="msgContent"/>
+	<input type="button" value="点我发送" onclick="CHAT.chat()"/>
+	<div>接收消息:</div>
+	<div id="receiveMsg" style="background-color: gray;"></div>
+	<script>
+		window.websocketUtil = {
+			listeners: new Map,
+			tigger(action, result) {
+				let callback = websocketUtil.listeners.get(action)
+				callback(result)
+			},
+			subscribe: function(action, callback) {
+				websocketUtil.listeners.set(action,callback)
+				let cb = websocketUtil.listeners.get(action)
+			},
+			emit: function (action, data, extendFields) {
+				let socketData= new SocketData(action, data, extendFields||'')
+				CHAT.socket.send(JSON.stringify(socketData))
+			}
+		} 
+	</script>
+	<script>
+		window.CHAT = {
+			socket:null,
+			init: function() {
+				if (window.WebSocket) {
+					CHAT.socket = new WebSocket("ws://127.0.0.1:7001/ws")
+					CHAT.socket.onopen = function() {
+						console.log("连接建立成功...")
+					}
+					CHAT.socket.onclose = function() {
+						console.log("连接关闭")
+					}
+					CHAT.socket.onerror = function() {
+						console.log("发送错误")
+					}
+					CHAT.socket.onmessage = function(e) {
+						// console.log("接收到消息"+e.data)
+						// var receiveMsg = document.getElementById('receiveMsg')
+						// var html = receiveMsg.innerHTML;
+						// receiveMsg.innerHTML = html +'<br/>'+ e.data
+						let result = JSON.parse(e.data)
+						websocketUtil.tigger(result.action, result)
+					}
+				} else {
+					alert('浏览器不支持websocket协议')
+				}
+			},
+			chat: function() {
+				var msg = document.getElementById('msgContent')
+				CHAT.socket.send(msg.value)
+			}
+		}
+		CHAT.init()
+	</script>
+	<script>
+		class SocketData {
+			constructor(action, msg, extendFields) {			
+			  	this.action = action
+				this.msg = msg
+				this.extendFields = extendFields
+			}
+		}
+	</script>
+	<button id="a">A</button>
+	<button id="b">B</button>
+	<button id="c">C</button>
+	<button id="d">D</button>
+	<script>
+		document.getElementById('a').onclick = function () {
+			websocketUtil.emit('A','aaa','111')
+		}
+		document.getElementById('b').onclick = function () {
+			websocketUtil.emit('B','bbb','222')
+		}
+		document.getElementById('c').onclick = function () {
+			websocketUtil.emit('C','ccc')
+		}
+		document.getElementById('d').onclick = function () {
+			websocketUtil.emit('D','ddd')
+		}
+
+		websocketUtil.subscribe('AR',function(result){
+			console.log(result)
+		})
+		websocketUtil.subscribe('BR',function(result){
+			console.log(result)
+		})
+		websocketUtil.subscribe('CR',function(result){
+			console.log(result)
+		})
+		websocketUtil.subscribe('DR',function(result){
+			console.log(result)
+		})
+	</script>
+
+</body>
+</html>
+
+
+

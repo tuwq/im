@@ -11,6 +11,7 @@ public class NettyBooter implements ApplicationListener<ContextRefreshedEvent>{
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 		if (event.getApplicationContext().getParent() == null) {
 			try {
+				SocketMapingConfig.getInstance().init();
 				WSServer.getInstance().start();
 			} catch(Exception e) {
 				e.printStackTrace();
