@@ -10,8 +10,13 @@
   <dependencies>
     <dependency>
     	<groupId>root</groupId>
-    	<artifactId>tim-service</artifactId>
+    	<artifactId>tim-producer</artifactId>
     	<version>0.0.1-SNAPSHOT</version>
     </dependency>
+    <!-- netty -->
+	<dependency>
+	    <groupId>io.netty</groupId>
+	    <artifactId>netty-all</artifactId>
+	</dependency>
   </dependencies>
 </project>

@@ -6,6 +6,8 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.common.collect.Maps;
@@ -16,12 +18,15 @@ import root.exception.CheckParamException;
 import root.model.User;
 import root.mq.producer.TestProducer;
 import root.mqbean.TestModel;
+import root.param.TestParam;
 import root.redis.RedisOperator;
 import root.service.TestService;
+import root.util.ApplicationContextUtil;
 import root.util.JsonUtils;
 import root.util.MD5Util;
 import root.util.ThreadUtil;
 import root.util.TimeAgoUtils;
+import root.util.ValidatorUtil;
 
 @RestController
 public class TestController {
@@ -32,6 +37,9 @@ public class TestController {
 	@Resource
 	private RedisOperator redis;
 	
+	@Resource
+	private TestProducer testProducer;
+	
 	@GetMapping("/all")
 	public List<User> test() {
 		return testService.all();
@@ -40,6 +48,20 @@ public class TestController {
 	@GetMapping("/string")
 	public JsonResult<String> string() {
 		return JsonResult.<String>success("ok");
+	}
+	
+	@GetMapping("/redis")
+	public JsonResult<String> redis() {
+		redis.set("testvalue", "a1");
+		String value = redis.get("testvalue");
+		return JsonResult.<String>success(value);
+	}
+	
+	@GetMapping("/redisDel")
+	public JsonResult<String> redisDel() {
+		redis.del("testvalue");
+		String value = redis.get("testvalue");
+		return JsonResult.<String>success(value);
 	}
 	
 	@GetMapping("/build")
@@ -74,12 +96,22 @@ public class TestController {
 		return JsonResult.success();
 	}
 	
-	@Resource
-	private TestProducer testProducer;
 	
 	@GetMapping("/mq")
 	public JsonResult<String> mq() {
 		testProducer.TestModelsend(TestModel.builder().id("1").name("a1").messageId("100").build(), Maps.newHashMap());
+		return JsonResult.<String>success("ok");
+	}
+	
+	@PostMapping("/check")
+	public JsonResult<String> check(@RequestBody TestParam param) {
+		ValidatorUtil.check(param);
+		return JsonResult.<String>success("ok");
+	}
+	
+	@GetMapping("/app")
+	public JsonResult<String> app() {
+		System.out.println(ApplicationContextUtil.popBean(TestService.class));
 		return JsonResult.<String>success("ok");
 	}
 }

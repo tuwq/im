@@ -10,11 +10,6 @@
   <dependencies>
     <dependency>
     	<groupId>root</groupId>
-    	<artifactId>tim-service</artifactId>
-    	<version>0.0.1-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-    	<groupId>root</groupId>
     	<artifactId>tim-model</artifactId>
     	<version>0.0.1-SNAPSHOT</version>
     </dependency>
