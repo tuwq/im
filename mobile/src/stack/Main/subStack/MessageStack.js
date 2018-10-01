@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Button} from 'react-native';
-import MainNavigator from '../../navigation/MainNavigator'
+import MessageNavigator from '../../../navigation/MessageNavigator'
 
-
-export default class Main extends Component {
+export default class MessageStack extends Component {
 
     constructor(props) {
         super(props)
@@ -18,6 +17,6 @@ export default class Main extends Component {
     }
 
     render() {
-        return (<MainNavigator />)
+        return (<MessageNavigator />)
     }
 }

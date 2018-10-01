@@ -1,16 +1,16 @@
 import { createBottomTabNavigator } from 'react-navigation'
-import Message from '../pages/Message/Message'
-import Docs from '../pages/Docs/Docs'
-import MyInfo from '../pages/MyInfo/MyInfo'
+import MessageStack from '../stack/Main/subStack/MessageStack'
+import DocsStack from '../stack/Main/subStack/DocsStack'
+import MyInfoStack from '../stack/Main/subStack/MyInfoStack'
 
 export default MainNavigator = createBottomTabNavigator({
-    Message: {
-        screen: Message
+    MessageStack: {
+        screen: MessageStack
     },
-    Docs: {
-        screen: Docs
+    DocsStack: {
+        screen: DocsStack
     },
-    MyInfo: {
-        screen: MyInfo
+    MyInfoStack: {
+        screen: MyInfoStack
     }
 })

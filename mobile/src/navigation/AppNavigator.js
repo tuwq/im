@@ -1,13 +1,14 @@
 import { createStackNavigator } from 'react-navigation'
-import Welcome from '../pages/Welcome/Welcome'
-import Main from '../pages/Main/Main'
+import WelcomeStack from '../stack/Welcome/WelcomeStack'
+import MainStack from '../stack/Main/MainStack'
+import Welcome from './../pages/Welcome/Welcome';
 
 export default AppNavigator = createStackNavigator({
     Welcome: {
         screen: Welcome,
     },
-    Main: {
-        screen: Main
+    MainStack: {
+        screen: MainStack
     }
 },{
     navigationOptions: {

@@ -15,7 +15,7 @@ export default class Welcome extends Component {
                 index: 0,
                 actions: [
                     NavigationActions.navigate({
-                        routeName: NavigatorName.Main
+                        routeName: NavigatorName.MainStack
                     })
                 ]
             });
