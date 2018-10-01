@@ -1,0 +1,1 @@
+export const SAVE_SHOW_INFO = 'SAVE_SHOW_INFO'
