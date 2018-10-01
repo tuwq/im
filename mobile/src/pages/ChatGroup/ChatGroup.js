@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Button} from 'react-native';
-import MyInfoNavigator from '../../../navigation/MyInfoNavigator'
 
-export default class MyInfoStack extends Component {
+export default class ChatGroup extends Component {
 
     constructor(props) {
         super(props)
@@ -13,10 +12,12 @@ export default class MyInfoStack extends Component {
     }
 
     componentWillUnmount() {
-        
+
     }
 
     render() {
-        return (<MyInfoNavigator />)
+        return (<View>
+           <Text>ChatGroup: {this.props.navigation.state.params.name}</Text>
+        </View>)
     }
 }

@@ -1,22 +1,23 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Button} from 'react-native';
-import DocsNavigator from '../../../navigation/DocsNavigator'
 
-export default class DocsStack extends Component {
+export default class ChatPrivate extends Component {
 
     constructor(props) {
         super(props)
     }
 
     componentDidMount() {
-        
+       
     }
 
     componentWillUnmount() {
-        
+
     }
 
     render() {
-        return (<DocsNavigator />)
+        return (<View>
+           <Text>ChatPrivate: {this.props.navigation.state.params.name}</Text>
+        </View>)
     }
 }

@@ -1,22 +1,24 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Button} from 'react-native';
-import MessageNavigator from '../../../navigation/MessageNavigator'
+import { PubsubName } from '../../constant/PubsubContant'
 
-export default class MessageStack extends Component {
+export default class UserManagement extends Component {
 
     constructor(props) {
         super(props)
     }
 
     componentDidMount() {
-        
+       
     }
 
     componentWillUnmount() {
-        
+
     }
 
     render() {
-        return (<MessageNavigator />)
+        return (<View>
+           <Text>UserManagement: {this.props.navigation.state.params.name}</Text>
+        </View>)
     }
 }

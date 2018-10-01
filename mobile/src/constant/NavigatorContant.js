@@ -1,7 +1,9 @@
 export const NavigatorName = {
-    WelcomeStack: 'WelcomeStack',
-    MainStack: 'MainStack',
-    MessageStack: 'MessageStack',
-    DocsStack: 'DocsStack',
-    MyInfoStack: 'MyInfoStack'
+    Welcome: 'Welcome',
+    Main: 'Main',
+    ChatPrivate: 'ChatPrivate',
+    ChatGroup: 'ChatGroup',
+    Contact: 'Contact',
+    Setting: 'Setting',
+    UserManagement: 'UserManagement'
 }

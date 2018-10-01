@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Button} from 'react-native';
 import PubSub from 'pubsub-js'
+
 import { PubsubName } from '../../constant/PubsubContant'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as showInfoActions from '../../store/actions/showInfo'
+import SocketFrame from './../../socket/SocketFrame';
 
 
 class Docs extends Component {
@@ -14,7 +16,7 @@ class Docs extends Component {
     }
 
     componentDidMount() {
-        
+       
     }
 
     componentWillUnmount() {

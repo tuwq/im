@@ -1,3 +1,4 @@
 export const PubsubName = {
-    toastSubscribe: 'toastSubscribe'
+    toastSubscribe: 'toastSubscribe',
+    openChatSubscribe: 'openChatSubscribe'
 }
