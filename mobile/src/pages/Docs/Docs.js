@@ -6,8 +6,7 @@ import { PubsubName } from '../../constant/PubsubContant'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as showInfoActions from '../../store/actions/showInfo'
-import SocketFrame from './../../socket/SocketFrame';
-
+import { allApi } from './../../api/Test/test';
 
 class Docs extends Component {
 
@@ -23,6 +22,11 @@ class Docs extends Component {
 
     }
 
+    async httpTest() {
+        let result = await allApi()
+        console.log(result)
+    }
+
     render() {
         return (<View>
             <Text>{this.props.showInfo.info}</Text>
@@ -30,6 +34,8 @@ class Docs extends Component {
             onPress={()=>{
                 PubSub.publish(PubsubName.toastSubscribe, 'Docs');
             }}/>
+            <Button title='httpTest' 
+            onPress={()=>this.httpTest()}/>
         </View>)
     }
 }

@@ -14,17 +14,61 @@ export default class Main extends Component {
     constructor(props) {
         super(props)
         this._rendTab = this._rendTab.bind(this)
+        this.initSocket = this.initSocket.bind(this)
+        this.initSubscribe = this.initSubscribe.bind(this)
+        this.CHAT = null
         this.state = {
             selectedTab: 'Message'
         }
     }
 
     componentDidMount() {
-        
+        this.initSocket()
+        this.initSubscribe()
     }
 
     componentWillUnmount() {
 
+    }
+
+    initSocket() {
+        var self = this
+        this.CHAT = {
+            socket: null,
+            init() {
+                this.socket = new WebSocket(global.sockeUrl)
+                global.socket = this.socket
+                this.socket.onopen = function() {
+                    console.log("连接建立成功...")
+                }
+                this.socket.onclose = function() {
+                    console.log("连接关闭")
+                }
+                this.socket.onerror = function() {
+                    console.log("发送错误")
+                }
+                this.socket.onmessage = function(e) {
+                    let result = JSON.parse(e.data)
+                    global.SocketFrame.tigger(result.action, result)
+                }
+            }
+        }
+        this.CHAT.init()
+    }
+
+    initSubscribe() {
+        global.SocketFrame.subscribe('AR',(result)=>{
+            console.log(result)
+        })
+        global.SocketFrame.subscribe('BR',(result)=>{
+            console.log(result)
+        })
+        global.SocketFrame.subscribe('CR',(result)=>{
+            console.log(result)
+        })
+        global.SocketFrame.subscribe('DR',(result)=>{
+            console.log(result)
+        })
     }
 
     _rendTab(Component, selectTab, title, SelectedIcon, NoSelectedIcon) {
