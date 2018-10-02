@@ -15,12 +15,12 @@ export default class Welcome extends Component {
                 index: 0,
                 actions: [
                     NavigationActions.navigate({
-                        routeName: NavigatorName.Main
+                        routeName: NavigatorName.Login
                     })
                 ]
             });
             this.props.navigation.dispatch(resetAction);
-        }, 500);  
+        }, 100);  
     }
 
     componentWillUnmount() {

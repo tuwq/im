@@ -5,5 +5,7 @@ export const NavigatorName = {
     ChatGroup: 'ChatGroup',
     Contact: 'Contact',
     Setting: 'Setting',
-    UserManagement: 'UserManagement'
+    UserManagement: 'UserManagement',
+    Login: 'Login',
+    Register: 'Register'
 }

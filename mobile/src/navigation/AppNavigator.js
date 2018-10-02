@@ -6,6 +6,8 @@ import ChatGroup from './../pages/ChatGroup/ChatGroup';
 import Contact from './../pages/Contact/Contact';
 import Setting from './../pages/Setting/Setting';
 import UserManagement from './../pages/UserManagement/UserManagement';
+import Login from './../pages/Login/Login';
+import Register from './../pages/Register/Register';
 
 export default AppNavigator = createStackNavigator({
     Welcome: {
@@ -28,7 +30,13 @@ export default AppNavigator = createStackNavigator({
     },
     UserManagement: {
         screen: UserManagement
-    }
+    },
+    Login: {
+        screen: Login
+    },
+    Register: {
+        screen: Register
+    },
 },{
     navigationOptions: {
         header: null
