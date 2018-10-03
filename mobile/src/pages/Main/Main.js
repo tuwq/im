@@ -4,7 +4,7 @@ import TabNavigator from 'react-native-tab-navigator';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import Message from './../Message/Message';
-import MyInfo from './../MyInfo/MyInfo';
+import Office from './../Office/Office';
 import Docs from './../Docs/Docs';
 
 
@@ -87,7 +87,7 @@ export default class Main extends Component {
            <TabNavigator>
                {this._rendTab(Message, 'Message', 'Message', <Icon name={'comments-o'} size={24} style={{color:'#2965F3'}} />, <Icon name={'comments-o'} size={24} style={{color:'gray'}} />)}
                {this._rendTab(Docs, 'Docs', 'Docs', <Icon name={'cloud'} size={24} style={{color:'#2965F3'}} />, <Icon name={'cloud'} size={24} style={{color:'gray'}} />)}
-               {this._rendTab(MyInfo, 'MyInfo', 'MyInfo', <Icon name={'th-list'} size={24} style={{color:'#2965F3'}} />, <Icon name={'th-list'} size={24} style={{color:'gray'}} />)}
+               {this._rendTab(Office, 'Office', 'Office', <Icon name={'th-list'} size={24} style={{color:'#2965F3'}} />, <Icon name={'th-list'} size={24} style={{color:'gray'}} />)}
            </TabNavigator>
         </View>)
     }

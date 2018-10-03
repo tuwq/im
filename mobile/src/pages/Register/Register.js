@@ -30,7 +30,7 @@ export default class Register extends Component {
     render() {
         return (<View style={styles.registContainer}>
            <NavigationBar 
-                leftButton={ViewUtil.getNavigationBarLeftButton(()=>this.goBack())}
+                leftButton={ViewUtil.getNavigationBarBackButton(()=>this.goBack())}
                 title={'注册账号'}
                 titleLayoutStyle={{paddingRight: 10}}
                 style={{backgroundColor: global.theme.color}}

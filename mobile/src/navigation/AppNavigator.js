@@ -8,6 +8,8 @@ import Setting from './../pages/Setting/Setting';
 import UserManagement from './../pages/UserManagement/UserManagement';
 import Login from './../pages/Login/Login';
 import Register from './../pages/Register/Register';
+import MyInfo from './../pages/MyInfo/MyInfo';
+import EditTextInfo from '../base/EditTextInfo/EditTextInfo'
 
 export default AppNavigator = createStackNavigator({
     Welcome: {
@@ -28,6 +30,9 @@ export default AppNavigator = createStackNavigator({
     Setting: {
         screen: Setting
     },
+    MyInfo: {
+        screen: MyInfo
+    },
     UserManagement: {
         screen: UserManagement
     },
@@ -37,6 +42,9 @@ export default AppNavigator = createStackNavigator({
     Register: {
         screen: Register
     },
+    EditTextInfo: {
+        screen: EditTextInfo
+    }
 },{
     navigationOptions: {
         header: null

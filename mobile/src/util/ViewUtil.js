@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default class ViewUtil {
 
-    static getNavigationBarLeftButton(callBack) {
+    static getNavigationBarBackButton(callBack) {
         return (<TouchableOpacity
             style={{padding: 8}}
             onPress={callBack}
@@ -13,7 +13,7 @@ export default class ViewUtil {
         </TouchableOpacity>)
     }
 
-    static getNavigationBarRightButton(title, callBack) {
+    static getNavigationBarTitleButton(title, callBack) {
         return (<TouchableOpacity
             style={{alignItems: 'center'}}
             onPress={callBack}
@@ -21,6 +21,24 @@ export default class ViewUtil {
             <View style={{marginRight: 10}}>
                 <Text style={{fontSize: 20,color: '#fff'}}>{title}</Text>
             </View>
+        </TouchableOpacity>)
+    }
+
+    static getNavigationBarLeftButton(component, callBack) {
+        return (<TouchableOpacity
+            style={{padding: 8}}
+            onPress={callBack}
+        >
+            {component}
+        </TouchableOpacity>)
+    }
+
+    static getNavigationBarRightButton(component, callBack) {
+        return (<TouchableOpacity
+            style={{padding: 8}}
+            onPress={callBack}
+        >
+            {component}
         </TouchableOpacity>)
     }
 

@@ -8,7 +8,7 @@ import { NavigatorName } from '../../constant/NavigatorContant'
 import NavigationBar from './../../base/NavigationBar/NavigationBar';
 import ViewUtil from './../../util/ViewUtil';
 
-export default class MyInfo extends Component {
+export default class Office extends Component {
 
     constructor(props) {
         super(props)
@@ -22,29 +22,26 @@ export default class MyInfo extends Component {
 
     }
 
-    goBack() {
-        
-    }
-
-    changeAvatar() {
-
+    openSetting() {
+        this.props.navigation.navigate(NavigatorName.Setting)
     }
 
     render() {
         return (<View>
             <NavigationBar 
-                leftButton={ViewUtil.getNavigationBarBackButton(()=>this.goBack())}
-                rightButton={ViewUtil.getNavigationBarTitleButton('更换头像',()=>{this.changeAvatar()})}
-                title={'个人资料'}
+                title={'办公'}
+                rightButton={ViewUtil.getNavigationBarRightButton(<Icon name={'gear'} size={17} style={{color:'#fff'}} />, () => {this.openSetting()})}
                 titleLayoutStyle={{paddingRight: 10}}
                 style={{backgroundColor: global.theme.color}}
-           />
-            <Text>MyInfo</Text>
-            <Button title='个人签名' 
+            />
+           <Text>Office</Text>
+           <Button title='sendToApp' 
             onPress={()=>{
-                this.props.navigation.navigate(NavigatorName.EditTextInfo,{
-                    navigationBarTitle: '个人签名'
-                })
+                PubSub.publish(PubsubName.toastSubscribe, 'Office');
+            }}/>
+            <Button title='Setting' 
+            onPress={()=>{
+                this.props.navigation.navigate(NavigatorName.Setting)
             }}/>
         </View>)
     }

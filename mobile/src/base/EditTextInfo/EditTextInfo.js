@@ -26,7 +26,7 @@ export default class MyInfo extends Component {
         
     }
 
-    changeAvatar() {
+    finish() {
 
     }
 
@@ -34,18 +34,12 @@ export default class MyInfo extends Component {
         return (<View>
             <NavigationBar 
                 leftButton={ViewUtil.getNavigationBarBackButton(()=>this.goBack())}
-                rightButton={ViewUtil.getNavigationBarTitleButton('更换头像',()=>{this.changeAvatar()})}
-                title={'个人资料'}
+                rightButton={ViewUtil.getNavigationBarTitleButton('完成',()=>{this.finish()})}
+                title={this.props.navigation.state.params.navigationBarTitle}
                 titleLayoutStyle={{paddingRight: 10}}
                 style={{backgroundColor: global.theme.color}}
            />
-            <Text>MyInfo</Text>
-            <Button title='个人签名' 
-            onPress={()=>{
-                this.props.navigation.navigate(NavigatorName.EditTextInfo,{
-                    navigationBarTitle: '个人签名'
-                })
-            }}/>
+            <Text>{this.props.navigation.state.params.navigationBarTitle}</Text>
         </View>)
     }
 }
