@@ -10,6 +10,8 @@ import { bindActionCreators } from 'redux'
 import * as showInfoActions from '../../store/actions/showInfo'
 import NavigationBar from './../../base/NavigationBar/NavigationBar';
 import ViewUtil from './../../util/ViewUtil';
+import MessagePrivateChatItem from '../../base/MessagePrivateChatItem/MessagePrivateChatItem'
+import MessageGroupChatItem from '../../base/MessageGroupChatItem/MessageGroupChatItem'
 
 
 class Message extends Component {
@@ -43,38 +45,12 @@ class Message extends Component {
                 titleLayoutStyle={{paddingRight: 10}}
                 style={{backgroundColor: global.theme.color}}
             />
-            <Text>Message</Text>
-            <Button title='sendToApp' 
-            onPress={()=>{
-                PubSub.publish(PubsubName.toastSubscribe, 'Message');
-            }}/>
-            <Button title='changeRedux' 
-            onPress={()=>{
-               this.props.showInfoActions.save({
-                   info: 'state showinfo.info'
-               })
-            }}/>
-            <Button title='opeChatPrivate' 
-            onPress={()=>{
-                this.props.navigation.navigate(NavigatorName.ChatPrivate,{
-                    id: 123,
-                    name: 'ChatPrivate'
-                })
-            }}/>
-            <Button title='openChatGroup' 
-            onPress={()=>{
-                this.props.navigation.navigate(NavigatorName.ChatGroup,{
-                    id: 123,
-                    name: 'ChatGroup'
-                })
-            }}/>
-            <Button title='openContact' 
-            onPress={()=>{
-                this.props.navigation.navigate(NavigatorName.Contact,{
-                    id: 123,
-                    name: 'Contact'
-                })
-            }}/>
+            <View>
+                <MessagePrivateChatItem />
+                <MessagePrivateChatItem />
+                <MessageGroupChatItem />
+                <MessageGroupChatItem />
+            </View>
         </View>)
     }
 }

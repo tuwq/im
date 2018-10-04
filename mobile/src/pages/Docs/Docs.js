@@ -33,19 +33,13 @@ class Docs extends Component {
     render() {
         return (<View>
             <NavigationBar 
-                leftButton={ViewUtil.getNavigationBarLeftButton(<Icon name={'briefcase'} size={17} style={{color:'#fff'}} />,() => {this.goContact()})}
+                leftButton={ViewUtil.getNavigationBarLeftButton(<Icon name={'briefcase'} size={17} style={{color:'#fff'}} />,() => {})}
                 title={'云文件'}
-                rightButton={ViewUtil.getNavigationBarRightButton(<Icon name={'plus'} size={17} style={{color:'#fff'}} />, () => {this.openExtra()})}
+                rightButton={ViewUtil.getNavigationBarRightButton(<Icon name={'plus'} size={17} style={{color:'#fff'}} />, () => {})}
                 titleLayoutStyle={{paddingRight: 10}}
                 style={{backgroundColor: global.theme.color}}
             />
-            <Text>{this.props.showInfo.info}</Text>
-            <Button title='sendToApp' 
-            onPress={()=>{
-                PubSub.publish(PubsubName.toastSubscribe, 'Docs');
-            }}/>
-            <Button title='httpTest' 
-            onPress={()=>this.httpTest()}/>
+            <Text>功能不可用</Text>
         </View>)
     }
 }
