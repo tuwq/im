@@ -1,0 +1,24 @@
+{
+    "extras": [{
+        "text": "日程",
+        "iconName": "calendar"
+    },{
+        "text": "邮箱",
+        "iconName": "envelope-o"
+    },{
+        "text": "电话",
+        "iconName": "volume-control-phone"
+    },{
+        "text": "收藏",
+        "iconName": "star"
+    },{
+        "text": "钱包",
+        "iconName": "archive"
+    },{
+        "text": "福利",
+        "iconName": "cube"
+    },{
+        "text": "好友动态",
+        "iconName": "share-square-o"
+    }]
+}
