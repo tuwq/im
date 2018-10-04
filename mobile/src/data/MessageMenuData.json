@@ -1,0 +1,19 @@
+{
+    "menus": [{
+        "id": "1",
+        "iconName": "comments",
+        "text": "发起多人聊天"
+    },{
+        "id": "2",
+        "iconName": "plus",
+        "text": "加好友"
+    },{
+        "id": "3",
+        "iconName": "qrcode",
+        "text": "扫一扫"
+    },{
+        "id": "4",
+        "iconName": "folder-open",
+        "text": "面对面快传"
+    }]
+}

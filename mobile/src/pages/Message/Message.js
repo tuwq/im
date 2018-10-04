@@ -12,12 +12,17 @@ import NavigationBar from './../../base/NavigationBar/NavigationBar';
 import ViewUtil from './../../util/ViewUtil';
 import MessagePrivateChatItem from '../../base/MessagePrivateChatItem/MessagePrivateChatItem'
 import MessageGroupChatItem from '../../base/MessageGroupChatItem/MessageGroupChatItem'
+import MenuDialog from '../../base/MenuDialog/MenuDialog'
+import MessageMenuData from '../../data/MessageMenuData.json'
 
 
 class Message extends Component {
 
     constructor(props) {
         super(props)
+        this.openExtra = this.openExtra.bind(this)
+        this.goContact = this.goContact.bind(this)
+        this.selectItemFn = this.selectItemFn.bind(this)
     }
 
     componentDidMount() {
@@ -33,6 +38,10 @@ class Message extends Component {
     }
 
     openExtra() {
+        this.refs.menuDialog.show()
+    }
+
+    selectItemFn(selectItemId) {
 
     }
 
@@ -51,6 +60,7 @@ class Message extends Component {
                 <MessageGroupChatItem />
                 <MessageGroupChatItem />
             </View>
+            <MenuDialog ref="menuDialog" menus={MessageMenuData.menus} selectItemFn={this.selectItemFn}/>
         </View>)
     }
 }
