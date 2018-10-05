@@ -22,7 +22,7 @@ class Message extends Component {
         super(props)
         this.openExtra = this.openExtra.bind(this)
         this.goContact = this.goContact.bind(this)
-        this.selectItemFn = this.selectItemFn.bind(this)
+        this.selectMenuItemFn = this.selectMenuItemFn.bind(this)
     }
 
     componentDidMount() {
@@ -41,8 +41,19 @@ class Message extends Component {
         this.refs.menuDialog.show()
     }
 
-    selectItemFn(selectItemId) {
-        PubSub.publish(PubsubName.toastSubscribe, selectItemId);
+    selectMenuItemFn(typeId) {
+        this.refs.menuDialog.hide()
+        switch(typeId) {
+            case "1":
+                this.props.navigation.navigate(NavigatorName.ChooseChatGroup)
+                break
+            case "2":
+                this.props.navigation.navigate(NavigatorName.FindAddFriend)
+                break
+            default:
+                PubSub.publish(PubsubName.toastSubscribe, '功能不可用');
+                return
+        }
     }
 
     render() {
@@ -60,7 +71,7 @@ class Message extends Component {
                 <MessageGroupChatItem />
                 <MessageGroupChatItem />
             </View>
-            <MenuDialog ref="menuDialog" menus={MessageMenuData.menus} selectItemFn={this.selectItemFn}/>
+            <MenuDialog ref="menuDialog" menus={MessageMenuData.menus} selectItemFn={this.selectMenuItemFn}/>
         </View>)
     }
 }

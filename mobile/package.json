@@ -12,6 +12,7 @@
     "react": "16.5.0",
     "react-native": "0.57.1",
     "react-native-easy-toast": "^1.1.0",
+    "react-native-scrollable-tab-view": "^0.8.0",
     "react-native-tab-navigator": "^0.3.4",
     "react-native-vector-icons": "^5.0.0",
     "react-navigation": "^2.17.0",

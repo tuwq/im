@@ -1,0 +1,11 @@
+{
+    "menus": [{
+        "id": "1",
+        "iconName": "user-plus",
+        "text": "创建群"
+    },{
+        "id": "2",
+        "iconName": "search",
+        "text": "查找群"
+    }]
+}

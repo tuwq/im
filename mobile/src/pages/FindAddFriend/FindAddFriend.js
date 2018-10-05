@@ -33,7 +33,7 @@ export default class FindAddFriend extends Component {
            <NavigationBar 
                 leftButton={ViewUtil.getNavigationBarBackButton(()=>this.goBack())}
                 rightButton={ViewUtil.getNavigationBarTitleButton('搜索',()=>this.search())}
-                titleView={ViewUtil.getNavigationBarTextInput()}
+                titleView={ViewUtil.getNavigationBarTextInput('QQ号/昵称')}
                 style={{backgroundColor: global.theme.color}}
            />
            <View>

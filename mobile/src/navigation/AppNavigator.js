@@ -13,6 +13,7 @@ import EditTextInfo from '../base/EditTextInfo/EditTextInfo'
 import AddFriend from '../pages/AddFriend/AddFriend'
 import FindAddFriend from '../pages/FindAddFriend/FindAddFriend'
 import FindAddGroup from '../pages/FindAddGroup/FindAddGroup'
+import ChooseChatGroup from '../pages/ChooseChatGroup/ChooseChatGroup'
 
 export default AppNavigator = createStackNavigator({
     Welcome: {
@@ -56,6 +57,9 @@ export default AppNavigator = createStackNavigator({
     },
     FindAddGroup: {
         screen: FindAddGroup
+    },
+    ChooseChatGroup: {
+        screen: ChooseChatGroup
     }
 },{
     navigationOptions: {

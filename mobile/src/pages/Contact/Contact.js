@@ -26,8 +26,18 @@ export default class Contact extends Component {
 
     }
 
-    selectItemFn(selectItemId) {
-        PubSub.publish(PubsubName.toastSubscribe, selectItemId);
+    selectItemFn(typeId) {
+        switch(typeId) {
+            case "1":
+                break
+            case "2":
+                this.props.navigation.navigate(NavigatorName.ChooseChatGroup)
+                break
+            case "3":
+                break
+            default:
+                return
+        }
     }
 
     goAddFriend() {

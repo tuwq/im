@@ -33,7 +33,7 @@ export default class FindAddGroup extends Component {
            <NavigationBar 
                 leftButton={ViewUtil.getNavigationBarBackButton(()=>this.goBack())}
                 rightButton={ViewUtil.getNavigationBarTitleButton('搜索',()=>this.search())}
-                titleView={ViewUtil.getNavigationBarTextInput('搜索')}
+                titleView={ViewUtil.getNavigationBarTextInput('群号/群名称')}
                 style={{backgroundColor: global.theme.color}}
            />
            <View>
