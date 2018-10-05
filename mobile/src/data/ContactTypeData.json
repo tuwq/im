@@ -1,0 +1,15 @@
+{
+    "contactTypes":[{
+        "id": "1",
+        "iconName": "user",
+        "text": "新朋友"
+    },{
+        "id": "2",
+        "iconName": "group",
+        "text": "群聊"
+    },{
+        "id": "3",
+        "iconName": "list-alt",
+        "text": "名片夹"
+    }]
+}

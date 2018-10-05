@@ -34,7 +34,7 @@ class Message extends Component {
     }
 
     goContact() {
-
+        this.props.navigation.navigate(NavigatorName.Contact)
     }
 
     openExtra() {
@@ -42,7 +42,7 @@ class Message extends Component {
     }
 
     selectItemFn(selectItemId) {
-
+        PubSub.publish(PubsubName.toastSubscribe, selectItemId);
     }
 
     render() {

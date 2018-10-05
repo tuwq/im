@@ -9,5 +9,8 @@ export const NavigatorName = {
     UserManagement: 'UserManagement',
     Login: 'Login',
     Register: 'Register',
-    EditTextInfo: 'EditTextInfo'
+    EditTextInfo: 'EditTextInfo',
+    AddFriend: 'AddFriend',
+    FindAddFriend: 'FindAddFriend',
+    FindAddGroup: 'FindAddGroup'
 }

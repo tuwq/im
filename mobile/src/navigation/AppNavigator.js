@@ -10,6 +10,9 @@ import Login from './../pages/Login/Login';
 import Register from './../pages/Register/Register';
 import MyInfo from './../pages/MyInfo/MyInfo';
 import EditTextInfo from '../base/EditTextInfo/EditTextInfo'
+import AddFriend from '../pages/AddFriend/AddFriend'
+import FindAddFriend from '../pages/FindAddFriend/FindAddFriend'
+import FindAddGroup from '../pages/FindAddGroup/FindAddGroup'
 
 export default AppNavigator = createStackNavigator({
     Welcome: {
@@ -44,6 +47,15 @@ export default AppNavigator = createStackNavigator({
     },
     EditTextInfo: {
         screen: EditTextInfo
+    },
+    AddFriend: {
+        screen: AddFriend
+    },
+    FindAddFriend: {
+        screen: FindAddFriend
+    },
+    FindAddGroup: {
+        screen: FindAddGroup
     }
 },{
     navigationOptions: {
