@@ -13,5 +13,6 @@ export const NavigatorName = {
     AddFriend: 'AddFriend',
     FindAddFriend: 'FindAddFriend',
     FindAddGroup: 'FindAddGroup',
-    ChooseChatGroup: 'ChooseChatGroup'
+    ChooseChatGroup: 'ChooseChatGroup',
+    EditMyInfo: 'EditMyInfo'
 }

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, Button, Image} from 'react-native';
+import {Platform, StyleSheet, Text, View, Button, Image, TouchableOpacity} from 'react-native';
 import PubSub from 'pubsub-js'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import OfficeExtraData from '../../data/OfficeExtraData.json'
@@ -32,6 +32,10 @@ export default class Office extends Component {
         PubSub.publish(PubsubName.toastSubscribe, '功能不可用');
     }
 
+    goEditMyInfo() {
+        this.props.navigation.navigate(NavigatorName.EditMyInfo)
+    }
+
     render() {
         return (<View>
             <NavigationBar 
@@ -46,9 +50,9 @@ export default class Office extends Component {
                         <Text style={styles.nickname}>炮塔向后转</Text>
                         <Text style={styles.accountNumber}>1246361002</Text>
                    </View>
-                   <View style={styles.avatar}>
+                   <TouchableOpacity style={styles.avatar} onPress={()=>this.goEditMyInfo()}>
                         <Image style={{width: 80,height: 80,borderRadius: 30}} source={{uri: 'http://img.twenq.com/upload/user/avatar/11E68E08859F3D3ED8123CA35AB08B6F.png?v=1538639216280'}}/>
-                   </View>
+                   </TouchableOpacity>
                </View>
                <View style={styles.extras}>
                     {OfficeExtraData.extras.map((item, index)=>{

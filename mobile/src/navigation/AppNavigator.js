@@ -14,6 +14,7 @@ import AddFriend from '../pages/AddFriend/AddFriend'
 import FindAddFriend from '../pages/FindAddFriend/FindAddFriend'
 import FindAddGroup from '../pages/FindAddGroup/FindAddGroup'
 import ChooseChatGroup from '../pages/ChooseChatGroup/ChooseChatGroup'
+import EditMyInfo from '../pages/EditMyInfo/EditMyInfo'
 
 export default AppNavigator = createStackNavigator({
     Welcome: {
@@ -60,6 +61,9 @@ export default AppNavigator = createStackNavigator({
     },
     ChooseChatGroup: {
         screen: ChooseChatGroup
+    },
+    EditMyInfo: {
+        screen: EditMyInfo
     }
 },{
     navigationOptions: {
