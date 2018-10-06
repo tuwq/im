@@ -55,11 +55,6 @@ export default class EditMyInfo extends Component {
         )
         config.renderForeground = () => (
             <View key="parallax-header" style={ styles.parallaxHeader }>
-              <Image style={ styles.avatar } source={{
-                uri: 'https://pbs.twimg.com/profile_images/2694242404/5b0619220a92d391534b0cd89bf5adc1_400x400.jpeg',
-                width: AVATAR_SIZE,
-                height: AVATAR_SIZE
-              }}/>
               <Text style={ styles.sectionSpeakerText }>
                 {params.name}
               </Text>
@@ -167,7 +162,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 1,
     flexDirection: 'column',
-    paddingTop: 100
+    paddingTop: 200
   },
   avatar: {
     marginBottom: 10,

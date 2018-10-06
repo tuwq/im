@@ -50,6 +50,9 @@ class Message extends Component {
             case "2":
                 this.props.navigation.navigate(NavigatorName.FindAddFriend)
                 break
+            case "3":
+                this.props.navigation.navigate(NavigatorName.GroupInfo)
+                break
             default:
                 PubSub.publish(PubsubName.toastSubscribe, '功能不可用');
                 return
