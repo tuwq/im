@@ -5,7 +5,7 @@ export const NavigatorName = {
     ChatGroup: 'ChatGroup',
     Contact: 'Contact',
     Setting: 'Setting',
-    MyInfo: 'MyInfo',
+    EditMyInfoing: 'EditMyInfoing',
     UserManagement: 'UserManagement',
     Login: 'Login',
     Register: 'Register',
@@ -14,5 +14,6 @@ export const NavigatorName = {
     FindAddFriend: 'FindAddFriend',
     FindAddGroup: 'FindAddGroup',
     ChooseChatGroup: 'ChooseChatGroup',
-    EditMyInfo: 'EditMyInfo'
+    EditMyInfo: 'EditMyInfo',
+    CreateChatGroup: 'CreateChatGroup'
 }

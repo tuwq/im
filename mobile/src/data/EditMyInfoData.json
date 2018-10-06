@@ -1,15 +1,15 @@
 {
     "settings":[{
         "id": "1",
-        "settingKey": "QQ号"
+        "text": "QQ号"
     },{
         "id": "2",
-        "settingKey": "签名"
+        "text": "签名"
     },{
         "id": "3",
-        "settingKey": "昵称"
+        "text": "昵称"
     },{
         "id": "4",
-        "settingKey": "手机号"
+        "text": "手机号"
     }]
 }

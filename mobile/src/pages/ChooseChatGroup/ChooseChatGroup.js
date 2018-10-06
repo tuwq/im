@@ -39,7 +39,7 @@ export default class ChooseChatGroup extends Component {
         this.refs.menuDialog.hide()
         switch(typeId) {
             case "1":
-                this.props.navigation.navigate(NavigatorName.Main)
+                this.props.navigation.navigate(NavigatorName.CreateChatGroup)
                 break
             case "2":
                 this.props.navigation.navigate(NavigatorName.FindAddGroup)

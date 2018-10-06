@@ -22,7 +22,7 @@ export default class MyInfoList extends Component {
         return (<View>
             {
                 this.props.settings.map((settingItem,index)=>{
-                    return (<MyInfoItem settingItem={settingItem} key={index}/>)
+                    return (<MyInfoItem settingItem={settingItem} key={index} selectItemFn={this.props.selectItemFn}/>)
                 })
             }
         </View>)

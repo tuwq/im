@@ -3,11 +3,15 @@ import {Platform, StyleSheet, Text, View, Button, Dimensions, Image, ListView, P
 import PubSub from 'pubsub-js'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
+import { PubsubName } from '../../constant/PubsubContant'
 
 import NavigationBar from './../../base/NavigationBar/NavigationBar';
 import ViewUtil from './../../util/ViewUtil';
 import MyInfoList from './subpages/MyInfoList/MyInfoList'
 import EditMyInfoData from '../../data/EditMyInfoData.json'
+import { NavigatorName } from './../../constant/NavigatorContant';
+import BottomDialog from '../../base/BottomDialog/BottomDialog'
+import ChangeAvatarMenuData from '../../data/ChangeAvatarMenuData.json'
 
 export default class EditMyInfo extends Component {
 
@@ -15,6 +19,8 @@ export default class EditMyInfo extends Component {
     constructor(props) {
         super(props)
         this._renderParallaxConfig = this._renderParallaxConfig.bind(this)
+        this.selectInfoItemFn = this.selectInfoItemFn.bind(this)
+        this.selectBottomMenuItemFn = this.selectBottomMenuItemFn.bind(this)
     }
 
     componentDidMount() {
@@ -30,7 +36,7 @@ export default class EditMyInfo extends Component {
     }
 
     changeAvatar() {
-
+      this.refs.menuDialog.show()
     }
 
     _renderParallaxConfig(params) {
@@ -82,6 +88,15 @@ export default class EditMyInfo extends Component {
         return config
     }
 
+    selectInfoItemFn(settingItem) {
+      this.props.navigation.navigate(NavigatorName.EditMyInfoing,{settingItem})
+    }
+
+    selectBottomMenuItemFn(typeId) {
+      this.refs.menuDialog.hide()
+      PubSub.publish(PubsubName.toastSubscribe, typeId);
+    }
+
     render() {
         let renderConfig = this._renderParallaxConfig({
           'name': '炮塔向后转',
@@ -97,7 +112,8 @@ export default class EditMyInfo extends Component {
                 parallaxHeaderHeight={ PARALLAX_HEADER_HEIGHT }
                 backgroundSpeed={10}
                 {...renderConfig}>
-              <MyInfoList settings={EditMyInfoData.settings}/>
+              <MyInfoList settings={EditMyInfoData.settings} selectItemFn={this.selectInfoItemFn}/>
+              <BottomDialog ref="menuDialog" menus={ChangeAvatarMenuData.menus} selectItemFn={this.selectBottomMenuItemFn}/>
             </ParallaxScrollView>
         );
     }

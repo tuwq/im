@@ -8,13 +8,14 @@ import Setting from './../pages/Setting/Setting';
 import UserManagement from './../pages/UserManagement/UserManagement';
 import Login from './../pages/Login/Login';
 import Register from './../pages/Register/Register';
-import MyInfo from './../pages/MyInfo/MyInfo';
+import EditMyInfoing from './../pages/EditMyInfoing/EditMyInfoing';
 import EditTextInfo from '../base/EditTextInfo/EditTextInfo'
 import AddFriend from '../pages/AddFriend/AddFriend'
 import FindAddFriend from '../pages/FindAddFriend/FindAddFriend'
 import FindAddGroup from '../pages/FindAddGroup/FindAddGroup'
 import ChooseChatGroup from '../pages/ChooseChatGroup/ChooseChatGroup'
 import EditMyInfo from '../pages/EditMyInfo/EditMyInfo'
+import CreateChatGroup from '../pages/CreateChatGroup/CreateChatGroup'
 
 export default AppNavigator = createStackNavigator({
     Welcome: {
@@ -35,8 +36,8 @@ export default AppNavigator = createStackNavigator({
     Setting: {
         screen: Setting
     },
-    MyInfo: {
-        screen: MyInfo
+    EditMyInfoing: {
+        screen: EditMyInfoing
     },
     UserManagement: {
         screen: UserManagement
@@ -64,6 +65,9 @@ export default AppNavigator = createStackNavigator({
     },
     EditMyInfo: {
         screen: EditMyInfo
+    },
+    CreateChatGroup: {
+        screen: CreateChatGroup
     }
 },{
     navigationOptions: {

@@ -17,8 +17,9 @@ export default class MyInfoItem extends Component {
     }
 
     render() {
-        return (<TouchableOpacity style={styles.MyInfoItem}>
-            <Text style={styles.settingKey}>{this.props.settingItem.settingKey}</Text>
+        return (<TouchableOpacity style={styles.MyInfoItem}
+            onPress={()=>this.props.selectItemFn(this.props.settingItem)}>
+            <Text style={styles.settingKey}>{this.props.settingItem.text}</Text>
             <Text style={styles.settingValue} ellipsizeMode="tail" numberOfLines={1}>炮塔向后转</Text>
         </TouchableOpacity>)
     }
