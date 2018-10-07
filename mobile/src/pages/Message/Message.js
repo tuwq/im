@@ -23,6 +23,7 @@ class Message extends Component {
         this.openExtra = this.openExtra.bind(this)
         this.goContact = this.goContact.bind(this)
         this.selectMenuItemFn = this.selectMenuItemFn.bind(this)
+        this.selectCharItemFn = this.selectCharItemFn.bind(this)
     }
 
     componentDidMount() {
@@ -59,6 +60,10 @@ class Message extends Component {
         }
     }
 
+    selectCharItemFn() {
+        this.props.navigation.navigate(NavigatorName.ChatPrivate)
+    }
+
     render() {
         return (<View>
             <NavigationBar 
@@ -69,8 +74,8 @@ class Message extends Component {
                 style={{backgroundColor: global.theme.color}}
             />
             <View>
-                <MessagePrivateChatItem />
-                <MessagePrivateChatItem />
+                <MessagePrivateChatItem selectCharItemFn={this.selectCharItemFn}/>
+                <MessagePrivateChatItem selectCharItemFn={this.selectCharItemFn}/>
                 <MessageGroupChatItem />
                 <MessageGroupChatItem />
             </View>

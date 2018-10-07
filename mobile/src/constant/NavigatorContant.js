@@ -16,5 +16,7 @@ export const NavigatorName = {
     ChooseChatGroup: 'ChooseChatGroup',
     EditMyInfo: 'EditMyInfo',
     CreateChatGroup: 'CreateChatGroup',
-    GroupInfo: 'GroupInfo'
+    GroupInfo: 'GroupInfo',
+    FriendChatSetting: 'FriendChatSetting',
+    FriendInfo: 'FriendInfo'
 }

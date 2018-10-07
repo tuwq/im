@@ -17,7 +17,9 @@ export default class MessagePrivateChatItem extends Component {
     }
 
     render() {
-        return (<TouchableOpacity style={styles.messagePrivateChatItem}>
+        return (<TouchableOpacity style={styles.messagePrivateChatItem}
+                onPress={()=>this.props.selectCharItemFn()}
+            >
             <Image style={{width: 45,height: 45,borderRadius: 30,marginRight: 10}} source={{uri: 'http://img.twenq.com/upload/artimg/2018/9/1537245774_52323c7f138827816fb40c0186640a63.jpg'}}/>
             <View style={styles.message}>
                 <Text style={{fontSize: 16,width: 150,color: '#000'}} ellipsizeMode="tail" numberOfLines={1}>22330 ass 仟月酱 15279167097</Text>

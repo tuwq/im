@@ -17,6 +17,8 @@ import ChooseChatGroup from '../pages/ChooseChatGroup/ChooseChatGroup'
 import EditMyInfo from '../pages/EditMyInfo/EditMyInfo'
 import CreateChatGroup from '../pages/CreateChatGroup/CreateChatGroup'
 import GroupInfo from '../pages/GroupInfo/GroupInfo'
+import FriendChatSetting from '../pages/FriendChatSetting/FriendChatSetting'
+import FriendInfo from '../pages/FriendInfo/FriendInfo'
 
 export default AppNavigator = createStackNavigator({
     Welcome: {
@@ -72,6 +74,12 @@ export default AppNavigator = createStackNavigator({
     },
     GroupInfo: {
         screen: GroupInfo
+    },
+    FriendChatSetting: {
+        screen: FriendChatSetting
+    },
+    FriendInfo: {
+        screen: FriendInfo
     }
 },{
     navigationOptions: {

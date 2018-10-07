@@ -7,16 +7,16 @@ import { PubsubName } from '../../constant/PubsubContant'
 
 import NavigationBar from './../../base/NavigationBar/NavigationBar';
 import ViewUtil from './../../util/ViewUtil';
-import { NavigatorName } from './../../constant/NavigatorContant';
-import BottomDialog from '../../base/BottomDialog/BottomDialog';
-import AllMember from './subpages/AllMember/AllMember'
+import EditMyInfoData from '../../data/EditMyInfoData.json'
+import FriendInfoList from './subpages/FriendInfoList/FriendInfoList'
 
-export default class EditMyInfo extends Component {
 
+export default class FirendInfo extends Component {
+
+    
     constructor(props) {
         super(props)
         this._renderParallaxConfig = this._renderParallaxConfig.bind(this)
-        this.selectBottomMenuItemFn = this.selectBottomMenuItemFn.bind(this)
     }
 
     componentDidMount() {
@@ -31,9 +31,6 @@ export default class EditMyInfo extends Component {
       this.props.navigation.goBack();
     }
 
-    dialogRight() {
-      this.refs.menuDialog.show()
-    }
 
     _renderParallaxConfig(params) {
         let config = {}
@@ -51,11 +48,6 @@ export default class EditMyInfo extends Component {
         )
         config.renderForeground = () => (
             <View key="parallax-header" style={ styles.parallaxHeader }>
-              <Image style={ styles.avatar } source={{
-                uri: 'http://img.twenq.com/upload/artimg/2018/9/1536816904_1c2bcb0a6ee2b44cdaa0f6b5c25df6f8.jpg',
-                width: AVATAR_SIZE,
-                height: AVATAR_SIZE
-              }}/>
               <Text style={ styles.sectionSpeakerText }>
                 {params.name}
               </Text>
@@ -74,7 +66,6 @@ export default class EditMyInfo extends Component {
             <View key="fixed-header" style={styles.fixedSection}>
               <NavigationBar 
                 leftButton={ViewUtil.getNavigationBarBackButton(() => this.goBack())}
-                rightButton={ViewUtil.getNavigationBarRightButton(<Icon name={'list'} size={17} style={{color:'#fff'}} />,()=>this.dialogRight())}
                 titleLayoutStyle={{paddingRight: 10}}
                 style={{backgroundColor: 'transparent'}}
             />
@@ -84,49 +75,42 @@ export default class EditMyInfo extends Component {
         return config
     }
 
-    selectInfoItemFn(settingItem) {
-      this.props.navigation.navigate(NavigatorName.EditMyInfoing,{settingItem})
-    }
-
-    selectBottomMenuItemFn(typeId) {
-      this.refs.menuDialog.hide()
-      switch (typeId) {
-        case "1":
-          Alert.alert('退出群','确定退出该群?',[{
-              text: '取消',
-              onPress: () => {
-                  
-              }
-          },{
-              text: '确定',
-              onPress: () => {
-                  
-              }
-          }])
-          break
-        default: 
-          return
-      }
+    removeFriend() {
+      Alert.alert('删除好友','确定删除该好友?',[{
+        text: '取消',
+        onPress: () => {
+            
+        }
+    },{
+        text: '确定',
+        onPress: () => {
+            
+        }
+    }])
     }
 
     render() {
         let renderConfig = this._renderParallaxConfig({
-          'name': '测试群A1',
+          'name': '仟月酱',
           'description': '',
           'avatar': '',
-          'title': '测试群A1',
+          'title': '个人资料',
           'backgroundImg': 'http://img.twenq.com/upload/artimg/2018/9/1536377718_3820bd5a4a04cb806198482a52df82ad.jpg'
         })
-        return (
+        return (<View style={{flex: 1}}>
               <ParallaxScrollView
                 headerBackgroundColor="#333"
                 stickyHeaderHeight={ STICKY_HEADER_HEIGHT }
                 parallaxHeaderHeight={ PARALLAX_HEADER_HEIGHT }
                 backgroundSpeed={10}
                 {...renderConfig}>
-               <AllMember />
-              <BottomDialog ref="menuDialog" menus={[{"id": "1","text": "退出该群"}]} selectItemFn={this.selectBottomMenuItemFn}/>
+                <FriendInfoList settings={EditMyInfoData.settings} selectItemFn={this.selectInfoItemFn}/>
             </ParallaxScrollView>
+              <TouchableOpacity style={styles.removeFriend} 
+                onPress={()=>this.removeFriend()}>
+                      <Text style={{color: '#fff'}}>删除好友</Text>
+              </TouchableOpacity>
+            </View>
         );
     }
 }
@@ -179,7 +163,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 1,
     flexDirection: 'column',
-    paddingTop: 100
+    paddingTop: 200
   },
   avatar: {
     marginBottom: 10,
@@ -206,5 +190,12 @@ const styles = StyleSheet.create({
   },
   rowText: {
     fontSize: 20
+  },
+  removeFriend: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#f57',
+    height: 50
   }
 });
