@@ -1,0 +1,10 @@
+/* 头部通知栏  */
+.title {
+	background-color: #000;
+}
+.title-color {
+	color: #fff;
+}
+.back-size {
+	font-size: 20px !important;
+}

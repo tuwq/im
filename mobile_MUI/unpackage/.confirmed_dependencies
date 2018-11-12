@@ -1,12 +1,34 @@
 {
-	"index.html": {
-		"resources": [
-			"pages/chatlist/chatlist.html"
-		],
-		"refer": [
-			"pages/contact/contact.html",
-			"pages/me/me.html",
-			"pages/chatlist/chatlist.html"
-		]
-	}
+  "index.html": {
+    "resources": [
+      "pages/chatlist/chatlist.html",
+      "pages/Chatlist/chatlist.html"
+    ],
+    "refer": [
+      "pages/contact/contact.html",
+      "pages/me/me.html",
+      "pages/chatlist/chatlist.html",
+      "pages/Contact/contact.html",
+      "pages/Me/me.html",
+      "pages/Chatlist/chatlist.html"
+    ]
+  },
+  "pages/Login/login.html": {
+    "refer": [
+      "pages/Login/login.html"
+    ],
+    "resources": []
+  },
+  "pages/Register/register.html": {
+    "refer": [
+      "pages/Register/register.html"
+    ],
+    "resources": []
+  },
+  "pages/ValidateCode/validateCode.html": {
+    "refer": [
+      "pages/ValidateCode/validateCode.html"
+    ],
+    "resources": []
+  }
 }

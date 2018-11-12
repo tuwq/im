@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="validateCode.css"/>
+		<link rel="stylesheet" type="text/css" href="../../common/header/header.css"/>
+	</head>
+
+	<body>
+		<script src="../../js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init()
+			// 相当于jQuery的加载
+	      	mui.plusReady(function(){
+	      		// 系统颜色
+	      		plus.navigator.setStatusBarBackground('#000')
+	      		plus.navigator.setStatusBarStyle('light')
+	      	})
+		</script>
+		<header class="mui-bar mui-bar-nav title">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left title-color back-size">返回</a>
+		</header>
+		<div class="validateCode-wrap">
+			<div class="validateCode-content">
+				<form class="validateCode-form">
+					<div class="validateCode-group">
+						<div class="validateCode-control">
+							 <input type="text" class="validateCode-input" placeholder="输入短信验证码">
+						</div>
+						<div class="validateCode-control">
+							<span style="color: rgb(128,128,128)">发送验证码至+86&nbsp;</span>
+							<span style="color: #DF5000;">15279167097&nbsp;</span>
+							<span>重新发送</span>
+						</div>
+						<div class="validateCode-control">
+							 <button class="input-button">注册</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</body>
+</html>

@@ -3,15 +3,15 @@ window.timConfig = {
 	timFooterBarArray: [
 		{
 			pageId: "chatlist.html",
-			pageUrl: "pages/chatlist/chatlist.html"
+			pageUrl: "pages/Chatlist/chatlist.html"
 		},
 		{
 			pageId: "contact.html",
-			pageUrl: "pages/contact/contact.html"
+			pageUrl: "pages/Contact/contact.html"
 		},
 		{
 			pageId: "me.html",
-			pageUrl: "pages/me/me.html"
+			pageUrl: "pages/Me/me.html"
 		}
 	],
 	// 中间webview所需减少的距离(防止全屏)
