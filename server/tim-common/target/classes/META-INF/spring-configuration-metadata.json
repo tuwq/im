@@ -1,0 +1,22 @@
+{
+  "hints": [],
+  "groups": [
+    {
+      "sourceType": "root.configConstant.TimConfigProperties",
+      "name": "tim.config",
+      "type": "root.configConstant.TimConfigProperties"
+    }
+  ],
+  "properties": [
+    {
+      "sourceType": "root.configConstant.TimConfigProperties",
+      "name": "tim.config.login",
+      "type": "root.configConstant.LoginProperties"
+    },
+    {
+      "sourceType": "root.configConstant.TimConfigProperties",
+      "name": "tim.config.user-default",
+      "type": "root.configConstant.UserDefaultProperties"
+    }
+  ]
+}
