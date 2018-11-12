@@ -1,0 +1,14 @@
+/* 头部通知栏  */
+.title {
+	background-color: #000;
+}
+.title-color {
+	color: #fff;
+}
+/* 底部选项卡 */
+.mui-bar-tab {
+	background-color: #000;	
+}
+.mui-bar-tab .mui-tab-item.mui-active{
+	color: #fff;
+}

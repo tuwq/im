@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <script src="js/mui.min.js"></script>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <!-- 头部 底部选项卡 阿里图标-->
+    <link rel="stylesheet" type="text/css" href="css/index.css"/>
+    <link rel="stylesheet" type="text/css" href="download/font_icon/iconfont.css"/>
+    <script src="config/config.js"></script>
+    <script type="text/javascript" charset="utf-8">
+      	mui.init();
+      	// 相当于jQuery的加载
+      	mui.plusReady(function(){
+      		// 系统颜色
+      		plus.navigator.setStatusBarBackground('#000')
+      		plus.navigator.setStatusBarStyle('light')
+      	})
+    </script>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav title">
+	    <h1 class="mui-title title-color">消息</h1>
+	</header>
+	<!-- 底部选项卡 tabindex用于显示区分 -->
+	<nav class="mui-bar mui-bar-tab">
+	    <a class="mui-tab-item mui-active" tabindex="0">
+	        <span class="mui-icon iconfont icon-news"></span>
+	    </a>
+	    <a class="mui-tab-item" tabindex="1">
+	        <span class="mui-icon iconfont icon-tongxunlu"></span>
+	    </a>
+	    <a class="mui-tab-item" tabindex="2">
+	        <span class="mui-icon iconfont icon-gongwenbao"></span>
+	    </a>
+	</nav>
+	<script type="text/javascript" charset="utf-8">
+		mui.plusReady(function(){
+			/**
+			 * 获取当前webView
+			 * 向当前webview追加子页的4张webview对象
+			 * 隐藏webview只显示首个wenview
+			 * 限制高度防止webview全屏
+			 * 批量绑定tap事件,依靠tabindex映射数组展示不同页面
+			 */
+			var indexWebview = plus.webview.currentWebview()
+			var timFooterBarArray = window.timConfig.timFooterBarArray
+			var timStyle = window.timConfig.timStyle
+			var indexWebView = plus.webview.currentWebview()
+			for (var i = 0; i < timFooterBarArray.length; i++) {
+				var pageBar = plus.webview.create(timFooterBarArray[i].pageUrl, timFooterBarArray[i].pageId, timStyle)
+				pageBar.hide()
+				indexWebview.append(pageBar)
+			}
+			plus.webview.show(timFooterBarArray[0].pageId)
+			mui('.mui-bar-tab').on('tap', 'a', function(){
+				mui.each(function(index, item){
+					plus.webview.hide(timFooterBarArray[index].pageId, 'none', 200)
+				})
+				var tabIndex = this.getAttribute('tabindex')
+				plus.webview.show(timFooterBarArray[tabIndex].pageId, 'none', 200)
+			})
+		})
+	</script>
+</body>
+</html>
