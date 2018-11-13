@@ -27,4 +27,7 @@ public class RegisterParam {
 	@NotBlank(message="密码不允许为空串")
 	@NotNull(message="密码不允许位空")
 	private String rePassword;
+	@NotBlank(message="验证码不允许为空串")
+	@NotNull(message="验证码不允许位空")
+	private String validateCode;
 }

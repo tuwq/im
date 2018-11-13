@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="root.mapper.PrivateChatMsgMapper" >
   <resultMap id="BaseResultMap" type="root.model.PrivateChatMsg" >
-    <id column="id" property="id" jdbcType="INTEGER" />
+    <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="send_user_id" property="sendUserId" jdbcType="INTEGER" />
     <result column="accept_user_id" property="acceptUserId" jdbcType="INTEGER" />
     <result column="msg" property="msg" jdbcType="VARCHAR" />
@@ -12,21 +12,21 @@
   <sql id="Base_Column_List" >
     id, send_user_id, accept_user_id, msg, sign_flag, create_time
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
     from private_chat_msg
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from private_chat_msg
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="root.model.PrivateChatMsg" >
     insert into private_chat_msg (id, send_user_id, accept_user_id, 
       msg, sign_flag, create_time
       )
-    values (#{id,jdbcType=INTEGER}, #{sendUserId,jdbcType=INTEGER}, #{acceptUserId,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=VARCHAR}, #{sendUserId,jdbcType=INTEGER}, #{acceptUserId,jdbcType=INTEGER}, 
       #{msg,jdbcType=VARCHAR}, #{signFlag,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -54,7 +54,7 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
-        #{id,jdbcType=INTEGER},
+        #{id,jdbcType=VARCHAR},
       </if>
       <if test="sendUserId != null" >
         #{sendUserId,jdbcType=INTEGER},
@@ -92,7 +92,7 @@
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="root.model.PrivateChatMsg" >
     update private_chat_msg
@@ -101,6 +101,6 @@
       msg = #{msg,jdbcType=VARCHAR},
       sign_flag = #{signFlag,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

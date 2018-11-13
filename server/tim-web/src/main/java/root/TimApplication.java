@@ -12,7 +12,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 @MapperScan("root.mapper")
 public class TimApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(TimApplication.class, args);
 	}

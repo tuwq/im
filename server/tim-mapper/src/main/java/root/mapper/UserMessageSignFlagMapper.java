@@ -3,13 +3,13 @@ package root.mapper;
 import root.model.UserMessageSignFlag;
 
 public interface UserMessageSignFlagMapper {
-    int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(String id);
 
     int insert(UserMessageSignFlag record);
 
     int insertSelective(UserMessageSignFlag record);
 
-    UserMessageSignFlag selectByPrimaryKey(Integer id);
+    UserMessageSignFlag selectByPrimaryKey(String id);
 
     int updateByPrimaryKeySelective(UserMessageSignFlag record);
 

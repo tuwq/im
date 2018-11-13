@@ -3,13 +3,13 @@ package root.mapper;
 import root.model.PrivateChatMsg;
 
 public interface PrivateChatMsgMapper {
-    int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(String id);
 
     int insert(PrivateChatMsg record);
 
     int insertSelective(PrivateChatMsg record);
 
-    PrivateChatMsg selectByPrimaryKey(Integer id);
+    PrivateChatMsg selectByPrimaryKey(String id);
 
     int updateByPrimaryKeySelective(PrivateChatMsg record);
 

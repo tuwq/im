@@ -3,13 +3,13 @@ package root.mapper;
 import root.model.Users;
 
 public interface UsersMapper {
-    int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(String id);
 
     int insert(Users record);
 
     int insertSelective(Users record);
 
-    Users selectByPrimaryKey(Integer id);
+    Users selectByPrimaryKey(String id);
 
     int updateByPrimaryKeySelective(Users record);
 

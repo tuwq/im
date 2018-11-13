@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Users {
-    private Integer id;
+    private String id;
 
     private String qqNumber;
 
@@ -24,18 +24,18 @@ public class Users {
 
     private String telephone;
 
-    private String qrcode; // 
+    private String qrcode; // 二维码
 
-    private String appId; //
+    private String appId; // 手机唯一标识
 
     private Date createTime;
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setId(String id) {
+        this.id = id == null ? null : id.trim();
     }
 
     public String getQqNumber() {

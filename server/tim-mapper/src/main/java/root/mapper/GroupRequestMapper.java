@@ -3,13 +3,13 @@ package root.mapper;
 import root.model.GroupRequest;
 
 public interface GroupRequestMapper {
-    int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(String id);
 
     int insert(GroupRequest record);
 
     int insertSelective(GroupRequest record);
 
-    GroupRequest selectByPrimaryKey(Integer id);
+    GroupRequest selectByPrimaryKey(String id);
 
     int updateByPrimaryKeySelective(GroupRequest record);
 

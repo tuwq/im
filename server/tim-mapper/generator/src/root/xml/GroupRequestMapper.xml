@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="root.mapper.GroupRequestMapper" >
   <resultMap id="BaseResultMap" type="root.model.GroupRequest" >
-    <id column="id" property="id" jdbcType="INTEGER" />
+    <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="send_group_id" property="sendGroupId" jdbcType="INTEGER" />
     <result column="accept_user_id" property="acceptUserId" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
@@ -10,20 +10,20 @@
   <sql id="Base_Column_List" >
     id, send_group_id, accept_user_id, create_time
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
     from group_request
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from group_request
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="root.model.GroupRequest" >
     insert into group_request (id, send_group_id, accept_user_id, 
       create_time)
-    values (#{id,jdbcType=INTEGER}, #{sendGroupId,jdbcType=INTEGER}, #{acceptUserId,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=VARCHAR}, #{sendGroupId,jdbcType=INTEGER}, #{acceptUserId,jdbcType=INTEGER}, 
       #{createTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="root.model.GroupRequest" >
@@ -44,7 +44,7 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
-        #{id,jdbcType=INTEGER},
+        #{id,jdbcType=VARCHAR},
       </if>
       <if test="sendGroupId != null" >
         #{sendGroupId,jdbcType=INTEGER},
@@ -70,13 +70,13 @@
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="root.model.GroupRequest" >
     update group_request
     set send_group_id = #{sendGroupId,jdbcType=INTEGER},
       accept_user_id = #{acceptUserId,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

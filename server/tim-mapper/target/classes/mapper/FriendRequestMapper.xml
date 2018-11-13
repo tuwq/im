@@ -2,29 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="root.mapper.FriendRequestMapper" >
   <resultMap id="BaseResultMap" type="root.model.FriendRequest" >
-    <id column="id" property="id" jdbcType="INTEGER" />
+    <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="send_user_id" property="sendUserId" jdbcType="INTEGER" />
     <result column="accept_user_id" property="acceptUserId" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
   </resultMap>
-  
   <sql id="Base_Column_List" >
     id, send_user_id, accept_user_id, create_time
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
     from friend_request
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from friend_request
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="root.model.FriendRequest" >
     insert into friend_request (id, send_user_id, accept_user_id, 
       create_time)
-    values (#{id,jdbcType=INTEGER}, #{sendUserId,jdbcType=INTEGER}, #{acceptUserId,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=VARCHAR}, #{sendUserId,jdbcType=INTEGER}, #{acceptUserId,jdbcType=INTEGER}, 
       #{createTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="root.model.FriendRequest" >
@@ -45,7 +44,7 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
-        #{id,jdbcType=INTEGER},
+        #{id,jdbcType=VARCHAR},
       </if>
       <if test="sendUserId != null" >
         #{sendUserId,jdbcType=INTEGER},
@@ -71,13 +70,13 @@
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="root.model.FriendRequest" >
     update friend_request
     set send_user_id = #{sendUserId,jdbcType=INTEGER},
       accept_user_id = #{acceptUserId,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>
