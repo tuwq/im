@@ -11,6 +11,7 @@
     <link rel="stylesheet" type="text/css" href="download/font_icon/iconfont.css"/>
     <link rel="stylesheet" type="text/css" href="common/css/header.css"/>
     <script src="config/TimConfig.js"></script>
+    <script src="common/js/TimUtil.js"></script>
     <script type="text/javascript" charset="utf-8">
       	mui.init();
       	// 相当于jQuery的加载
@@ -23,7 +24,7 @@
 </head>
 <body>
 	<header class="mui-bar mui-bar-nav title">
-	    <h1 class="mui-title title-color">消息</h1>
+	    <h1 class="mui-title title-color" id="headtitle">消息</h1>
 	</header>
 	<!-- 底部选项卡 tabindex用于显示区分 -->
 	<nav class="mui-bar mui-bar-tab">
@@ -45,6 +46,7 @@
 			 * 隐藏webview只显示首个wenview
 			 * 限制高度防止webview全屏
 			 * 批量绑定tap事件,依靠tabindex映射数组展示不同页面
+			 * ! 禁用返回按钮
 			 */
 			var indexWebview = plus.webview.currentWebview()
 			var timFooterBarArray = window.TimConfig.timFooterBarArray
@@ -56,13 +58,17 @@
 				indexWebview.append(pageBar)
 			}
 			plus.webview.show(timFooterBarArray[0].pageId)
+			var headtitleDOM = document.getElementById('headtitle')
+			headtitleDOM.innerText = timFooterBarArray[0].title
 			mui('.mui-bar-tab').on('tap', 'a', function(){
 				mui.each(function(index, item){
-					plus.webview.hide(timFooterBarArray[index].pageId, 'none', 200)
+					plus.webview.hide(timFooterBarArray[index].pageId, 'none', 0)
 				})
 				var tabIndex = this.getAttribute('tabindex')
-				plus.webview.show(timFooterBarArray[tabIndex].pageId, 'none', 200)
+				plus.webview.show(timFooterBarArray[tabIndex].pageId, 'none', 0)
+				headtitleDOM.innerText = timFooterBarArray[tabIndex].title
 			})
+			mui.back = function() {return false}
 		})
 	</script>
 </body>

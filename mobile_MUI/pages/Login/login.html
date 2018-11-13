@@ -57,15 +57,24 @@
 			 * 获取录入元素数据
 			 * 校验录入数据
 			 * 获取登录账户,密码,手机唯一标识码
+			 * 登陆成功缓存用户信息
+			 * 跳转至主页
+			 * ! 是否以登录,登录跳转主页
 			 */
 			mui.plusReady(function(){
+				var cacheUser = window.TimUtil.getCacheNowUserInfo()
+				if (cacheUser != null) mui.openWindow({
+					url: '../../index.html',
+					id: 'index.html',
+					show: {autoShow: true,aniShow:'none',duration: 0}
+				})
 				var loginnameDOM = document.getElementById('loginname')
 				var passwordDOM = document.getElementById('password')
 				var loginButton = document.getElementById('loginButton')
 				loginButton.addEventListener("tap", function(e){
 					e.preventDefault()
 					e.stopPropagation()
-					var appId = plus.device.uuid.split(',')[0]
+					var appId = plus.push.getClientInfo().clientid
 					var loginname = loginnameDOM.value
 					var password = passwordDOM.value
 				    var flag = window.CheckFormUtil.checkLoginForm({loginname, password})
@@ -74,6 +83,13 @@
 							loginname,  password, appId
 						}, function(data){
 							if (data.code == HttpConstantCode.successCode) {
+								var user = data.result
+								TimUtil.setCacheNowUserInfo(user)
+								mui.openWindow({
+									url: '../../index.html',
+									id: 'index.html',
+									show: {autoShow: true}
+								})
 								window.TimUtil.showToast('登陆成功', 'success')
 							} else {
 								window.TimUtil.showToast(data.msg, 'error')

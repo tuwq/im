@@ -137,14 +137,16 @@
 					"pages/contact/contact.html",
 					"pages/me/me.html",
 					"pages/Contact/contact.html",
-					"pages/Me/me.html"
+					"pages/Me/me.html",
+					"pages/Login/login.html"
 				],
 				"priority": 0
 			},
 			"pages/Login/login.html": {
 				"resources": [],
 				"refer": [
-					"pages/Login/login.html"
+					"pages/Login/login.html",
+					"index.html"
 				],
 				"priority": 0
 			},

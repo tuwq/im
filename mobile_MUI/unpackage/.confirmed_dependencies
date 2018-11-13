@@ -10,12 +10,14 @@
       "pages/chatlist/chatlist.html",
       "pages/Contact/contact.html",
       "pages/Me/me.html",
-      "pages/Chatlist/chatlist.html"
+      "pages/Chatlist/chatlist.html",
+      "pages/Login/login.html"
     ]
   },
   "pages/Login/login.html": {
     "refer": [
-      "pages/Login/login.html"
+      "pages/Login/login.html",
+      "index.html"
     ],
     "resources": []
   },
