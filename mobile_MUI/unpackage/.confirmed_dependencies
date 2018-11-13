@@ -30,5 +30,16 @@
       "pages/ValidateCode/validateCode.html"
     ],
     "resources": []
+  },
+  "pages/RegisterData/RegisterData.html": {
+    "refer": [
+      "pages/RegisterData/RegisterData.html"
+    ],
+    "resources": []
+  },
+  "pages/RegisterValidate/RegisterValidate.html": {
+    "refer": [
+      "pages/RegisterValidate/RegisterValidate.html"
+    ]
   }
 }

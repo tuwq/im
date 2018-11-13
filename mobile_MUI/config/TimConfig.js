@@ -1,4 +1,6 @@
-window.timConfig = {
+window.TimConfig = {
+	// 服务器地址
+	serverUrl: 'http://202cg57547.imwork.net:47424',
 	// 底部选项卡
 	timFooterBarArray: [
 		{

@@ -126,7 +126,7 @@ public class LoginService {
 		user.setAppId(param.getAppId());
 		usersMapper.updateByPrimaryKeySelective(user);
 		LoginDto loginDto = DtoUtil.adapt(new LoginDto(), user);
-		loginDto.setPassword("");
+		loginDto.setPassword(""); 
 		loginDto.setQrcode("");
 		loginDto.setAppId("");
 		return loginDto;

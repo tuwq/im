@@ -9,8 +9,8 @@
     <!-- 头部 底部选项卡 阿里图标-->
     <link rel="stylesheet" type="text/css" href="css/index.css"/>
     <link rel="stylesheet" type="text/css" href="download/font_icon/iconfont.css"/>
-    <link rel="stylesheet" type="text/css" href="common/header/header.css"/>
-    <script src="config/config.js"></script>
+    <link rel="stylesheet" type="text/css" href="common/css/header.css"/>
+    <script src="config/TimConfig.js"></script>
     <script type="text/javascript" charset="utf-8">
       	mui.init();
       	// 相当于jQuery的加载
@@ -47,8 +47,8 @@
 			 * 批量绑定tap事件,依靠tabindex映射数组展示不同页面
 			 */
 			var indexWebview = plus.webview.currentWebview()
-			var timFooterBarArray = window.timConfig.timFooterBarArray
-			var timStyle = window.timConfig.timStyle
+			var timFooterBarArray = window.TimConfig.timFooterBarArray
+			var timStyle = window.TimConfig.timStyle
 			var indexWebView = plus.webview.currentWebview()
 			for (var i = 0; i < timFooterBarArray.length; i++) {
 				var pageBar = plus.webview.create(timFooterBarArray[i].pageUrl, timFooterBarArray[i].pageId, timStyle)

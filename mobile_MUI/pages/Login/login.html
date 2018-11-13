@@ -6,30 +6,37 @@
 		<title></title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<script src="../../js/mui.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="login.css"/>
-		<link rel="stylesheet" type="text/css" href="../../common/animation/input.css"/>
+		<script src="../../common/js/CheckFormUtil.js"></script>
+		<script src="../../common/js/TimUtil.js"></script>
+		<script src="../../api/Login/login.js"></script>
+		<script src="../../config/HttpConstantCode.js"></script>
 	</head>
 
 	<body>
+		<script type="text/javascript">
+			mui.init()
+		</script>
 		<div class="login-wrap">
 			<div class="login-content">
 				<div class="login-avatar">
 					<img class="avatar" src="../../image/default.jpg" alt="" />
 				</div>
-				<form class="login-form">
+				<form class="login-form" onsubmit="return false;">
 					<div class="login-group">
 						<div class="login-control">
-							 <input type="text" class="login-input" placeholder="QQ号/手机号">
+							 <input id="loginname" type="text" class="login-input" placeholder="QQ号/手机号">
 						</div>
 				    </div>
 				    <div class="login-group">
 						<div class="login-control">
-							 <input type="text" class="login-input" placeholder="密码">
+							 <input id="password" type="password" class="login-input" placeholder="密码">
 						</div>
 				    </div>
 				    <div class="login-group">
 						<div class="login-control">
-							 <button class="input-button">登录</button>
+							 <button class="input-button" id="loginButton">登录</button>
 						</div>
 				    </div>
 				</form>	
@@ -45,10 +52,38 @@
 				</div>
 			</div>
 		</div>
-		<script src="../../js/mui.min.js"></script>
 		<script type="text/javascript">
-			mui.init()
+			/**
+			 * 获取录入元素数据
+			 * 校验录入数据
+			 * 获取登录账户,密码,手机唯一标识码
+			 */
+			mui.plusReady(function(){
+				var loginnameDOM = document.getElementById('loginname')
+				var passwordDOM = document.getElementById('password')
+				var loginButton = document.getElementById('loginButton')
+				loginButton.addEventListener("tap", function(e){
+					e.preventDefault()
+					e.stopPropagation()
+					var appId = plus.device.uuid.split(',')[0]
+					var loginname = loginnameDOM.value
+					var password = passwordDOM.value
+				    var flag = window.CheckFormUtil.checkLoginForm({loginname, password})
+					if (flag == true) {
+						window.LoginApi.loginApi('/login/login', {
+							loginname,  password, appId
+						}, function(data){
+							if (data.code == HttpConstantCode.successCode) {
+								window.TimUtil.showToast('登陆成功', 'success')
+							} else {
+								window.TimUtil.showToast(data.msg, 'error')
+							}
+						})
+					} else {
+						window.TimUtil.showToast(flag, 'error')
+					}
+				})
+			})
 		</script>
 	</body>
-	
 </html>

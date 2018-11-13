@@ -67,7 +67,6 @@
 	border-radius: 3px !important;
 	box-shadow: none !important;
 	background: transparent !important;
-	border-bottom: 1px solid rgb(128,128,128) !important;
 }
 .login-input::-webkit-input-placeholder {
 	color: #000;
