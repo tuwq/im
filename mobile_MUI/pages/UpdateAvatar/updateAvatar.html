@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../common/css/header.css"/>
+		<link rel="stylesheet" type="text/css" href="updateAvatar.css"/>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../config/TimConfig.js"></script>
+		<script src="../../common/js/TimUtil.js"></script>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav title-header">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left title-color"></a>
+		    <h1 class="mui-title title-color">头像</h1>
+		    <a id="openMenu" class="mui-pull-right title-color title-size title-font">更换头像</a>
+		</header>
+		<div class="update-wrap">
+			<div class="update-content">
+				<img id="faceImage" src="../../image/default.jpg" alt="" />
+			</div>
+		</div>
+		<div id="sheet-faceImage" class="mui-popover mui-popover-bottom mui-popover-action ">
+		    <ul class="mui-table-view">
+		      <li class="mui-table-view-cell">
+		        <a href="#">选择照片</a>
+		      </li>
+		      <li class="mui-table-view-cell">
+		        <a href="#">保存图片</a>
+		      </li>
+		    </ul>
+		    <ul class="mui-table-view">
+		      <li class="mui-table-view-cell">
+		        <a href="#sheet-faceImage"><b>取消</b></a>
+		      </li>
+		    </ul>
+		</div>
+		
+		<script type="text/javascript">
+			/**
+			 * 页面加载后加载头像
+			 * 绑定选择菜单
+			 */
+			mui.init()
+			mui.plusReady(function(){
+				plus.navigator.setStatusBarBackground('#000')
+      			plus.navigator.setStatusBarStyle('light')
+				var user = window.TimUtil.getCacheNowUserInfo()
+				var faceImageDOM = document.getElementById('faceImage')
+				if (user != null) {
+					faceImageDOM.src = window.TimConfig.serverImageUrl + window.TimConfig.avatarPrefix + user.faceImage
+				}
+				var imgWidth = document.body.clientWidth
+				var imgHeight = document.body.clientHeight
+				var openMenuDOM = document.getElementById('openMenu')
+				openMenuDOM.addEventListener('tap', function(e){
+					mui('#sheet-faceImage').popover('toggle')
+				})
+			})
+		</script>
+	</body>
+
+</html>

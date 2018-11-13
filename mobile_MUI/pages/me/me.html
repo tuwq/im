@@ -6,14 +6,97 @@
 		<title></title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="me.css"/>
+		<link rel="stylesheet" type="text/css" href="../../common/css/header.css"/>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../config/TimConfig.js"></script>
+		<script src="../../common/js/TimUtil.js"></script>
 	</head>
 
 	<body>
-		
-		<script src="../../js/mui.min.js"></script>
+		<header class="mui-bar mui-bar-nav title-header noshadow">
+		    <h1 class="mui-title title-color">我</h1>
+		</header>
+		<div class="me-wrap">
+			<div class="me-top">
+				<div class="me-info">
+					<div class="me-info-top">
+						<h2 id="me-info-nickname-top" class="info-nickname">炮塔向后转</h2>
+						<img class="info-qrcode" src="../../image/qrcode.png" alt="" />
+					</div>		
+					<div class="me-info-bottom">
+						<span id="me-info-qqNumber-top" class="info-qqnumber"></span>
+					</div>
+				</div>
+				<div class="me-avatar">
+					<a href="javascript:void(0);" id="me-info-faceImage-link">
+						<img id="me-info-faceImage" class="avatar" src="../../image/default.jpg" alt="" />
+					</a>
+				</div>
+			</div>
+			<div class="me-bottom">
+				<div class="me-info-list">
+					<div class="info-item">
+						<span class="item-desc">QQ号</span>
+						<span id="me-info-qqNumber-bottom" class="item-value"></span>
+					</div>
+					<div class="info-item">
+						<span class="item-desc">个人签名</span>
+						<span id="me-info-description" class="item-value"></span>
+					</div>
+					<div class="info-item">
+						<span class="item-desc">昵称</span>
+						<span id="me-info-nickname-bottom" class="item-value"></span>
+					</div>
+					<div class="info-item">
+						<span class="item-desc">手机号码</span>
+						<span id="me-info-telephone" class="item-value"></span>
+					</div>
+				</div>
+			</div>
+			<div class="logout">
+				<button id="logout-btn" class="logout-btn">退出登录</button>
+			</div>
+		</div>
 		<script type="text/javascript">
+			/**
+			 * 当当前webview被渲染时加载用户信息
+			 * 点击头像跳转头像页面
+			 */
 			mui.init()
+			mui.plusReady(function(e){
+				var meWebview = plus.webview.currentWebview()
+				meWebview.addEventListener('show', function() {
+					refreshUserInfo()				
+				})
+				document.getElementById('logout-btn').addEventListener('tap', function(e){
+					window.TimUtil.removeCacheNowUserInfo()
+				})
+				document.getElementById('me-info-faceImage-link').addEventListener('tap', function(e){
+					mui.openWindow({
+						url: '../UpdateAvatar/updateAvatar.html',
+						id: 'updateAvatar.html'
+					})
+				})
+			}) 
+			function refreshUserInfo() {
+				var user = TimUtil.getCacheNowUserInfo()
+				if (user != null) {
+					var faceImage = user.faceImage
+					var nickname = user.nickname
+					var qqNumber = user.qqNumber
+					var description = user.description
+					var telephone = user.telephone
+					document.getElementById('me-info-qqNumber-top').innerText = qqNumber
+					document.getElementById('me-info-qqNumber-bottom').innerText = qqNumber
+					document.getElementById('me-info-description').innerText = description == ''?'没有签名':description
+					document.getElementById('me-info-nickname-top').innerText = nickname
+					document.getElementById('me-info-nickname-bottom').innerText = nickname
+					document.getElementById('me-info-telephone').innerText = telephone
+					document.getElementById('me-info-faceImage').src = 
+						window.TimConfig.serverImageUrl + window.TimConfig.avatarPrefix + faceImage
+				}
+			}
 		</script>
 	</body>
-
 </html>

@@ -23,9 +23,6 @@
     </script>
 </head>
 <body>
-	<header class="mui-bar mui-bar-nav title">
-	    <h1 class="mui-title title-color" id="headtitle">消息</h1>
-	</header>
 	<!-- 底部选项卡 tabindex用于显示区分 -->
 	<nav class="mui-bar mui-bar-tab">
 	    <a class="mui-tab-item mui-active" tabindex="0">
@@ -58,15 +55,12 @@
 				indexWebview.append(pageBar)
 			}
 			plus.webview.show(timFooterBarArray[0].pageId)
-			var headtitleDOM = document.getElementById('headtitle')
-			headtitleDOM.innerText = timFooterBarArray[0].title
 			mui('.mui-bar-tab').on('tap', 'a', function(){
 				mui.each(function(index, item){
 					plus.webview.hide(timFooterBarArray[index].pageId, 'none', 0)
 				})
 				var tabIndex = this.getAttribute('tabindex')
 				plus.webview.show(timFooterBarArray[tabIndex].pageId, 'none', 0)
-				headtitleDOM.innerText = timFooterBarArray[tabIndex].title
 			})
 			mui.back = function() {return false}
 		})

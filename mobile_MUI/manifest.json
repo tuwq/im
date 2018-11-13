@@ -10,7 +10,7 @@
 	"icons": {
 		"72": "icon.png"
 	},
-	"launch_path": "pages/Login/login.html",/*应用的入口页面，默认为根目录下的index.html；支持网络地址，必须以http://或https://开头*/
+	"launch_path": "pages/UpdateAvatar/updateAvatar.html",/*应用的入口页面，默认为根目录下的index.html；支持网络地址，必须以http://或https://开头*/
 	"developer": {
 		"name": "",/*开发者名称*/
 		"email": "",/*开发者邮箱地址*/
@@ -177,6 +177,23 @@
 					"pages/RegisterValidate/RegisterValidate.html"
 				],
 				"priority": 0
+			},
+			"pages/Me/me.html": {
+				"resources": [
+					"js/mui.min.js",
+					"common/css/header.css",
+					"css/mui.min.css",
+					"common/js/TimUtil.js",
+					"config/TimConfig.js",
+					"image/default.jpg",
+					"image/qrcode.png",
+					"pages/Me/me.css"
+				],
+				"refer": [
+					"pages/UpdateAvatar/updateAvatar.html",
+					"pages/Register/register.html"
+				],
+				"priority": 0
 			}
 		},
 		"idle": {
@@ -193,8 +210,6 @@
 				"css/index.css",
 				"download/font_icon/iconfont.svg",
 				"download/font_icon/iconfont.woff",
-				"js/mui.min.js",
-				"css/mui.min.css",
 				"download/font_icon/demo_fontclass.html",
 				"js/mui.js",
 				"download/font_icon/iconfont.eot",

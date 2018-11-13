@@ -1,10 +1,22 @@
 /* 头部通知栏  */
-.title {
+.title-header {
 	background-color: #000;
 }
 .title-color {
 	color: #fff;
 }
+.title-size {
+	font-size: 16px !important;
+	line-height: 3em !important;
+}
+.title-font {
+	position: absolute;
+	z-index: 1000;
+	right: 10px;
+}
 .back-size {
 	font-size: 20px !important;
+}
+.noshadow {
+	box-shadow: none;
 }

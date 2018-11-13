@@ -1,0 +1,93 @@
+/* 容器 */
+.me-wrap {
+	margin-top: 44px;
+	height: 100%;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+}
+/* 上方信息内容 */
+.me-wrap .me-top {
+	display: flex;
+	padding: 10px;
+	height: 130px;
+	overflow: hidden;
+	background-image: url(../../image/timg.jpg);
+}
+/* 左侧信息: 昵称,二维码,QQ号*/
+.me-info {
+	width: 60%;
+	max-width: 50%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding-left: 10px;
+	color: #fff;
+}
+.me-info-top {
+	display: flex;
+	width: 100%;
+	align-items: center;
+}
+.me-info-top .info-nickname {
+	font-size: 25px;
+	font-weight: 600;	
+}
+.me-info-top .info-qrcode {
+	margin-left: 10px;
+	width: 20px;
+	height: 20px;
+}
+.me-info-bottom {
+	
+}
+.me-info-bottom .info-qqnumber {
+	font-size: 15px;
+}
+.me-avatar {
+	width: 40%;
+	max-width: 50%;
+	height: 100%;
+	display: flex;
+	justify-content: flex-end;
+	margin-right: 10px;
+}
+.me-avatar .avatar {
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
+}
+.me-wrap .me-bottom {
+	padding: 10px;
+}
+.me-bottom .me-info-list {
+	display: flex;
+	flex-direction: column;
+}
+.info-item {
+	height: 60px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+.info-item .item-desc {
+	font-weight: 500;
+	font-size: 14px;
+	color: #777;
+}
+.info-item .item-value {
+	font-size: 18px;
+	font-weight: 600;
+}
+.me-wrap .logout {
+	width: 100%;
+	position: absolute;
+	bottom: 0;
+}
+.logout .logout-btn {
+	width: 100%;
+	height: 50px;
+	color: #fff;
+	background-color: #CF2D28;
+}

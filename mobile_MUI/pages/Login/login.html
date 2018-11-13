@@ -63,11 +63,13 @@
 			 */
 			mui.plusReady(function(){
 				var cacheUser = window.TimUtil.getCacheNowUserInfo()
-				if (cacheUser != null) mui.openWindow({
-					url: '../../index.html',
-					id: 'index.html',
-					show: {autoShow: true,aniShow:'none',duration: 0}
-				})
+				if (cacheUser != null) {
+					mui.openWindow({
+						url: '../../index.html',
+						id: 'index.html',
+						show: {autoShow: true,aniShow:'none',duration: 0}
+					})
+				}
 				var loginnameDOM = document.getElementById('loginname')
 				var passwordDOM = document.getElementById('password')
 				var loginButton = document.getElementById('loginButton')

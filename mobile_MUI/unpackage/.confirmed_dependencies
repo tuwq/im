@@ -42,6 +42,23 @@
   "pages/RegisterValidate/RegisterValidate.html": {
     "refer": [
       "pages/RegisterValidate/RegisterValidate.html"
+    ],
+    "resources": []
+  },
+  "pages/Me/me.html": {
+    "refer": [
+      "pages/UpdateAvatar/updateAvatar.html",
+      "pages/Register/register.html"
+    ],
+    "resources": [
+      "js/mui.min.js",
+      "common/css/header.css",
+      "css/mui.min.css",
+      "common/js/TimUtil.js",
+      "config/TimConfig.js",
+      "image/default.jpg",
+      "image/qrcode.png",
+      "pages/Me/me.css"
     ]
   }
 }
