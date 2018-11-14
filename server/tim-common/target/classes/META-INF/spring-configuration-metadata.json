@@ -15,6 +15,11 @@
     },
     {
       "sourceType": "root.configConstant.TimConfigProperties",
+      "name": "tim.config.qiniu",
+      "type": "root.configConstant.QiNiuProperties"
+    },
+    {
+      "sourceType": "root.configConstant.TimConfigProperties",
       "name": "tim.config.user-default",
       "type": "root.configConstant.UserDefaultProperties"
     }

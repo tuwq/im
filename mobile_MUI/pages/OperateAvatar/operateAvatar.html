@@ -21,7 +21,7 @@
 		</header>
 		<div class="operate-wrap">
 			<div class="operate-content">
-				<img id="faceImage" src="../../image/default.jpg" alt="" />
+				<img id="faceImage" src="" alt="" />
 			</div>
 		</div>
 		<div id="sheet-faceImage" class="mui-popover mui-popover-bottom mui-popover-action ">
@@ -52,7 +52,7 @@
 				var user = window.TimUtil.getCacheNowUserInfo()
 				var faceImageDOM = document.getElementById('faceImage')
 				if (user != null) {
-					faceImageDOM.src = window.TimConfig.serverImageUrl + window.TimConfig.avatarBigPrefix + user.faceImageBig
+					faceImageDOM.src = window.TimConfig.serverImageUrl + window.TimConfig.avatarPrefix + user.faceImageBig
 				}
 				var imgWidth = document.body.clientWidth
 				var imgHeight = document.body.clientHeight

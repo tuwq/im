@@ -3,8 +3,7 @@ window.TimConfig = {
 	serverUrl: 'http://202cg57547.imwork.net:47424',
 	// 图片服务器的地址
 	serverImageUrl: 'http://tim.img.mackz.xin/',
-	avatarBigPrefix: 'user/avatar/big/',
-	avatarCutPrefix: 'user/avatar/cut/',
+	avatarPrefix: 'user/avatar/',
 	// 底部选项卡
 	timFooterBarArray: [
 		{

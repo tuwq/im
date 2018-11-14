@@ -60,8 +60,10 @@
 			 * 登陆成功缓存用户信息
 			 * 跳转至主页
 			 * ! 是否以登录,登录跳转主页
+			 * ! 禁用返回
 			 */
 			mui.plusReady(function(){
+				mui.back = function() {return false}
 				var cacheUser = window.TimUtil.getCacheNowUserInfo()
 				if (cacheUser != null) {
 					mui.openWindow({

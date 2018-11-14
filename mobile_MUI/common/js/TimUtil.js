@@ -26,6 +26,11 @@ window.TimUtil = {
 	getCacheNowUserInfo: function() {
 		return JSON.parse(plus.storage.getItem('nowUserInfo'))
 	},
+	setCacheNowUserProperty: function(key, value) {
+		var user = this.getCacheNowUserInfo()
+		user[key] = value
+		this.setCacheNowUserInfo(user)
+	},
 	/**
 	 * 清除缓存当前用户信息
 	 */
@@ -46,6 +51,25 @@ window.TimUtil = {
 			type:'post',
 			timeout:10000,
 			headers:{'Content-Type':'application/json'},	              
+			success:function(data){
+				success(data)
+			}
+		});
+	},
+	/**
+	 * 上传文件
+	 * @param {Object} url
+	 * @param {Object} data
+	 * @param {Object} success
+	 * @param {Object} fail
+	 */
+	postUpload: function(url, data, success, fail) {
+		mui.ajax(window.TimConfig.serverUrl + url,{
+			data: data,
+			dataType:'json',
+			type:'post',
+			timeout:10000,
+			headers:{'Content-Type':'multipart/form-data'},	              
 			success:function(data){
 				success(data)
 			}

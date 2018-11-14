@@ -15,4 +15,6 @@ public class TimConfigProperties {
 	private LoginProperties login;
 	
 	private UserDefaultProperties userDefault;
+	
+	private QiNiuProperties qiniu;
 }

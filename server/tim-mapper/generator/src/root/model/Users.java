@@ -7,11 +7,13 @@ public class Users {
 
     private String qqNumber;
 
-    private String nickname;
-
     private String password;
 
-    private String faceImage;
+    private String nickname;
+
+    private String faceImageCut;
+
+    private String faceImageBig;
 
     private String description;
 
@@ -39,14 +41,6 @@ public class Users {
         this.qqNumber = qqNumber == null ? null : qqNumber.trim();
     }
 
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname == null ? null : nickname.trim();
-    }
-
     public String getPassword() {
         return password;
     }
@@ -55,12 +49,28 @@ public class Users {
         this.password = password == null ? null : password.trim();
     }
 
-    public String getFaceImage() {
-        return faceImage;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setFaceImage(String faceImage) {
-        this.faceImage = faceImage == null ? null : faceImage.trim();
+    public void setNickname(String nickname) {
+        this.nickname = nickname == null ? null : nickname.trim();
+    }
+
+    public String getFaceImageCut() {
+        return faceImageCut;
+    }
+
+    public void setFaceImageCut(String faceImageCut) {
+        this.faceImageCut = faceImageCut == null ? null : faceImageCut.trim();
+    }
+
+    public String getFaceImageBig() {
+        return faceImageBig;
+    }
+
+    public void setFaceImageBig(String faceImageBig) {
+        this.faceImageBig = faceImageBig == null ? null : faceImageBig.trim();
     }
 
     public String getDescription() {

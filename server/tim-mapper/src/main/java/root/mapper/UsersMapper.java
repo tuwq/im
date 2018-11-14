@@ -40,4 +40,16 @@ public interface UsersMapper {
 	 * @return
 	 */
 	Users getByQQNumberOrPhone(@Param("loginname") String loginname);
+	/**
+	 * 修改原图头像
+	 * @param userId
+	 * @param string
+	 */
+	void updateBigAvatar(@Param("id") String id, @Param("faceImageBig") String faceImageBig);
+	/**
+	 * 修改修剪头像
+	 * @param userId
+	 * @param string
+	 */
+	void updateCutAvatar(@Param("id") String id, @Param("faceImageCut") String faceImageCut);
 }

@@ -192,7 +192,8 @@
 				"refer": [
 					"pages/UpdateAvatar/updateAvatar.html",
 					"pages/Register/register.html",
-					"pages/OperateAvatar/operateAvatar.html"
+					"pages/OperateAvatar/operateAvatar.html",
+					"pages/Login/login.html"
 				],
 				"priority": 0
 			},

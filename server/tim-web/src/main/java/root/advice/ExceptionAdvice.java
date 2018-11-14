@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import root.exception.CheckParamException;
+import root.exception.FileUploadException;
+import root.exceptionResult.FileUploadExceptionResult;
 import root.exceptionResult.ParamExceptionResult;
 
 
@@ -19,6 +21,12 @@ public class ExceptionAdvice {
 	public ResponseEntity<ParamExceptionResult> handlerParamException(CheckParamException e) {
 		// TODO 记录异常日志
 		return new ResponseEntity<ParamExceptionResult>(ParamExceptionResult.error(e.getMessage()),HttpStatus.OK);
+	}
+	
+	// 文件上传时的异常
+	@ExceptionHandler(FileUploadException.class)
+	public ResponseEntity<FileUploadExceptionResult> handlerFileUploadException(FileUploadException e) {
+		return new ResponseEntity<FileUploadExceptionResult>(FileUploadExceptionResult.builder().code(e.getResultCode()).msg(e.getMsg()).build(),HttpStatus.OK);
 	}
 	
 	// 处理未知异常

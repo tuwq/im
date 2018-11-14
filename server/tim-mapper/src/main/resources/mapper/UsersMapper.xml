@@ -4,9 +4,10 @@
   <resultMap id="BaseResultMap" type="root.model.Users" >
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="qq_number" property="qqNumber" jdbcType="VARCHAR" />
-    <result column="nickname" property="nickname" jdbcType="VARCHAR" />
     <result column="password" property="password" jdbcType="VARCHAR" />
-    <result column="face_image" property="faceImage" jdbcType="VARCHAR" />
+    <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+    <result column="face_image_cut" property="faceImageCut" jdbcType="VARCHAR" />
+    <result column="face_image_big" property="faceImageBig" jdbcType="VARCHAR" />
     <result column="description" property="description" jdbcType="VARCHAR" />
     <result column="telephone" property="telephone" jdbcType="VARCHAR" />
     <result column="qrCode" property="qrcode" jdbcType="VARCHAR" />
@@ -14,28 +15,45 @@
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, qq_number, nickname, `password`, face_image, description, telephone, qrCode, app_id, 
-    create_time
+    id, qq_number, `password`, nickname, face_image_cut, face_image_big, description, telephone, 
+    qrCode, app_id, create_time
   </sql>
   
-  <select id="countByQQNumberOrPhone" parameterType="map" resultType="int">
+  <update id="updateBigAvatar" parameterType="map" >
+ 	update users
+    <set >
+      <if test="faceImageBig != null" >
+        face_image_big = #{faceImageBig,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update> 
+  
+  <update id="updateCutAvatar" parameterType="map" >
+ 	update users
+    <set >
+      <if test="faceImageCut != null" >
+        face_image_cut = #{faceImageCut,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update> 
+  
+   <select id="countByQQNumberOrPhone" parameterType="map" resultType="int">
   	SELECT count(1)
   	FROM users
   	WHERE qq_number = #{loginname} OR telephone = #{loginname}
   </select>
-  
   <select id="getByQQNumberOrPhone" parameterType="map" resultMap="BaseResultMap">
   	SELECT <include refid="Base_Column_List" />
   	FROM users
   	WHERE qq_number = #{loginname} OR telephone = #{loginname}
   </select>
-  
   <select id="countByQQNumber" parameterType="map" resultType="int">
   	SELECT count(1)
   	FROM users
   	WHERE qq_number = #{qqNumber}
   </select>
-  
   <select id="countByTelePhone" parameterType="map" resultType="int">
   	SELECT count(1)
   	FROM users
@@ -53,14 +71,14 @@
     where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="root.model.Users" >
-    insert into users (id, qq_number, nickname, 
-      `password`, face_image, description, 
-      telephone, qrCode, app_id, 
-      create_time)
-    values (#{id,jdbcType=VARCHAR}, #{qqNumber,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, 
-      #{password,jdbcType=VARCHAR}, #{faceImage,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
-      #{telephone,jdbcType=VARCHAR}, #{qrcode,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP})
+    insert into users (id, qq_number, `password`, 
+      nickname, face_image_cut, face_image_big, 
+      description, telephone, qrCode, 
+      app_id, create_time)
+    values (#{id,jdbcType=VARCHAR}, #{qqNumber,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{nickname,jdbcType=VARCHAR}, #{faceImageCut,jdbcType=VARCHAR}, #{faceImageBig,jdbcType=VARCHAR}, 
+      #{description,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, #{qrcode,jdbcType=VARCHAR}, 
+      #{appId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="root.model.Users" >
     insert into users
@@ -71,14 +89,17 @@
       <if test="qqNumber != null" >
         qq_number,
       </if>
-      <if test="nickname != null" >
-        nickname,
-      </if>
       <if test="password != null" >
         `password`,
       </if>
-      <if test="faceImage != null" >
-        face_image,
+      <if test="nickname != null" >
+        nickname,
+      </if>
+      <if test="faceImageCut != null" >
+        face_image_cut,
+      </if>
+      <if test="faceImageBig != null" >
+        face_image_big,
       </if>
       <if test="description != null" >
         description,
@@ -103,14 +124,17 @@
       <if test="qqNumber != null" >
         #{qqNumber,jdbcType=VARCHAR},
       </if>
-      <if test="nickname != null" >
-        #{nickname,jdbcType=VARCHAR},
-      </if>
       <if test="password != null" >
         #{password,jdbcType=VARCHAR},
       </if>
-      <if test="faceImage != null" >
-        #{faceImage,jdbcType=VARCHAR},
+      <if test="nickname != null" >
+        #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="faceImageCut != null" >
+        #{faceImageCut,jdbcType=VARCHAR},
+      </if>
+      <if test="faceImageBig != null" >
+        #{faceImageBig,jdbcType=VARCHAR},
       </if>
       <if test="description != null" >
         #{description,jdbcType=VARCHAR},
@@ -135,14 +159,17 @@
       <if test="qqNumber != null" >
         qq_number = #{qqNumber,jdbcType=VARCHAR},
       </if>
-      <if test="nickname != null" >
-        nickname = #{nickname,jdbcType=VARCHAR},
-      </if>
       <if test="password != null" >
         `password` = #{password,jdbcType=VARCHAR},
       </if>
-      <if test="faceImage != null" >
-        face_image = #{faceImage,jdbcType=VARCHAR},
+      <if test="nickname != null" >
+        nickname = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="faceImageCut != null" >
+        face_image_cut = #{faceImageCut,jdbcType=VARCHAR},
+      </if>
+      <if test="faceImageBig != null" >
+        face_image_big = #{faceImageBig,jdbcType=VARCHAR},
       </if>
       <if test="description != null" >
         description = #{description,jdbcType=VARCHAR},
@@ -165,9 +192,10 @@
   <update id="updateByPrimaryKey" parameterType="root.model.Users" >
     update users
     set qq_number = #{qqNumber,jdbcType=VARCHAR},
-      nickname = #{nickname,jdbcType=VARCHAR},
       `password` = #{password,jdbcType=VARCHAR},
-      face_image = #{faceImage,jdbcType=VARCHAR},
+      nickname = #{nickname,jdbcType=VARCHAR},
+      face_image_cut = #{faceImageCut,jdbcType=VARCHAR},
+      face_image_big = #{faceImageBig,jdbcType=VARCHAR},
       description = #{description,jdbcType=VARCHAR},
       telephone = #{telephone,jdbcType=VARCHAR},
       qrCode = #{qrcode,jdbcType=VARCHAR},

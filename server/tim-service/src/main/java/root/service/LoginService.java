@@ -103,7 +103,7 @@ public class LoginService {
 		if (dbPhone == null || !MD5Util.encrypt(param.getTelephone()).equals(dbPhone)) {throw new CheckParamException("注册时间过期,请重新尝试注册");}
 		redisOperator.del(MD5Util.encrypt(param.getTelephone()));
 		Users user = Users.builder().id(RandomUtil.getUUID()).qqNumber(this.getQQNumber()).nickname(param.getNickname()).password(MD5Util.encrypt(param.getPassword()))
-		.faceImage(timConfigProperties.getUserDefault().getDefaultAvatar()).telephone(param.getTelephone())
+		.faceImageCut(timConfigProperties.getUserDefault().getDefaultAvatar()).faceImageBig(timConfigProperties.getUserDefault().getDefaultAvatar()).telephone(param.getTelephone())
 		.createTime(new Date()).build();
 		usersMapper.insertSelective(user);
 	}

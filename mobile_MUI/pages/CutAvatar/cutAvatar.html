@@ -15,6 +15,7 @@
 		<script src="../../js/mui.min.js"></script>
 		<script src="../../config/TimConfig.js"></script>
 		<script src="../../common/js/TimUtil.js"></script>
+		<script src="../../api/User/user.js"></script>
 	</head>
 
 	<body>
@@ -28,24 +29,86 @@
 				<img id="cut-image" src="" alt="" style="background-color: #16102E;"/>
 			</div>
 		</div>
-		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+		<script src="../../download/jQuery/jquery-3.3.1.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
 		<script src="https://fengyuanchen.github.io/js/common.js"></script>
 		<script src="../../download/cropper/cropper.js"></script>
 		<script type="text/javascript">
+			/**
+			 * 从相册选取图片
+			 * 获取大图的base64编码
+			 * 获取修剪后的base64编码
+			 * 使用jQuery的when同时上传至服务器
+			 */
 			mui.init()
 			var $image = $('#cut-image')
+			var faceImageBigData
+			var faceImageCutData
 			mui.plusReady(function(){
 				window.TimUtil.setSystemStatusColor()
 				var user = window.TimUtil.getCacheNowUserInfo()
 				var faceImageBig = user.faceImageBig
-				$image.attr('src', window.TimConfig.serverImageUrl + window.TimConfig.avatarBigPrefix + faceImageBig)		
+				$image.attr('src', window.TimConfig.serverImageUrl + window.TimConfig.avatarPrefix + faceImageBig)	
 				plus.gallery.pick(function(path){
 					$image.attr('src', path)
+					var imageDOM = $image[0]
+					imageDOM.onload = function() {
+						faceImageBigData = getBase64Image(imageDOM)
+						$('#confirm-cut').on('tap', function(){
+							plus.nativeUI.showWaiting( "上传中..." );
+							var cropper = $image.data('cropper');
+							var result = $image.cropper("getCroppedCanvas");
+							if (result) {
+								faceImageCutData = result.toDataURL()
+								var data1 = {
+									userId: user.id,
+									faceData: faceImageBigData,
+									imageSizeType: 1
+								}
+								var data2 = {
+									userId: user.id, 
+									faceData: faceImageCutData,
+									imageSizeType: 2
+								}
+								$.when($.ajax(window.TimConfig.serverUrl + '/user/uploadAvatarForBase',{
+									data: JSON.stringify(data1),
+									dataType:'json',
+									type:'post',
+									timeout:10000,
+									headers:{'Content-Type':'application/json;charset=utf-8'},
+									success: function(data) {
+										return data
+									}
+								}), $.ajax(window.TimConfig.serverUrl + '/user/uploadAvatarForBase',{
+										data: JSON.stringify(data2),
+										dataType:'json',
+										type:'post',
+										timeout:10000,
+										headers:{'Content-Type':'application/json;charset=utf-8'},	
+										success: function(data) {
+											return data										
+										}
+								})).done(function(bigData, cutData){
+									bigData = bigData[0]
+									cutData = cutData[0]
+									if (bigData.code == 200 && cutData.code == 200) {
+										plus.nativeUI.closeWaiting()
+										window.TimUtil.setCacheNowUserProperty('faceImageBig', bigData.result)
+										window.TimUtil.setCacheNowUserProperty('faceImageCut', cutData.result)
+										window.TimUtil.showToast('上传头像成功', 'success')
+										mui.openWindow({
+											url: '../../index.html',
+											id: 'index.html',
+											show: {autoShow: true, aniShow: 'none', duration: 0}
+										})
+									} else {
+										window.TimUtil.showToast(bigData.msg, 'error')
+									}
+								})
+							}
+						})
+					}
 					startCut()
-				})
-				$('#confirm-cut').on('tap', function(){
-					
 				})
 			})
 			function startCut() {
@@ -56,6 +119,16 @@
 				}
 				$image.cropper(options)
 				plus.nativeUI.closeWaiting()
+			}
+			function getBase64Image(img) {
+				var canvas = document.createElement("canvas")
+				canvas.width = img.width
+				canvas.height = img.height
+				var ctx = canvas.getContext("2d")
+				ctx.drawImage(img, 0, 0, img.width, img.height)
+				var ext = img.src.substring(img.src.lastIndexOf(".") + 1).toLowerCase()
+				var dataURL = canvas.toDataURL("image/" + ext)
+				return dataURL
 			}
 		</script>
 	</body>
