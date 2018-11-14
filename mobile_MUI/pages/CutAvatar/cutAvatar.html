@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../common/css/header.css"/>
+		<link rel="stylesheet" type="text/css" href="cutAvatar.css"/>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="../../download/cropper/cropper.css"/>
+		<link rel="stylesheet" type="text/css" href="../../download/cropper/main.css"/>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../config/TimConfig.js"></script>
+		<script src="../../common/js/TimUtil.js"></script>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav title-header">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left title-color"></a>
+		    <h1 class="mui-title title-color">修剪头像</h1>
+		    <a id="confirm-cut" class="mui-pull-right title-color title-font">确认修剪</a>
+		</header>
+		<div class="container">
+			<div class="img-container">
+				<img id="cut-image" src="" alt="" style="background-color: #16102E;"/>
+			</div>
+		</div>
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
+		<script src="https://fengyuanchen.github.io/js/common.js"></script>
+		<script src="../../download/cropper/cropper.js"></script>
+		<script type="text/javascript">
+			mui.init()
+			var $image = $('#cut-image')
+			mui.plusReady(function(){
+				window.TimUtil.setSystemStatusColor()
+				var user = window.TimUtil.getCacheNowUserInfo()
+				var faceImageBig = user.faceImageBig
+				$image.attr('src', window.TimConfig.serverImageUrl + window.TimConfig.avatarBigPrefix + faceImageBig)		
+				plus.gallery.pick(function(path){
+					$image.attr('src', path)
+					startCut()
+				})
+				$('#confirm-cut').on('tap', function(){
+					
+				})
+			})
+			function startCut() {
+				plus.nativeUI.showWaiting('处理中..')
+				var options = {
+					aspectRatio: 1 / 1,
+					crop: function(e) {}
+				}
+				$image.cropper(options)
+				plus.nativeUI.closeWaiting()
+			}
+		</script>
+	</body>
+
+</html>

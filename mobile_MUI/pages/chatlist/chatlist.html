@@ -6,6 +6,7 @@
 		<title></title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../common/css/header.css"/>
 		<script src="../../js/mui.min.js"></script>
 		<script src="../../common/js/TimUtil.js"></script>
 	</head>
@@ -14,14 +15,17 @@
 		<script type="text/javascript">
 			mui.init()
 		</script>
-		<header class="mui-bar mui-bar-nav title">
+		<header class="mui-bar mui-bar-nav title-header">
 		    <h1 class="mui-title title-color">消息</h1>
 		</header>
 		<button id="removeCache">删除缓存</button>
 		<script type="text/javascript">
-			var removeCache = document.getElementById('removeCache')
-			removeCache.addEventListener('tap', function(e){
-				window.TimUtil.removeCacheNowUserInfo()
+			mui.plusReady(function(){
+				window.TimUtil.setSystemStatusColor()
+				var removeCache = document.getElementById('removeCache')
+				removeCache.addEventListener('tap', function(e){
+					window.TimUtil.removeCacheNowUserInfo()
+				})
 			})
 		</script>
 	</body>

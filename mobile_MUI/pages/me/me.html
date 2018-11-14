@@ -65,6 +65,7 @@
 			 */
 			mui.init()
 			mui.plusReady(function(e){
+				window.TimUtil.setSystemStatusColor()
 				var meWebview = plus.webview.currentWebview()
 				meWebview.addEventListener('show', function() {
 					refreshUserInfo()				
@@ -74,15 +75,15 @@
 				})
 				document.getElementById('me-info-faceImage-link').addEventListener('tap', function(e){
 					mui.openWindow({
-						url: '../UpdateAvatar/updateAvatar.html',
-						id: 'updateAvatar.html'
+						url: '../OperateAvatar/operateAvatar.html',
+						id: 'operateAvatar.html'
 					})
 				})
 			}) 
 			function refreshUserInfo() {
 				var user = TimUtil.getCacheNowUserInfo()
 				if (user != null) {
-					var faceImage = user.faceImage
+					var faceImage = user.faceImageBig
 					var nickname = user.nickname
 					var qqNumber = user.qqNumber
 					var description = user.description
@@ -94,7 +95,7 @@
 					document.getElementById('me-info-nickname-bottom').innerText = nickname
 					document.getElementById('me-info-telephone').innerText = telephone
 					document.getElementById('me-info-faceImage').src = 
-						window.TimConfig.serverImageUrl + window.TimConfig.avatarPrefix + faceImage
+						window.TimConfig.serverImageUrl + window.TimConfig.avatarBigPrefix + faceImage
 				}
 			}
 		</script>

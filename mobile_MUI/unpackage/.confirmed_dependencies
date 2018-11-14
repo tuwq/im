@@ -48,7 +48,8 @@
   "pages/Me/me.html": {
     "refer": [
       "pages/UpdateAvatar/updateAvatar.html",
-      "pages/Register/register.html"
+      "pages/Register/register.html",
+      "pages/OperateAvatar/operateAvatar.html"
     ],
     "resources": [
       "js/mui.min.js",
@@ -59,6 +60,11 @@
       "image/default.jpg",
       "image/qrcode.png",
       "pages/Me/me.css"
+    ]
+  },
+  "pages/OperateAvatar/operateAvatar.html": {
+    "refer": [
+      "pages/CutAvatar/cutAvatar.html"
     ]
   }
 }

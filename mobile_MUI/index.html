@@ -14,12 +14,6 @@
     <script src="common/js/TimUtil.js"></script>
     <script type="text/javascript" charset="utf-8">
       	mui.init();
-      	// 相当于jQuery的加载
-      	mui.plusReady(function(){
-      		// 系统颜色
-      		plus.navigator.setStatusBarBackground('#000')
-      		plus.navigator.setStatusBarStyle('light')
-      	})
     </script>
 </head>
 <body>
@@ -45,6 +39,7 @@
 			 * 批量绑定tap事件,依靠tabindex映射数组展示不同页面
 			 * ! 禁用返回按钮
 			 */
+			window.TimUtil.setSystemStatusColor()
 			var indexWebview = plus.webview.currentWebview()
 			var timFooterBarArray = window.TimConfig.timFooterBarArray
 			var timStyle = window.TimConfig.timStyle

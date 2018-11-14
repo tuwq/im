@@ -8,6 +8,10 @@ window.TimUtil = {
 	showToast: function(message, type) {
 		plus.nativeUI.toast(message, {icon: "../../image/"+ type + ".png", verticalAlign: "bottom"})
 	},
+	setSystemStatusColor: function() {
+		plus.navigator.setStatusBarBackground('#16102E')
+      	plus.navigator.setStatusBarStyle('light')
+	},
 	/**
 	 * 缓存当前用户信息
 	 * @param {Object} user 用户对象
