@@ -5,6 +5,10 @@
 .title-color {
 	color: #fff !important;
 }
+.title-size-left {
+	font-size: 20px !important;
+	line-height: 30px;
+}
 .title-font {
 	position: absolute;
 	z-index: 1000;

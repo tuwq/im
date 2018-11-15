@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../common/css/header.css"/>
+		<link rel="stylesheet" type="text/css" href="meQrCode.css"/>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../config/TimConfig.js"></script>
+		<script src="../../common/js/TimUtil.js"></script>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav title-header">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left title-color title-size-left">返回</a>
+		    <h1 class="mui-title title-color">我的二维码</h1>
+		</header>
+		<div class="wrap">
+			<div class="content">
+				<div class="qrCode-wrap">
+					<div id="qrCode-content" class="qrCode-content">
+						<img id="qrcode-image" class="qrcode" src="" alt="" />
+					</div>
+					<div class="qrCode-profile">
+						<img id="qrCode-avatar" class="avatar" src="" alt="" />
+						<div class="me-info">
+							<span id="nickname-span" class="nickname">纤月酱</span>
+							<span class="explain">扫一扫二维码,加我TIM。</span>
+						</div>
+					</div>
+				</div>
+				<div class="sweepCode-wrap">
+					<div id="shoukuan" class="icon-wrap">
+						<div class="icon-control" style="background-color: #5293EF;">
+							<img src="../../image/shoukuan.png" alt="" />
+						</div>
+						<span class="txt">收钱</span>
+					</div>
+					<div id="saoyisao" class="icon-wrap">
+						<div class="icon-control" style="background-color: #1CBDF2;">
+							<img src="../../image/saoyisao.png" alt="" />
+						</div>
+						<span class="txt">扫一扫</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="sheet-qrcode" class="mui-popover mui-popover-bottom mui-popover-action ">
+		    <ul class="mui-table-view">
+		      <li class="mui-table-view-cell">
+		        <a id="save-qrcode" href="javascript:void(0);">保存二维码</a>
+		      </li>
+		    </ul>
+		    <ul class="mui-table-view">
+		      <li class="mui-table-view-cell">
+		        <a href="#sheet-qrcode"><b>取消</b></a>
+		      </li>
+		    </ul>
+		</div>
+		<script type="text/javascript">
+			mui.init()
+			mui.plusReady(function(){
+				var user = window.TimUtil.getCacheNowUserInfo()
+				refreshUserInfo()
+				document.getElementById('qrcode-image').src = window.TimConfig.serverImageUrl + window.TimConfig.qrCodePrefix + user.qrcode
+				document.getElementById('shoukuan').addEventListener('tap', function(e) {
+				
+				})
+				document.getElementById('saoyisao').addEventListener('tap', function(e) {
+				
+				})
+				document.getElementById('qrCode-content').addEventListener('tap', function(e){
+					mui('#sheet-qrcode').popover('toggle')
+				})
+				document.getElementById('save-qrcode').addEventListener('tap', function(e){
+					plus.nativeUI.showWaiting('保存中..')
+					var dtask = plus.downloader.createDownload(window.TimConfig.serverImageUrl + window.TimConfig.qrCodePrefix + user.qrcode, {}, 
+						function(downloadFile, status) {
+							plus.nativeUI.closeWaiting()
+							if (status == 200) {
+								var tempFile = downloadFile.filename
+								plus.gallery.save(tempFile, function(){
+									window.TimUtil.showToast('保存完成', 'success')
+								})
+							} else {
+								window.TimUtil.showToast('未知的保存错误', 'error')
+							}
+						})
+					dtask.start()
+				})
+				window.addEventListener(window.TimConfig.timSubscribe.refreshUserInfoSubscribe, function() {
+					refreshUserInfo()
+				})
+			})
+			function refreshUserInfo() {
+				var user = window.TimUtil.getCacheNowUserInfo()
+				document.getElementById('qrCode-avatar').src = window.TimConfig.serverImageUrl + window.TimConfig.avatarPrefix + user.faceImageCut
+				document.getElementById('nickname-span').innerText = user.nickname
+			}
+		</script>
+	</body>
+
+</html>

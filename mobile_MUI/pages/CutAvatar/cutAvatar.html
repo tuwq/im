@@ -107,8 +107,10 @@
 									window.TimUtil.showToast('上传头像成功', 'success')
 									var meWebview = plus.webview.getWebviewById('me.html')
 									var operateAvatarWebview = plus.webview.getWebviewById('operateAvatar.html')
+									var meQrCodeWebview = plus.webview.getWebviewById('meQrCode.html')
 									mui.fire(meWebview, window.TimConfig.timSubscribe.refreshUserInfoSubscribe)
 									mui.fire(operateAvatarWebview, window.TimConfig.timSubscribe.refreshUserInfoSubscribe)
+									mui.fire(meQrCodeWebview, window.TimConfig.timSubscribe.refreshUserInfoSubscribe)
 									mui.openWindow({
 										url: '../../index.html',
 										id: 'index.html',

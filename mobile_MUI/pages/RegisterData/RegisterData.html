@@ -50,9 +50,10 @@
 					var password = document.getElementById('password-input').value
 					var rePassword = document.getElementById('repassword-input').value
 					var appId = plus.push.getClientInfo().clientid
+					plus.nativeUI.showWaiting('等待..')
 					window.LoginApi.registerApi('/login/register', {validateCode, telephone, nickname, password, rePassword, appId}, function(data){
+						plus.nativeUI.closeWaiting()
 						if (data.code == 200) {
-							console.log(JSON.stringify(data))
 							var user = data.result
 							window.TimUtil.setCacheNowUserInfo(user)
 							mui.openWindow({
@@ -60,6 +61,7 @@
 								id: 'index.html',
 								show: {autoShow: true, aniShow: 'slide-in-right', duration:200},
 							})
+							window.TimUtil.showToast('注册成功', 'error')
 						} else {
 							window.TimUtil.showToast(data.msg, 'error')
 						}

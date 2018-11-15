@@ -198,7 +198,8 @@
 					"pages/Register/register.html",
 					"pages/OperateAvatar/operateAvatar.html",
 					"pages/Login/login.html",
-					"pages/EditMeInfo/editMeInfo.html"
+					"pages/EditMeInfo/editMeInfo.html",
+					"pages/MeQrCode/meQrCode.html"
 				],
 				"priority": 0
 			},

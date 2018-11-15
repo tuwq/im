@@ -19,7 +19,7 @@
 		</header>
 		<div class="me-wrap">
 			<div class="me-top">
-				<div class="me-info">
+				<div id="openQrCode" class="me-info">
 					<div class="me-info-top">
 						<h2 id="me-info-nickname-top" class="info-nickname">炮塔向后转</h2>
 						<img class="info-qrcode" src="../../image/qrcode.png" alt="" />
@@ -62,6 +62,7 @@
 			/**
 			 * 当当前webview被渲染时加载用户信息
 			 * 点击头像跳转头像页面
+			 * 点击二维码跳转二维码页面
 			 * ! 点击昵称签名跳转信息编辑页面 1: 昵称, 2: 签名
 			 * ! 添加修改头像后更新信息的事件
 			 */
@@ -110,6 +111,13 @@
 							headTitle: '编辑签名',
 							editType: 2
 						}
+					})
+				})
+				document.getElementById('openQrCode').addEventListener('tap', function(e){
+					mui.openWindow({
+						url: '../MeQrCode/meQrCode.html',
+						id: 'meQrCode.html',
+						show: {autoShow: true, aniShow: 'slide-in-right', duration:200},
 					})
 				})
 				window.addEventListener(window.TimConfig.timSubscribe.refreshUserInfoSubscribe, function() {
