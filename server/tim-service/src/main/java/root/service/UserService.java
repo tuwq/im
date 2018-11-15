@@ -18,7 +18,7 @@ import root.model.Users;
 import root.param.EditMeInfoParam;
 import root.param.UploadAvatarBaseParam;
 import root.pluginService.QiNiuService;
-import root.util.BaseUrlUtil;
+import root.util.Base64Util;
 import root.util.DtoUtil;
 import root.util.ValidatorUtil;
 
@@ -41,10 +41,10 @@ public class UserService {
 	public String uploadAvatarForBase(UploadAvatarBaseParam param) {
 		ValidatorUtil.check(param);
 		try {
-			boolean imageType = BaseUrlUtil.isImageType(param.getFaceData());
+			boolean imageType = Base64Util.isImageType(param.getFaceData());
 			if (!imageType) { throw new FileUploadException(ResultCode.FILE_UPLOAD_FAIL, "文件类型必须是jpg或png");}
-			String baseType = BaseUrlUtil.getType(param.getFaceData());
-			byte[] uploadData = BaseUrlUtil.baseUrlToByte(param.getFaceData());
+			String baseType = Base64Util.getType(param.getFaceData());
+			byte[] uploadData = Base64Util.baseUrlToByte(param.getFaceData());
 			String fileName;
 			if (param.getImageSizeType() == 1) {
 				fileName =  param.getUserId() + "_big" + baseType;
@@ -78,7 +78,7 @@ public class UserService {
 		int count = usersMapper.countById(param.getUserId());
 		if (count == 0) {throw new CheckParamException("用户不存在");}
 		if (editType == 1) {
-			if (editValue.length() < 1 || editValue.length() > 7) {throw new CheckParamException("昵称长度在1-7之间");}
+			if (editValue.length() < 1 || editValue.length() > 7) {throw new CheckParamException("昵称长度保持在1-7之间");}
 			usersMapper.updateNickname(param.getUserId(), param.getEditValue());
 		} else if(editType == 2){
 			usersMapper.updateDescription(param.getUserId(), param.getEditValue());

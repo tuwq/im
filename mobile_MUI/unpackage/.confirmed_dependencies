@@ -17,13 +17,16 @@
 	"pages/Login/login.html": {
 		"refer": [
 			"pages/Login/login.html",
-			"index.html"
+			"index.html",
+			"pages/Register/register.html",
+			"pages/RegisterPhone/registerPhone.html"
 		],
 		"resources": []
 	},
 	"pages/Register/register.html": {
 		"refer": [
-			"pages/Register/register.html"
+			"pages/Register/register.html",
+			"pages/RegisterValidate/registerValidate.html"
 		],
 		"resources": []
 	},
@@ -67,6 +70,22 @@
 	"pages/OperateAvatar/operateAvatar.html": {
 		"refer": [
 			"pages/CutAvatar/cutAvatar.html"
+		]
+	},
+	"pages/RegisterValidate/registerValidate.html": {
+		"refer": [
+			"pages/RegisterValidate/registerValidate.html",
+			"pages/RegisterData/registerData.html"
+		]
+	},
+	"pages/RegisterData/registerData.html": {
+		"refer": [
+			"index.html"
+		]
+	},
+	"pages/RegisterPhone/registerPhone.html": {
+		"refer": [
+			"pages/RegisterValidate/registerValidate.html"
 		]
 	}
 }

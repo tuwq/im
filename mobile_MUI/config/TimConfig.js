@@ -4,6 +4,7 @@ window.TimConfig = {
 	// 图片服务器的地址
 	serverImageUrl: 'http://tim.img.mackz.xin/',
 	avatarPrefix: 'user/avatar/',
+	qrCodePrefix: 'user/qrCode/',
 	// 底部选项卡
 	timFooterBarArray: [
 		{

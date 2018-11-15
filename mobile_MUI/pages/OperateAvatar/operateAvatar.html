@@ -63,13 +63,16 @@
 				var choosePhotoDOM = document.getElementById('choosePhoto-link')
 				var downloadPhotoDOM = document.getElementById('downloadPhoto-link')
 				choosePhotoDOM.addEventListener('tap', function(e) {
-					mui.openWindow({
-						url: '../CutAvatar/cutAvatar.html',
-						id: 'cutAvatar.html',
-						show: {autoShow: true, aniShow: 'slide-in-bottom', duration: 200},
-						createNew: true
+					plus.gallery.pick(function(path){
+						mui('#sheet-faceImage').popover('toggle')
+						mui.openWindow({
+							url: '../CutAvatar/cutAvatar.html',
+							id: 'cutAvatar.html',
+							show: {autoShow: true, aniShow: 'none', duration: 0},
+							createNew: true,
+							extras: { tempPath: path }
+						})
 					})
-					mui('#sheet-faceImage').popover('toggle')
 				})
 				downloadPhotoDOM.addEventListener('tap', function(e) {
 					plus.nativeUI.showWaiting('保存中..')

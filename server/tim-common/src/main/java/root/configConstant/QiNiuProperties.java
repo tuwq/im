@@ -10,4 +10,5 @@ public class QiNiuProperties {
 	private String seKey;
 	private String imgBucket;
 	private String avatarPrefix;
+	private String qrCodePrefix;
 }

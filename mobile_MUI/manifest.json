@@ -146,7 +146,9 @@
 				"resources": [],
 				"refer": [
 					"pages/Login/login.html",
-					"index.html"
+					"index.html",
+					"pages/Register/register.html",
+					"pages/RegisterPhone/registerPhone.html"
 				],
 				"priority": 0
 			},
@@ -154,7 +156,9 @@
 				"resources": [
 					"pages/Register/register.html"
 				],
-				"refer": [],
+				"refer": [
+					"pages/RegisterValidate/registerValidate.html"
+				],
 				"priority": 0
 			},
 			"pages/ValidateCode/validateCode.html": {
@@ -202,6 +206,28 @@
 				"resources": [],
 				"refer": [
 					"pages/CutAvatar/cutAvatar.html"
+				],
+				"priority": 0
+			},
+			"pages/RegisterValidate/registerValidate.html": {
+				"resources": [],
+				"refer": [
+					"pages/RegisterValidate/registerValidate.html",
+					"pages/RegisterData/registerData.html"
+				],
+				"priority": 0
+			},
+			"pages/RegisterData/registerData.html": {
+				"resources": [],
+				"refer": [
+					"index.html"
+				],
+				"priority": 0
+			},
+			"pages/RegisterPhone/registerPhone.html": {
+				"resources": [],
+				"refer": [
+					"pages/RegisterValidate/registerValidate.html"
 				],
 				"priority": 0
 			}

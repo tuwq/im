@@ -1,0 +1,61 @@
+/* 注册容器 */
+.register-wrap {
+	margin-top: 44px;
+	flex: 1;
+	height: 100%;
+}
+.register-content {
+	margin-top: 30%;
+}
+/* 注册表单 */
+.register-form {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	max-width: 100%;
+	flex-direction: column;
+}
+.register-form .register-group {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	color: #007AFF;
+	width: 100%;
+}
+.register-control {
+	display: flex;
+	justify-content: center;
+	width: 100%;
+}
+.register-input {
+	display: block !important;
+	width: 80% !important;
+	color: #000 !important;
+	outline: 0 !important;
+	font-size: 1.6rem !important;
+	line-height: 28px !important; 
+	border: 0 !important;
+	padding: 8px 12px !important;
+	height: 50px !important;
+	border-radius: 3px !important;
+	box-shadow: none !important;
+	background: transparent !important;
+}
+.register-input::-webkit-input-placeholder {
+	color: #000;
+    font-size: 20px;
+    font-weight: 400;
+    opacity: .4;
+    line-height: 25px;
+    text-align: center;
+}
+.input-button {
+	margin-top: 10px !important;
+	color: #fff;
+	width: 80%;
+	height: 50px;
+	font-size: 20px;
+	background-color: #007AFF;
+	text-align: center;
+}

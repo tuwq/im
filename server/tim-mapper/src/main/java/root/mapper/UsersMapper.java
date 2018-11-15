@@ -70,4 +70,10 @@ public interface UsersMapper {
 	 * @param description
 	 */
 	void updateDescription(@Param("id") String id, @Param("description") String description);
+	/**
+	 * 修改二维码根据QQ号码
+	 * @param qqNumber
+	 * @param qrCode
+	 */
+	void updateQrCodeByQQNumber(@Param("qqNumber") String qqNumber,@Param("qrCode") String qrCode);
 }

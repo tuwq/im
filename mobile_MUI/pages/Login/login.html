@@ -13,11 +13,7 @@
 		<script src="../../api/Login/login.js"></script>
 		<script src="../../config/HttpConstantCode.js"></script>
 	</head>
-
 	<body>
-		<script type="text/javascript">
-			mui.init()
-		</script>
 		<div class="login-wrap">
 			<div class="login-content">
 				<div class="login-avatar">
@@ -42,7 +38,7 @@
 				</form>	
 				<div class="login-profile">
 					<div class="profile-content">
-						<div class="profile-control">
+						<div class="profile-control" id="goRegister">
 							新用户注册
 						</div>
 						<div class="profile-control">
@@ -62,8 +58,9 @@
 			 * ! 是否以登录,登录跳转主页
 			 * ! 禁用返回
 			 */
+			mui.init()
+			mui.back = function() {return false}
 			mui.plusReady(function(){
-				mui.back = function() {return false}
 				var cacheUser = window.TimUtil.getCacheNowUserInfo()
 				if (cacheUser != null) {
 					mui.openWindow({
@@ -88,7 +85,7 @@
 						}, function(data){
 							if (data.code == HttpConstantCode.successCode) {
 								var user = data.result
-								TimUtil.setCacheNowUserInfo(user)
+								window.TimUtil.setCacheNowUserInfo(user)
 								mui.openWindow({
 									url: '../../index.html',
 									id: 'index.html',
@@ -102,6 +99,13 @@
 					} else {
 						window.TimUtil.showToast(flag, 'error')
 					}
+				})
+				document.getElementById('goRegister').addEventListener('tap', function() {
+					mui.openWindow({
+						url: '../RegisterPhone/registerPhone.html',
+						id: 'registerPhone.html',
+						show: {autoShow: true, aniShow: 'slide-in-left', duration:200}
+					})
 				})
 			})
 		</script>

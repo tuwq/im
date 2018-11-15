@@ -51,7 +51,6 @@
 					window.userApi.editMeInfoApi('/user/editMeInfo', {
 						userId,editType,editValue
 					}, function(data){
-						console.log(JSON.stringify(data))
 						if (data.code == 200) {
 							if (editType == 1) {
 								window.TimUtil.setCacheNowUserProperty('nickname', editValue)

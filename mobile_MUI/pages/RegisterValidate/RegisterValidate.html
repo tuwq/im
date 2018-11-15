@@ -8,28 +8,22 @@
 		<link href="../../css/mui.min.css" rel="stylesheet" />
 		<link rel="stylesheet" type="text/css" href="registerValidate.css"/>
 		<link rel="stylesheet" type="text/css" href="../../common/css/header.css"/>
+		<script src="../../config/TimConfig.js"></script>
+		<script src="../../common/js/TimUtil.js"></script>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../api/Login/login.js"></script>
 	</head>
 
 	<body>
-		<script src="../../js/mui.min.js"></script>
-		<script type="text/javascript">
-			mui.init()
-			// 相当于jQuery的加载
-	      	mui.plusReady(function(){
-	      		// 系统颜色
-	      		plus.navigator.setStatusBarBackground('#000')
-	      		plus.navigator.setStatusBarStyle('light')
-	      	})
-		</script>
 		<header class="mui-bar mui-bar-nav title">
 		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left title-color back-size">返回</a>
 		</header>
 		<div class="validateCode-wrap">
 			<div class="validateCode-content">
-				<form class="validateCode-form">
+				<form class="validateCode-form" onsubmit="return false;">
 					<div class="validateCode-group">
 						<div class="validateCode-control">
-							 <input type="text" class="validateCode-input" placeholder="输入短信验证码">
+							 <input id="validateCode-input" type="text" class="validateCode-input" placeholder="输入短信验证码">
 						</div>
 						<div class="validateCode-control">
 							<span style="color: rgb(128,128,128)">发送验证码至+86&nbsp;</span>
@@ -37,11 +31,43 @@
 							<span>重新发送</span>
 						</div>
 						<div class="validateCode-control">
-							 <button class="input-button">下一步</button>
+							 <button id="next-confirm" class="input-button">下一步</button>
 						</div>
 					</div>
 				</form>
 			</div>
 		</div>
+		<script type="text/javascript">
+			/**
+			 * 获取验证码(伪验证)
+			 * 验证验证码
+			 * 跳转至注册信息补充页面
+			 */
+			mui.init()
+	      	mui.plusReady(function(){
+	      		var selfWebview = plus.webview.currentWebview()
+				var validateCode = selfWebview.validateCode
+				var telephone = selfWebview.telephone
+				document.getElementById('validateCode-input').setAttribute('value', validateCode)
+				document.getElementById('next-confirm').addEventListener('tap', function(e){
+					validateCode = document.getElementById('validateCode-input').value
+					window.LoginApi.validateCodeApi('/login/validateCode', {validateCode,telephone}, function(data){
+		      			if (data.code == 200) {
+							mui.openWindow({
+								url: '../RegisterData/registerData.html',
+								id: 'registerData.html',
+								show: {autoShow: true, aniShow: 'slide-in-left', duration:200},
+								extras: {
+									validateCode: validateCode,
+									telephone
+								}
+							})
+		      			} else {
+		      				window.TimUtil.showToast(data.msg, 'error')
+		      			}
+		      		})
+				})
+	      	})
+		</script>
 	</body>
 </html>

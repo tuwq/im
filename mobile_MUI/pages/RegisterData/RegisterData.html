@@ -8,42 +8,65 @@
 		<link href="../../css/mui.min.css" rel="stylesheet" />
 		<link rel="stylesheet" type="text/css" href="../../common/css/header.css"/>
 		<link rel="stylesheet" type="text/css" href="registerData.css"/>
+		<script src="../../config/TimConfig.js"></script>
+		<script src="../../common/js/TimUtil.js"></script>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../api/Login/login.js"></script>
 	</head>
 
 	<body>
-		<script src="../../js/mui.min.js"></script>
-		<script type="text/javascript">
-			mui.init()
-			// 相当于jQuery的加载
-	      	mui.plusReady(function(){
-	      		// 系统颜色
-	      		plus.navigator.setStatusBarBackground('#000')
-	      		plus.navigator.setStatusBarStyle('light')
-	      	})
-		</script>
 		<header class="mui-bar mui-bar-nav title">
 		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left title-color back-size">返回</a>
 		</header>
 		<div class="register-wrap">
 			<div class="register-content">
-				<form class="register-form">
+				<form class="register-form" onsubmit="return false;">
 					<div class="register-group">
 						<div class="register-control">
-							 <input type="text" class="register-input" placeholder="昵称">
+							 <input id="nickname-input" type="text" class="register-input" placeholder="昵称">
 						</div>
 						<div class="register-control">
-							 <input type="password" class="register-input" placeholder="密码">
+							 <input id="password-input" type="password" class="register-input" placeholder="密码">
 						</div>
 						<div class="register-control">
-							 <input type="password" class="register-input" placeholder="确认密码">
+							 <input id="repassword-input" type="password" class="register-input" placeholder="确认密码">
 						</div>
 						<div class="register-control">
-							 <button class="input-button">注册</button>
+							 <button id="regist-confirm" class="input-button">注册</button>
 						</div>
 					</div>
 				</form>
 			</div>
 		</div>
+		<script type="text/javascript">
+			mui.init()
+			mui.back = function() {return false}
+	      	mui.plusReady(function(){
+				var selfWebview = plus.webview.currentWebview()
+				var validateCode = selfWebview.validateCode
+				var telephone = selfWebview.telephone
+				document.getElementById('regist-confirm').addEventListener('tap', function(e){
+					var nickname = document.getElementById('nickname-input').value
+					var password = document.getElementById('password-input').value
+					var rePassword = document.getElementById('repassword-input').value
+					var appId = plus.push.getClientInfo().clientid
+					window.LoginApi.registerApi('/login/register', {validateCode, telephone, nickname, password, rePassword, appId}, function(data){
+						if (data.code == 200) {
+							console.log(JSON.stringify(data))
+							var user = data.result
+							window.TimUtil.setCacheNowUserInfo(user)
+							mui.openWindow({
+								url: '../../index.html',
+								id: 'index.html',
+								show: {autoShow: true, aniShow: 'slide-in-right', duration:200},
+							})
+						} else {
+							window.TimUtil.showToast(data.msg, 'error')
+						}
+					})
+				})
+	      	})
+		</script>
 	</body>
 
 </html>

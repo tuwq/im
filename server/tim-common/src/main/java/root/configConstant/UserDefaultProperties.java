@@ -8,4 +8,6 @@ import lombok.Setter;
 public class UserDefaultProperties {
 
 	private String defaultAvatar;
+	
+	private String defaultQrCodePrefix;
 }

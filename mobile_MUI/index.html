@@ -12,9 +12,6 @@
     <link rel="stylesheet" type="text/css" href="common/css/header.css"/>
     <script src="config/TimConfig.js"></script>
     <script src="common/js/TimUtil.js"></script>
-    <script type="text/javascript" charset="utf-8">
-      	mui.init();
-    </script>
 </head>
 <body>
 	<!-- 底部选项卡 tabindex用于显示区分 -->
@@ -30,6 +27,8 @@
 	    </a>
 	</nav>
 	<script type="text/javascript" charset="utf-8">
+		mui.init();
+		mui.back = function() {return false}
 		mui.plusReady(function(){
 			/**
 			 * 获取当前webView
@@ -57,7 +56,6 @@
 				var tabIndex = this.getAttribute('tabindex')
 				plus.webview.show(timFooterBarArray[tabIndex].pageId, 'none', 0)
 			})
-			mui.back = function() {return false}
 		})
 	</script>
 </body>

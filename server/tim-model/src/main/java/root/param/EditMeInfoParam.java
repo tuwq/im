@@ -17,7 +17,6 @@ public class EditMeInfoParam {
 	@NotBlank(message="用户id不能为空串")
 	private String userId;
 	@NotNull(message="修改类型不能为空")
-	@NotBlank(message="修改类型不能为空串")
 	// 修改信息的类型 1:昵称 2: 签名
 	private Integer editType;
 	@NotNull(message="修改类型不能为空")

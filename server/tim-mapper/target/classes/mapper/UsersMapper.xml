@@ -19,6 +19,16 @@
     qrCode, app_id, create_time
   </sql>
   
+  <update id="updateQrCodeByQQNumber" parameterType="map" >
+ 	update users
+    <set >
+      <if test="qrCode != null" >
+        qrCode = #{qrCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where qq_number = #{qqNumber,jdbcType=VARCHAR}
+  </update> 
+  
   <update id="updateNickname" parameterType="map" >
  	update users
     <set >
@@ -106,7 +116,7 @@
       #{description,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, #{qrcode,jdbcType=VARCHAR}, 
       #{appId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="root.model.Users" >
+  <insert id="insertSelective" parameterType="root.model.Users" useGeneratedKeys="true" keyProperty="id">
     insert into users
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >

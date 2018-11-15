@@ -5,21 +5,21 @@ import java.util.Date;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
-import org.bouncycastle.jcajce.provider.digest.MD5;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.github.pagehelper.util.StringUtil;
-
+import root.async.UserAsyncDataHandler;
 import root.configConstant.TimConfigProperties;
+import root.constant.ResultCode;
 import root.dto.LoginDto;
 import root.exception.CheckParamException;
+import root.exception.FileUploadException;
 import root.mapper.UsersMapper;
 import root.model.Users;
 import root.param.LoginParam;
 import root.param.RegisterParam;
 import root.param.ValidateParam;
+import root.pluginService.QiNiuService;
 import root.redis.RedisOperator;
 import root.util.DtoUtil;
 import root.util.FileUtils;
@@ -39,7 +39,7 @@ public class LoginService {
 	@Resource
 	private TimConfigProperties timConfigProperties;
 	@Resource
-	private QRCodeUtils qrCodeUtils;
+	private UserAsyncDataHandler userAsyncDataHandler;
 	/**
 	 * 校验请求录入参数
 	 * 校验手机号形式
@@ -91,9 +91,12 @@ public class LoginService {
 	 * 检查验证码是否正确
 	 * 删除redis缓存
 	 * 生成QQ号,且QQ号不允许重复
+	 * 返回用户信息
+	 * ! 异步生成二维码并上传至七牛云
 	 * @param param
 	 */
-	public void register(RegisterParam param) {
+	@Transactional
+	public LoginDto register(RegisterParam param) {
 		ValidatorUtil.check(param);
 		if(!RegexUtil.regexPhone(param.getTelephone())) {throw new CheckParamException("手机号形式错误");}
 		if(!param.getPassword().equals(param.getRePassword())) {throw new CheckParamException("两次密码不一致");}
@@ -102,10 +105,19 @@ public class LoginService {
 		String dbPhone = redisOperator.hget(MD5Util.encrypt(param.getTelephone()), MD5Util.encrypt(param.getValidateCode()));
 		if (dbPhone == null || !MD5Util.encrypt(param.getTelephone()).equals(dbPhone)) {throw new CheckParamException("注册时间过期,请重新尝试注册");}
 		redisOperator.del(MD5Util.encrypt(param.getTelephone()));
-		Users user = Users.builder().id(RandomUtil.getUUID()).qqNumber(this.getQQNumber()).nickname(param.getNickname()).password(MD5Util.encrypt(param.getPassword()))
+		String qqNumber = this.getQQNumber();
+		Users user = Users.builder().id(RandomUtil.getUUID()).qqNumber(qqNumber).nickname(param.getNickname()).password(MD5Util.encrypt(param.getPassword()))
 		.faceImageCut(timConfigProperties.getUserDefault().getDefaultAvatar()).faceImageBig(timConfigProperties.getUserDefault().getDefaultAvatar()).telephone(param.getTelephone())
-		.createTime(new Date()).build();
+		.createTime(new Date()).appId(param.getAppId()).description("").build();
 		usersMapper.insertSelective(user);
+		String uploadQrCode = qqNumber + ".png";
+		String dbQrCode = uploadQrCode + "?v=" + new Date().getTime();
+		userAsyncDataHandler.uploadQrCode(qqNumber, uploadQrCode, dbQrCode);
+		LoginDto loginDto = DtoUtil.adapt(new LoginDto(), user);
+		loginDto.setPassword("");
+		loginDto.setAppId("");
+		loginDto.setQrcode(dbQrCode);
+		return loginDto;
 	}
 	
 	/**
@@ -127,7 +139,6 @@ public class LoginService {
 		usersMapper.updateByPrimaryKeySelective(user);
 		LoginDto loginDto = DtoUtil.adapt(new LoginDto(), user);
 		loginDto.setPassword(""); 
-		loginDto.setQrcode("");
 		loginDto.setAppId("");
 		return loginDto;
 	}
@@ -146,5 +157,5 @@ public class LoginService {
 		}
 		return qqNumber;
 	}
-
+	
 }
