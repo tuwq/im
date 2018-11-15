@@ -8,8 +8,8 @@
 		<link href="../../css/mui.min.css" rel="stylesheet" />
 		<link rel="stylesheet" type="text/css" href="../../common/css/header.css"/>
 		<link rel="stylesheet" type="text/css" href="cutAvatar.css"/>
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+		<link rel="stylesheet" href="../../download/font-awesome/font-awesome.min.css">
+		<link rel="stylesheet" href="../../download/bootstrap/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="../../download/cropper/cropper.css"/>
 		<link rel="stylesheet" type="text/css" href="../../download/cropper/main.css"/>
 		<script src="../../js/mui.min.js"></script>
@@ -19,6 +19,11 @@
 	</head>
 
 	<body>
+		<style>
+			.cropper-view-box, .cropper-face {
+			    border-radius: 50% !important;
+			}
+		</style>
 		<header class="mui-bar mui-bar-nav title-header">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left title-color"></a>
 		    <h1 class="mui-title title-color">修剪头像</h1>
@@ -30,8 +35,8 @@
 			</div>
 		</div>
 		<script src="../../download/jQuery/jquery-3.3.1.min.js"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
-		<script src="https://fengyuanchen.github.io/js/common.js"></script>
+		<script src="../../download/bootstrap/bootstrap.budle.min.js"></script>
+		<script src="../../download/cropper/common.js"></script>
 		<script src="../../download/cropper/cropper.js"></script>
 		<script type="text/javascript">
 			/**
@@ -39,6 +44,7 @@
 			 * 获取大图的base64编码
 			 * 获取修剪后的base64编码
 			 * 使用jQuery的when同时上传至服务器
+			 * ! 通过webview的fire通知其他webview更新信息
 			 */
 			mui.init()
 			var $image = $('#cut-image')
@@ -96,6 +102,10 @@
 										window.TimUtil.setCacheNowUserProperty('faceImageBig', bigData.result)
 										window.TimUtil.setCacheNowUserProperty('faceImageCut', cutData.result)
 										window.TimUtil.showToast('上传头像成功', 'success')
+										var meWebview = plus.webview.getWebviewById('me.html')
+										var operateAvatarWebview = plus.webview.getWebviewById('operateAvatar.html')
+										mui.fire(meWebview, window.TimConfig.timSubscribe.refreshUserInfoSubscribe)
+										mui.fire(operateAvatarWebview, window.TimConfig.timSubscribe.refreshUserInfoSubscribe)
 										mui.openWindow({
 											url: '../../index.html',
 											id: 'index.html',

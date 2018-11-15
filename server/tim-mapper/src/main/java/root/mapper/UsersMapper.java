@@ -52,4 +52,22 @@ public interface UsersMapper {
 	 * @param string
 	 */
 	void updateCutAvatar(@Param("id") String id, @Param("faceImageCut") String faceImageCut);
+	/**
+	 * 用户是否存在
+	 * @param userId
+	 * @return
+	 */
+	int countById(@Param("id") String id);
+	/**
+	 * 修改昵称
+	 * @param userId
+	 * @param editValue
+	 */
+	void updateNickname(@Param("id") String id, @Param("nickname") String nickname);
+	/**
+	 * 修改签名
+	 * @param userId
+	 * @param description
+	 */
+	void updateDescription(@Param("id") String id, @Param("description") String description);
 }

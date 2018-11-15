@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../common/css/header.css" rel="stylesheet" />
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../config/TimConfig.js"></script>
+		<script src="../../common/js/TimUtil.js"></script>
+		<script src="../../api/User/user.js"></script>
+	</head>
+	
+	
+
+	<body>
+		<header class="mui-bar mui-bar-nav title-header">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left title-color"></a>
+		    <h1 id="me-edit-header-title" class="mui-title title-color">编辑昵称</h1>
+		    <a id="me-edit-confirm-edit" class="mui-pull-right title-color title-font">确认编辑</a>
+		</header>
+		<div class="mui-content">
+			<div class="mui-input-row">
+			    <input id="me-edit-value" type="text" class="mui-input-speech mui-input-clear" 
+			    	placeholder="">
+			</div>
+		</div>
+		
+		<script type="text/javascript">
+			/**
+			 * 加载页面
+			 * 修改个人信息数据
+			 * 修改完成后跳转个人页面
+			 * ! 通过webview的fire通知其他webview更新信息
+			 */
+			mui.init()
+			mui.plusReady(function(){
+				var selfWebview = plus.webview.currentWebview()
+				var beforeValue = selfWebview.beforeValue
+				var headTitle = selfWebview.headTitle
+				var editType = selfWebview.editType
+				document.getElementById('me-edit-header-title').innerText = headTitle
+				document.getElementById('me-edit-value').setAttribute('value', beforeValue)
+				document.getElementById('me-edit-value').setAttribute('placeholder', headTitle)
+				document.getElementById('me-edit-confirm-edit').addEventListener('tap', function(e){
+					var user = window.TimUtil.getCacheNowUserInfo()
+					var userId = user.id
+					var editValue = document.getElementById('me-edit-value').value
+					window.userApi.editMeInfoApi('/user/editMeInfo', {
+						userId,editType,editValue
+					}, function(data){
+						console.log(JSON.stringify(data))
+						if (data.code == 200) {
+							if (editType == 1) {
+								window.TimUtil.setCacheNowUserProperty('nickname', editValue)
+							} else if(editType == 2){
+								window.TimUtil.setCacheNowUserProperty('description', editValue)
+							}
+							var meWebview = plus.webview.getWebviewById('me.html')
+							mui.fire(meWebview, window.TimConfig.timSubscribe.refreshUserInfoSubscribe)
+							window.TimUtil.showToast('编辑完成', 'success')
+							mui.openWindow({
+								url: '../../index.html',
+								id: 'index.html',
+								show: {autoShow: true, aniShow: 'none', duration: 0}
+							})
+						} else {
+							window.TimUtil.showToast(data.msg, 'error')
+						}
+					})
+				})
+			})
+		</script>
+	</body>
+
+</html>

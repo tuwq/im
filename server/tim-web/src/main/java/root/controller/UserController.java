@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import root.bean.JsonResult;
 import root.dto.LoginDto;
+import root.param.EditMeInfoParam;
 import root.param.UploadAvatarBaseParam;
 import root.service.UserService;
 
@@ -22,5 +23,11 @@ public class UserController {
 	public JsonResult<String>  uploadAvatarForBase(@RequestBody UploadAvatarBaseParam param) {
 		String newAddress = userService.uploadAvatarForBase(param);
 		return JsonResult.<String>success(newAddress);
+	}
+	
+	@PostMapping("/editMeInfo")
+	public JsonResult<Void> editMeInfo(@RequestBody EditMeInfoParam param){
+		userService.editMeInfo(param);
+		return JsonResult.<Void>success();
 	}
 }

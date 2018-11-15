@@ -22,6 +22,9 @@ window.TimConfig = {
 			title: '我'
 		}
 	],
+	timSubscribe: {
+		refreshUserInfoSubscribe: 'refreshUserInfoSubscribe'
+	},
 	// 中间webview所需减少的距离(防止全屏)
 	timStyle: {
 		top: "0px",

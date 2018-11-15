@@ -66,14 +66,38 @@
 					mui.openWindow({
 						url: '../CutAvatar/cutAvatar.html',
 						id: 'cutAvatar.html',
-						show: {autoShow: true, aniShow: 'slide-in-bottom', duration: 200}
+						show: {autoShow: true, aniShow: 'slide-in-bottom', duration: 200},
+						createNew: true
 					})
 					mui('#sheet-faceImage').popover('toggle')
 				})
 				downloadPhotoDOM.addEventListener('tap', function(e) {
-					
+					plus.nativeUI.showWaiting('保存中..')
+					var dtask = plus.downloader.createDownload(window.TimConfig.serverImageUrl + window.TimConfig.avatarPrefix + user.faceImageBig, {}, 
+						function(downloadFile, status) {
+							plus.nativeUI.closeWaiting()
+							if (status == 200) {
+								var tempFile = downloadFile.filename
+								plus.gallery.save(tempFile, function(){
+									window.TimUtil.showToast('保存完成', 'success')
+								})
+							} else {
+								window.TimUtil.showToast('未知的保存错误', 'error')
+							}
+						})
+					dtask.start()
+				})
+				window.addEventListener(window.TimConfig.timSubscribe.refreshUserInfoSubscribe, function() {
+					refreshUserInfo()
 				})
 			})
+			function refreshUserInfo() {
+				var user = TimUtil.getCacheNowUserInfo()
+				if (user != null) {
+					var faceImageDOM = document.getElementById('faceImage')
+					faceImageDOM.src = window.TimConfig.serverImageUrl + window.TimConfig.avatarPrefix + user.faceImageBig
+				}
+			}
 		</script>
 	</body>
 

@@ -9,5 +9,11 @@ window.userApi = {
 		window.TimUtil.postJson(url, data, function(data) {
 			if(success) success(data)
 		}) 
+	},
+	editMeInfoApi: function(url, data, success) {
+		window.TimUtil.postJson(url, data, function(data) {
+			
+			if(success) success(data)
+		})
 	}
 }

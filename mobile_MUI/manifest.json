@@ -193,7 +193,8 @@
 					"pages/UpdateAvatar/updateAvatar.html",
 					"pages/Register/register.html",
 					"pages/OperateAvatar/operateAvatar.html",
-					"pages/Login/login.html"
+					"pages/Login/login.html",
+					"pages/EditMeInfo/editMeInfo.html"
 				],
 				"priority": 0
 			},

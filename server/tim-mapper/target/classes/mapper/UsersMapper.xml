@@ -19,6 +19,32 @@
     qrCode, app_id, create_time
   </sql>
   
+  <update id="updateNickname" parameterType="map" >
+ 	update users
+    <set >
+      <if test="nickname != null" >
+        nickname = #{nickname,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update> 
+  
+  <update id="updateDescription" parameterType="map" >
+ 	update users
+    <set >
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update> 
+  
+  <select id="countById" parameterType="map" resultType="int">
+  	SELECT count(1)
+  	FROM users
+  	WHERE id = #{id}
+  </select>
+  
   <update id="updateBigAvatar" parameterType="map" >
  	update users
     <set >
