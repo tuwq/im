@@ -1,0 +1,18 @@
+.find-result {
+	display: flex;
+	height: 100%;
+	flex-direction: column;
+	padding-left: 20px;
+}
+.find-result.hasValue {display: none;}
+.find-result .result-control {
+	margin-bottom: 20px;
+}
+.find-result .result-control a {
+	color: #000;
+	text-overflow: ellipsis;
+}
+.find-result .result-control .iconfont {
+	color: #000;
+	font-size: 20px;
+}

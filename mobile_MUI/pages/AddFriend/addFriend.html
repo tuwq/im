@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="addFriend.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../common/css/header.css"/>
+		<link rel="stylesheet" type="text/css" href="../../download/font_icon/iconfont.css"/>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../download/jQuery/jquery-3.3.1.min.js"></script>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav title-header">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left title-color title-size-left">返回</a>
+		    <h1 id="me-edit-header-title" class="mui-title title-color">添加</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-input-row find-friend">
+			    <input id="find-friend-input" type="number" class="mui-input mui-input-clear" 
+			    	placeholder="QQ号/手机号/群">
+			</div>
+		</div>
+		<div class="find-result">
+			<div class="result-control" id="confirm-findSingle">
+				<a><span class="iconfont icon-friend"></span>&nbsp;找人:&nbsp;<span id="findSingleText"></span></a>
+			</div>
+			<div class="result-control" id="confirm-findGroup">
+				<a><span class="iconfont icon-friend_add"></span>&nbsp;找群:&nbsp;<span id="findGroupText"></span></a>
+			</div>
+		</div>
+		<script type="text/javascript">
+			mui.init()
+			mui.plusReady(function(){
+				var findSingleTextDOM = document.getElementById('findSingleText')
+				var findGroupTextDOM = document.getElementById('findGroupText')
+				var value
+				document.getElementById("find-friend-input").addEventListener('input',function(){
+					value = this.value
+					findSingleTextDOM.innerText = value
+					findGroupTextDOM.innerText = value
+				});
+				mui("body").on("tap", ".find-friend .mui-icon-clear", function() {
+					value = ''
+					findSingleTextDOM.innerText = value
+					findGroupTextDOM.innerText = value
+				})
+				document.getElementById('confirm-findSingle').addEventListener('tap', function(){
+					var findvalue = findSingleTextDOM.innerText
+					console.log(findvalue)
+				})
+				document.getElementById('confirm-findGroup').addEventListener('tap', function(){
+					var findvalue = findGroupTextDOM.innerText
+					console.log(findvalue)
+				})
+			})
+		</script>
+	</body>
+
+</html>

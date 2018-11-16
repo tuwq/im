@@ -2,7 +2,8 @@
   "index.html": {
     "resources": [
       "pages/chatlist/chatlist.html",
-      "pages/Chatlist/chatlist.html"
+      "pages/Chatlist/chatlist.html",
+      "download/font_icon/iconfont.css"
     ],
     "refer": [
       "pages/contact/contact.html",
