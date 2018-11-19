@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80011
 File Encoding         : 65001
 
-Date: 2018-11-19 16:10:13
+Date: 2018-11-19 16:51:38
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -68,18 +68,6 @@ CREATE TABLE `group_users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for my_friends
--- ----------------------------
-DROP TABLE IF EXISTS `my_friends`;
-CREATE TABLE `my_friends` (
-  `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '好友关联id',
-  `my_id` varchar(50) NOT NULL COMMENT '我的id',
-  `my_friend_id` varchar(50) NOT NULL COMMENT '我好友的id',
-  `create_time` datetime NOT NULL COMMENT '关联时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
 -- Table structure for single_chat_msg
 -- ----------------------------
 DROP TABLE IF EXISTS `single_chat_msg`;
@@ -103,6 +91,18 @@ CREATE TABLE `single_request` (
   `accept_user_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '接收者id',
   `accept_status` int(11) NOT NULL DEFAULT '0' COMMENT '请求状态,0:未接收,1:同意,2:拒绝,3:忽略',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for single_users
+-- ----------------------------
+DROP TABLE IF EXISTS `single_users`;
+CREATE TABLE `single_users` (
+  `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '好友关联id',
+  `my_id` varchar(50) NOT NULL COMMENT '我的id',
+  `my_friend_id` varchar(50) NOT NULL COMMENT '我好友的id',
+  `create_time` datetime NOT NULL COMMENT '关联时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

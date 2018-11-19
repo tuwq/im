@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="imageResult.css"/>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../common/js/TimUtil.js"></script>
+	</head>
+
+	<body>
+		<div class="image-wrap">
+			<div class="image-content" id="image-content">
+				<img id="image" src="" alt="" />
+			</div>
+		</div>
+		<div id="sheet-image" class="mui-popover mui-popover-bottom mui-popover-action ">
+		    <ul class="mui-table-view">
+		      <li class="mui-table-view-cell">
+		        <a id="downloadPhoto-link" href="javascript:void(0);">保存图片</a>
+		      </li>
+		    </ul>
+		    <ul class="mui-table-view">
+		      <li class="mui-table-view-cell">
+		        <a href="#sheet-image"><b>取消</b></a>
+		      </li>
+		    </ul>
+		</div>
+		<script type="text/javascript">
+			mui.init({
+				gestureConfig: {
+					longtap: true,
+	    			release:true,
+	    			hold: true
+				}
+			})
+			mui.plusReady(function(){
+				var selfWebview = plus.webview.currentWebview()
+				var imageURL = selfWebview.imageURL
+				var ImageDOM = document.getElementById('image')
+				ImageDOM.src = imageURL
+				var sheetImageDOM = document.getElementById('sheet-image')
+				document.getElementById('image-content').addEventListener('longtap', function(){
+					 mui(sheetImageDOM).popover('toggle')
+				})
+				document.getElementById('downloadPhoto-link').addEventListener('tap', function(e) {
+					plus.nativeUI.showWaiting('保存中..')
+					var dtask = plus.downloader.createDownload(imageURL, {}, 
+						function(downloadFile, status) {
+							plus.nativeUI.closeWaiting()
+							if (status == 200) {
+								var tempFile = downloadFile.filename
+								plus.gallery.save(tempFile, function(){
+									window.TimUtil.showToast('保存完成', 'success')
+								})
+							} else {
+								window.TimUtil.showToast('未知的保存错误', 'error')
+							}
+						})
+					dtask.start()
+				})
+			})
+		</script>
+	</body>
+
+</html>

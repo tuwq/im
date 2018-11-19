@@ -1,0 +1,102 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../common/css/header.css"/>
+		<link rel="stylesheet" type="text/css" href="findSingleResult.css"/>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../download/jQuery/jquery-3.3.1.min.js"></script>
+		<script src="../../config/TimConfig.js"></script>
+		<script src="../../common/js/TimUtil.js"></script>
+		<script src="../../api/Find/find.js"></script>
+		
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav title-header input-header">
+		   	<input id="find-friend-input" type="text" placeholder="QQ号/手机号/昵称/群">
+		    <a id="confirm-findSingle" class="mui-pull-right title-color title-font">搜索</a>
+		</header>
+		<div class="container">
+			<div id="noResult" class="noResult isNone">
+				<h4>没有找到相关结果</h4>
+			</div>
+			<div id="hasResult" class="">
+				<div class="findType-title">人</div>
+				<div class="result-list">
+					<div class="result-item" data-id="be027f22c17442a5b58933750431846f">
+						<img class="avatar" src="../../image/default.jpg" width="50" height="50" alt=""/>
+						<div class="info-profile">
+							<span class="nickname">纤月酱</span>
+							<span class="qqnumber">(1246361002)</span>
+						</div>
+					</div>
+					<div class="result-item" data-id="2">
+						<img class="avatar" src="../../image/default.jpg" width="50" height="50" alt=""/>
+						<div class="info-profile">
+							<span class="nickname">纤月酱</span>
+							<span class="qqnumber">(1246361002)</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			/**
+			 * 显示搜索结果
+			 * 点击跳转至他人页面
+			 */
+			mui.init()
+			mui.plusReady(function(){
+				var friendInput = document.getElementById('find-friend-input')
+				var noResultDOM = document.getElementById('noResult')
+				var hasResultDOM = document.getElementById('hasResult')
+				var findResult
+				var value
+				var selfWebview = plus.webview.currentWebview()
+				findResult = selfWebview.findResult
+				friendInput.value = selfWebview.findValue
+				if (findResult.length == 0) {
+					$(hasResultDOM).addClass('isNone')
+					$(noResultDOM).removeClass('isNone')
+				}
+				$('.result-item').each(function(index, item){
+					item.addEventListener('tap', function(){
+						var userId = this.getAttribute('data-id')
+						mui.openWindow({
+							url: '../NoMeFriendInfo/noMeFriendInfo.html',
+							id: 'noMeFriendInfo.html',
+							extras: {
+								userId
+							}
+						})
+					})
+				})
+				document.getElementById('confirm-findSingle').addEventListener('tap', function(){
+					value = friendInput.value
+					window.FindApi.findSingleApi('/findSingle/list', {
+						targetInfo: value
+					}, function(data){
+						value = ''
+						if (data.code == 200) {
+							if (data.result.length == 0) {
+								$(hasResultDOM).addClass('isNone')
+								$(noResultDOM).removeClass('isNone')
+								return
+							} 
+							$(noResultDOM).addClass('isNone')	
+							$(hasResultDOM).removeClass('isNone')
+						} else {
+							window.TimUtil.showToast(data.msg, 'error')
+						}
+					})
+				})
+			})
+		</script>
+	</body>
+
+</html>

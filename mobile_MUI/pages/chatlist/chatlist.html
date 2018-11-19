@@ -21,7 +21,7 @@
 		</header>
 		<div id="openMenu" class="mui-popover">
 		  <ul class="mui-table-view">
-		    <li class="mui-table-view-cell cell-item" id="addFriend"><a href="#"><span class="iconfont icon-addfriend "></span>添加好友</a></li>
+		    <li class="mui-table-view-cell cell-item" id="addFriend"><a href="#"><span class="iconfont icon-addfriend "></span>加好友</a></li>
 		    <li class="mui-table-view-cell cell-item" id="createGroup"><a href="#"><span class="iconfont icon-group"></span>创建群</a></li>
 		    <li class="mui-table-view-cell cell-item" id="saoyisao"><a href="#"><span class="iconfont icon-saoyisao"></span>扫一扫</a></li>
 		  </ul>
@@ -34,7 +34,11 @@
 			mui.plusReady(function(){
 				window.TimUtil.setSystemStatusColor()
 				document.getElementById('addFriend').addEventListener('tap', function(){
-					console.log('addFriend')
+					mui.openWindow({
+						url: '../AddFriend/addFriend.html',
+						id: 'addFriend.html',
+						show: {autoShow: true, aniShow: 'slide-in-left', duration:100}
+					})
 				})
 				document.getElementById('createGroup').addEventListener('tap', function(){
 					console.log('createGroup')

@@ -57,6 +57,22 @@ window.TimUtil = {
 		});
 	},
 	/**
+	 * 封装ajax-post请求
+	 * @param {Object} url
+	 * @param {Object} data
+	 * @param {Object} successm
+	 */
+	getJson: function(url, data, success, fail) {
+		mui.ajax(window.TimConfig.serverUrl + url,{
+			data: data,
+			dataType:'json',
+			type:'get',
+			success:function(data){
+				success(data)
+			}
+		})
+	},
+	/**
 	 * 上传文件
 	 * @param {Object} url
 	 * @param {Object} data

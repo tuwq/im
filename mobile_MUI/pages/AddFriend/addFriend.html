@@ -11,6 +11,7 @@
 		<link rel="stylesheet" type="text/css" href="../../download/font_icon/iconfont.css"/>
 		<script src="../../js/mui.min.js"></script>
 		<script src="../../download/jQuery/jquery-3.3.1.min.js"></script>
+		<script src="../../api/Find/find.js"></script>
 	</head>
 
 	<body>
@@ -20,8 +21,8 @@
 		</header>
 		<div class="mui-content">
 			<div class="mui-input-row find-friend">
-			    <input id="find-friend-input" type="number" class="mui-input mui-input-clear" 
-			    	placeholder="QQ号/手机号/群">
+			    <input id="find-friend-input" type="text" class="mui-input mui-input-clear" 
+			    	placeholder="QQ号/手机号/昵称/群">
 			</div>
 		</div>
 		<div class="find-result">
@@ -33,6 +34,11 @@
 			</div>
 		</div>
 		<script type="text/javascript">
+			/**
+			 * 绑定搜索按钮
+			 * 获取寻找结果
+			 * 跳转结果页面
+			 */
 			mui.init()
 			mui.plusReady(function(){
 				var findSingleTextDOM = document.getElementById('findSingleText')
@@ -50,11 +56,26 @@
 				})
 				document.getElementById('confirm-findSingle').addEventListener('tap', function(){
 					var findvalue = findSingleTextDOM.innerText
-					console.log(findvalue)
+					window.FindApi.findSingleApi('/findSingle/list', {
+						targetInfo: findvalue
+					}, function(data){
+						if (data.code == 200) {
+							mui.openWindow({
+								url: '../FindSingleResult/findSingleResult.html',
+								id: 'findSingleResult.html',
+								extras: {
+									findResult: data.result,
+									findValue: value
+								}
+							})
+						} else {
+							window.TimUtil.showToast(data.msg, 'error')
+						}
+						value = ''
+					})
 				})
 				document.getElementById('confirm-findGroup').addEventListener('tap', function(){
 					var findvalue = findGroupTextDOM.innerText
-					console.log(findvalue)
 				})
 			})
 		</script>
