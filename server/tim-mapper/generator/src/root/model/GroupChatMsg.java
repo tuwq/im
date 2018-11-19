@@ -5,9 +5,9 @@ import java.util.Date;
 public class GroupChatMsg {
     private String id;
 
-    private Integer sendUserId;
+    private String sendUserId;
 
-    private Integer acceptGroupId;
+    private String acceptGroupId;
 
     private String msg;
 
@@ -23,20 +23,20 @@ public class GroupChatMsg {
         this.id = id == null ? null : id.trim();
     }
 
-    public Integer getSendUserId() {
+    public String getSendUserId() {
         return sendUserId;
     }
 
-    public void setSendUserId(Integer sendUserId) {
-        this.sendUserId = sendUserId;
+    public void setSendUserId(String sendUserId) {
+        this.sendUserId = sendUserId == null ? null : sendUserId.trim();
     }
 
-    public Integer getAcceptGroupId() {
+    public String getAcceptGroupId() {
         return acceptGroupId;
     }
 
-    public void setAcceptGroupId(Integer acceptGroupId) {
-        this.acceptGroupId = acceptGroupId;
+    public void setAcceptGroupId(String acceptGroupId) {
+        this.acceptGroupId = acceptGroupId == null ? null : acceptGroupId.trim();
     }
 
     public String getMsg() {

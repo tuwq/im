@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="root.mapper.SingleChatMsgMapper" >
+  <resultMap id="BaseResultMap" type="root.model.SingleChatMsg" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="send_user_id" property="sendUserId" jdbcType="VARCHAR" />
+    <result column="accept_user_id" property="acceptUserId" jdbcType="VARCHAR" />
+    <result column="msg" property="msg" jdbcType="VARCHAR" />
+    <result column="sign_flag" property="signFlag" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, send_user_id, accept_user_id, msg, sign_flag, create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from single_chat_msg
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from single_chat_msg
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="root.model.SingleChatMsg" >
+    insert into single_chat_msg (id, send_user_id, accept_user_id, 
+      msg, sign_flag, create_time
+      )
+    values (#{id,jdbcType=VARCHAR}, #{sendUserId,jdbcType=VARCHAR}, #{acceptUserId,jdbcType=VARCHAR}, 
+      #{msg,jdbcType=VARCHAR}, #{signFlag,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="root.model.SingleChatMsg" >
+    insert into single_chat_msg
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="sendUserId != null" >
+        send_user_id,
+      </if>
+      <if test="acceptUserId != null" >
+        accept_user_id,
+      </if>
+      <if test="msg != null" >
+        msg,
+      </if>
+      <if test="signFlag != null" >
+        sign_flag,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="sendUserId != null" >
+        #{sendUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="acceptUserId != null" >
+        #{acceptUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="msg != null" >
+        #{msg,jdbcType=VARCHAR},
+      </if>
+      <if test="signFlag != null" >
+        #{signFlag,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="root.model.SingleChatMsg" >
+    update single_chat_msg
+    <set >
+      <if test="sendUserId != null" >
+        send_user_id = #{sendUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="acceptUserId != null" >
+        accept_user_id = #{acceptUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="msg != null" >
+        msg = #{msg,jdbcType=VARCHAR},
+      </if>
+      <if test="signFlag != null" >
+        sign_flag = #{signFlag,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="root.model.SingleChatMsg" >
+    update single_chat_msg
+    set send_user_id = #{sendUserId,jdbcType=VARCHAR},
+      accept_user_id = #{acceptUserId,jdbcType=VARCHAR},
+      msg = #{msg,jdbcType=VARCHAR},
+      sign_flag = #{signFlag,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -6,6 +6,11 @@ import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * 修改上传头像的录入请求参数
+ * @author tuwq
+ *
+ */
 @Setter
 @Getter
 public class UploadAvatarBaseParam {

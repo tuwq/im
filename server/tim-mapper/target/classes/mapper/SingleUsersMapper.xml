@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="root.mapper.SingleUsersMapper" >
+  <resultMap id="BaseResultMap" type="root.model.SingleUsers" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="my_id" property="myId" jdbcType="VARCHAR" />
+    <result column="my_friend_id" property="myFriendId" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, my_id, my_friend_id, create_time
+  </sql>
+  
+   <select id="isMyFriend" parameterType="map" resultType="int">
+    select count(*)
+    from single_users
+    where my_id=#{myId} AND my_friend_id=#{friendId}
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from single_users
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from single_users
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="root.model.SingleUsers" >
+    insert into single_users (id, my_id, my_friend_id, 
+      create_time)
+    values (#{id,jdbcType=VARCHAR}, #{myId,jdbcType=VARCHAR}, #{myFriendId,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="root.model.SingleUsers" >
+    insert into single_users
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="myId != null" >
+        my_id,
+      </if>
+      <if test="myFriendId != null" >
+        my_friend_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="myId != null" >
+        #{myId,jdbcType=VARCHAR},
+      </if>
+      <if test="myFriendId != null" >
+        #{myFriendId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="root.model.SingleUsers" >
+    update single_users
+    <set >
+      <if test="myId != null" >
+        my_id = #{myId,jdbcType=VARCHAR},
+      </if>
+      <if test="myFriendId != null" >
+        my_friend_id = #{myFriendId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="root.model.SingleUsers" >
+    update single_users
+    set my_id = #{myId,jdbcType=VARCHAR},
+      my_friend_id = #{myFriendId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

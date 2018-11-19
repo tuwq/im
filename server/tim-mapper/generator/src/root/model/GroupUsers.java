@@ -5,9 +5,9 @@ import java.util.Date;
 public class GroupUsers {
     private String id;
 
-    private Integer groupId;
+    private String groupId;
 
-    private Integer userId;
+    private String userId;
 
     private Date createTime;
 
@@ -19,20 +19,20 @@ public class GroupUsers {
         this.id = id == null ? null : id.trim();
     }
 
-    public Integer getGroupId() {
+    public String getGroupId() {
         return groupId;
     }
 
-    public void setGroupId(Integer groupId) {
-        this.groupId = groupId;
+    public void setGroupId(String groupId) {
+        this.groupId = groupId == null ? null : groupId.trim();
     }
 
-    public Integer getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUserId(String userId) {
+        this.userId = userId == null ? null : userId.trim();
     }
 
     public Date getCreateTime() {

@@ -3,12 +3,13 @@
 <mapper namespace="root.mapper.GroupRequestMapper" >
   <resultMap id="BaseResultMap" type="root.model.GroupRequest" >
     <id column="id" property="id" jdbcType="VARCHAR" />
-    <result column="send_group_id" property="sendGroupId" jdbcType="INTEGER" />
-    <result column="accept_user_id" property="acceptUserId" jdbcType="INTEGER" />
+    <result column="send_group_id" property="sendGroupId" jdbcType="VARCHAR" />
+    <result column="accept_user_id" property="acceptUserId" jdbcType="VARCHAR" />
+    <result column="accept_status" property="acceptStatus" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, send_group_id, accept_user_id, create_time
+    id, send_group_id, accept_user_id, accept_status, create_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -22,9 +23,9 @@
   </delete>
   <insert id="insert" parameterType="root.model.GroupRequest" >
     insert into group_request (id, send_group_id, accept_user_id, 
-      create_time)
-    values (#{id,jdbcType=VARCHAR}, #{sendGroupId,jdbcType=INTEGER}, #{acceptUserId,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=TIMESTAMP})
+      accept_status, create_time)
+    values (#{id,jdbcType=VARCHAR}, #{sendGroupId,jdbcType=VARCHAR}, #{acceptUserId,jdbcType=VARCHAR}, 
+      #{acceptStatus,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="root.model.GroupRequest" >
     insert into group_request
@@ -38,6 +39,9 @@
       <if test="acceptUserId != null" >
         accept_user_id,
       </if>
+      <if test="acceptStatus != null" >
+        accept_status,
+      </if>
       <if test="createTime != null" >
         create_time,
       </if>
@@ -47,10 +51,13 @@
         #{id,jdbcType=VARCHAR},
       </if>
       <if test="sendGroupId != null" >
-        #{sendGroupId,jdbcType=INTEGER},
+        #{sendGroupId,jdbcType=VARCHAR},
       </if>
       <if test="acceptUserId != null" >
-        #{acceptUserId,jdbcType=INTEGER},
+        #{acceptUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="acceptStatus != null" >
+        #{acceptStatus,jdbcType=INTEGER},
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
@@ -61,10 +68,13 @@
     update group_request
     <set >
       <if test="sendGroupId != null" >
-        send_group_id = #{sendGroupId,jdbcType=INTEGER},
+        send_group_id = #{sendGroupId,jdbcType=VARCHAR},
       </if>
       <if test="acceptUserId != null" >
-        accept_user_id = #{acceptUserId,jdbcType=INTEGER},
+        accept_user_id = #{acceptUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="acceptStatus != null" >
+        accept_status = #{acceptStatus,jdbcType=INTEGER},
       </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -74,8 +84,9 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="root.model.GroupRequest" >
     update group_request
-    set send_group_id = #{sendGroupId,jdbcType=INTEGER},
-      accept_user_id = #{acceptUserId,jdbcType=INTEGER},
+    set send_group_id = #{sendGroupId,jdbcType=VARCHAR},
+      accept_user_id = #{acceptUserId,jdbcType=VARCHAR},
+      accept_status = #{acceptStatus,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>

@@ -6,6 +6,10 @@ import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * 登录请求的录入参数
+ * @author tuwq
+ */
 @Setter
 @Getter
 public class LoginParam {

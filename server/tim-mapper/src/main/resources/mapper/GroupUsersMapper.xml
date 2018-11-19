@@ -3,8 +3,8 @@
 <mapper namespace="root.mapper.GroupUsersMapper" >
   <resultMap id="BaseResultMap" type="root.model.GroupUsers" >
     <id column="id" property="id" jdbcType="VARCHAR" />
-    <result column="group_id" property="groupId" jdbcType="INTEGER" />
-    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="group_id" property="groupId" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
@@ -23,7 +23,7 @@
   <insert id="insert" parameterType="root.model.GroupUsers" >
     insert into group_users (id, group_id, user_id, 
       create_time)
-    values (#{id,jdbcType=VARCHAR}, #{groupId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=VARCHAR}, #{groupId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="root.model.GroupUsers" >
@@ -47,10 +47,10 @@
         #{id,jdbcType=VARCHAR},
       </if>
       <if test="groupId != null" >
-        #{groupId,jdbcType=INTEGER},
+        #{groupId,jdbcType=VARCHAR},
       </if>
       <if test="userId != null" >
-        #{userId,jdbcType=INTEGER},
+        #{userId,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
@@ -61,10 +61,10 @@
     update group_users
     <set >
       <if test="groupId != null" >
-        group_id = #{groupId,jdbcType=INTEGER},
+        group_id = #{groupId,jdbcType=VARCHAR},
       </if>
       <if test="userId != null" >
-        user_id = #{userId,jdbcType=INTEGER},
+        user_id = #{userId,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -74,8 +74,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="root.model.GroupUsers" >
     update group_users
-    set group_id = #{groupId,jdbcType=INTEGER},
-      user_id = #{userId,jdbcType=INTEGER},
+    set group_id = #{groupId,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>

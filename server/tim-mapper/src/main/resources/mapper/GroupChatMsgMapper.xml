@@ -3,8 +3,8 @@
 <mapper namespace="root.mapper.GroupChatMsgMapper" >
   <resultMap id="BaseResultMap" type="root.model.GroupChatMsg" >
     <id column="id" property="id" jdbcType="VARCHAR" />
-    <result column="send_user_id" property="sendUserId" jdbcType="INTEGER" />
-    <result column="accept_group_id" property="acceptGroupId" jdbcType="INTEGER" />
+    <result column="send_user_id" property="sendUserId" jdbcType="VARCHAR" />
+    <result column="accept_group_id" property="acceptGroupId" jdbcType="VARCHAR" />
     <result column="msg" property="msg" jdbcType="VARCHAR" />
     <result column="sign_flag" property="signFlag" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
@@ -26,7 +26,7 @@
     insert into group_chat_msg (id, send_user_id, accept_group_id, 
       msg, sign_flag, create_time
       )
-    values (#{id,jdbcType=VARCHAR}, #{sendUserId,jdbcType=INTEGER}, #{acceptGroupId,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=VARCHAR}, #{sendUserId,jdbcType=VARCHAR}, #{acceptGroupId,jdbcType=VARCHAR}, 
       #{msg,jdbcType=VARCHAR}, #{signFlag,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}
       )
   </insert>
@@ -57,10 +57,10 @@
         #{id,jdbcType=VARCHAR},
       </if>
       <if test="sendUserId != null" >
-        #{sendUserId,jdbcType=INTEGER},
+        #{sendUserId,jdbcType=VARCHAR},
       </if>
       <if test="acceptGroupId != null" >
-        #{acceptGroupId,jdbcType=INTEGER},
+        #{acceptGroupId,jdbcType=VARCHAR},
       </if>
       <if test="msg != null" >
         #{msg,jdbcType=VARCHAR},
@@ -77,10 +77,10 @@
     update group_chat_msg
     <set >
       <if test="sendUserId != null" >
-        send_user_id = #{sendUserId,jdbcType=INTEGER},
+        send_user_id = #{sendUserId,jdbcType=VARCHAR},
       </if>
       <if test="acceptGroupId != null" >
-        accept_group_id = #{acceptGroupId,jdbcType=INTEGER},
+        accept_group_id = #{acceptGroupId,jdbcType=VARCHAR},
       </if>
       <if test="msg != null" >
         msg = #{msg,jdbcType=VARCHAR},
@@ -96,8 +96,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="root.model.GroupChatMsg" >
     update group_chat_msg
-    set send_user_id = #{sendUserId,jdbcType=INTEGER},
-      accept_group_id = #{acceptGroupId,jdbcType=INTEGER},
+    set send_user_id = #{sendUserId,jdbcType=VARCHAR},
+      accept_group_id = #{acceptGroupId,jdbcType=VARCHAR},
       msg = #{msg,jdbcType=VARCHAR},
       sign_flag = #{signFlag,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP}

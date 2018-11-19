@@ -1,5 +1,7 @@
 package root.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 import root.model.Users;
@@ -76,4 +78,10 @@ public interface UsersMapper {
 	 * @param qrCode
 	 */
 	void updateQrCodeByQQNumber(@Param("qqNumber") String qqNumber,@Param("qrCode") String qrCode);
+	/**
+	 * 获得用户信息,可能是QQ号或手机号或昵称
+	 * @param targetInfo
+	 * @return
+	 */
+	List<Users> findByQQNumberOrPhoneOrNickname(@Param("targetInfo") String targetInfo);
 }

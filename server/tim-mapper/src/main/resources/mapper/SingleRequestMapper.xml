@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="root.mapper.SingleRequestMapper" >
+  <resultMap id="BaseResultMap" type="root.model.SingleRequest" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="send_user_id" property="sendUserId" jdbcType="VARCHAR" />
+    <result column="accept_user_id" property="acceptUserId" jdbcType="VARCHAR" />
+    <result column="accept_status" property="acceptStatus" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, send_user_id, accept_user_id, accept_status, create_time
+  </sql>
+  
+  <select id="isSameRequest" parameterType="map" resultType="int">
+    select count(*)
+    from single_request
+    where send_user_id = #{sendUserId} AND accept_user_id = #{acceptId} AND accept_status=0
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from single_request
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from single_request
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="root.model.SingleRequest" >
+    insert into single_request (id, send_user_id, accept_user_id, 
+      accept_status, create_time)
+    values (#{id,jdbcType=VARCHAR}, #{sendUserId,jdbcType=VARCHAR}, #{acceptUserId,jdbcType=VARCHAR}, 
+      #{acceptStatus,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="root.model.SingleRequest" >
+    insert into single_request
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="sendUserId != null" >
+        send_user_id,
+      </if>
+      <if test="acceptUserId != null" >
+        accept_user_id,
+      </if>
+      <if test="acceptStatus != null" >
+        accept_status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="sendUserId != null" >
+        #{sendUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="acceptUserId != null" >
+        #{acceptUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="acceptStatus != null" >
+        #{acceptStatus,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="root.model.SingleRequest" >
+    update single_request
+    <set >
+      <if test="sendUserId != null" >
+        send_user_id = #{sendUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="acceptUserId != null" >
+        accept_user_id = #{acceptUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="acceptStatus != null" >
+        accept_status = #{acceptStatus,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="root.model.SingleRequest" >
+    update single_request
+    set send_user_id = #{sendUserId,jdbcType=VARCHAR},
+      accept_user_id = #{acceptUserId,jdbcType=VARCHAR},
+      accept_status = #{acceptStatus,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

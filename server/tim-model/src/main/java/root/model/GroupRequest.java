@@ -5,9 +5,11 @@ import java.util.Date;
 public class GroupRequest {
     private String id;
 
-    private Integer sendGroupId;
+    private String sendGroupId;
 
-    private Integer acceptUserId;
+    private String acceptUserId;
+
+    private Integer acceptStatus;
 
     private Date createTime;
 
@@ -19,20 +21,28 @@ public class GroupRequest {
         this.id = id == null ? null : id.trim();
     }
 
-    public Integer getSendGroupId() {
+    public String getSendGroupId() {
         return sendGroupId;
     }
 
-    public void setSendGroupId(Integer sendGroupId) {
-        this.sendGroupId = sendGroupId;
+    public void setSendGroupId(String sendGroupId) {
+        this.sendGroupId = sendGroupId == null ? null : sendGroupId.trim();
     }
 
-    public Integer getAcceptUserId() {
+    public String getAcceptUserId() {
         return acceptUserId;
     }
 
-    public void setAcceptUserId(Integer acceptUserId) {
-        this.acceptUserId = acceptUserId;
+    public void setAcceptUserId(String acceptUserId) {
+        this.acceptUserId = acceptUserId == null ? null : acceptUserId.trim();
+    }
+
+    public Integer getAcceptStatus() {
+        return acceptStatus;
+    }
+
+    public void setAcceptStatus(Integer acceptStatus) {
+        this.acceptStatus = acceptStatus;
     }
 
     public Date getCreateTime() {
