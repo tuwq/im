@@ -10,22 +10,10 @@ Target Server Type    : MYSQL
 Target Server Version : 80011
 File Encoding         : 65001
 
-Date: 2018-11-15 22:11:12
+Date: 2018-11-19 16:10:13
 */
 
 SET FOREIGN_KEY_CHECKS=0;
-
--- ----------------------------
--- Table structure for friend_request
--- ----------------------------
-DROP TABLE IF EXISTS `friend_request`;
-CREATE TABLE `friend_request` (
-  `id` varchar(50) NOT NULL COMMENT '好友请求关联id',
-  `send_user_id` int(11) NOT NULL COMMENT '发送者id',
-  `accept_user_id` int(11) NOT NULL COMMENT '接收者id',
-  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for groups
@@ -46,8 +34,8 @@ CREATE TABLE `groups` (
 DROP TABLE IF EXISTS `group_chat_msg`;
 CREATE TABLE `group_chat_msg` (
   `id` varchar(50) NOT NULL COMMENT '组消息id',
-  `send_user_id` int(11) NOT NULL COMMENT '发送者id',
-  `accept_group_id` int(11) NOT NULL COMMENT '接收组id',
+  `send_user_id` varchar(50) NOT NULL COMMENT '发送者id',
+  `accept_group_id` varchar(50) NOT NULL COMMENT '接收组id',
   `msg` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '消息内容',
   `sign_flag` int(11) NOT NULL COMMENT '是否签收',
   `create_time` datetime NOT NULL COMMENT '创建时间',
@@ -60,8 +48,9 @@ CREATE TABLE `group_chat_msg` (
 DROP TABLE IF EXISTS `group_request`;
 CREATE TABLE `group_request` (
   `id` varchar(50) NOT NULL COMMENT '组请求关联id',
-  `send_group_id` int(11) DEFAULT NULL COMMENT '发送组id',
-  `accept_user_id` int(11) NOT NULL COMMENT '接收者id',
+  `send_group_id` varchar(50) DEFAULT NULL COMMENT '发送组id',
+  `accept_user_id` varchar(50) NOT NULL COMMENT '接收者id',
+  `accept_status` int(11) NOT NULL DEFAULT '0' COMMENT '请求状态,0:未接收,1:同意,2:拒绝,3:忽略',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -72,8 +61,8 @@ CREATE TABLE `group_request` (
 DROP TABLE IF EXISTS `group_users`;
 CREATE TABLE `group_users` (
   `id` varchar(50) NOT NULL COMMENT '组用户关联id',
-  `group_id` int(11) NOT NULL COMMENT '组id',
-  `user_id` int(11) NOT NULL COMMENT '用户id',
+  `group_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '组id',
+  `user_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户id',
   `create_time` datetime NOT NULL COMMENT '入群时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -84,23 +73,36 @@ CREATE TABLE `group_users` (
 DROP TABLE IF EXISTS `my_friends`;
 CREATE TABLE `my_friends` (
   `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '好友关联id',
-  `my_id` int(11) NOT NULL COMMENT '我的id',
-  `my_friend_id` int(11) NOT NULL COMMENT '我好友的id',
+  `my_id` varchar(50) NOT NULL COMMENT '我的id',
+  `my_friend_id` varchar(50) NOT NULL COMMENT '我好友的id',
   `create_time` datetime NOT NULL COMMENT '关联时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for private_chat_msg
+-- Table structure for single_chat_msg
 -- ----------------------------
-DROP TABLE IF EXISTS `private_chat_msg`;
-CREATE TABLE `private_chat_msg` (
+DROP TABLE IF EXISTS `single_chat_msg`;
+CREATE TABLE `single_chat_msg` (
   `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '私人信息id',
-  `send_user_id` int(11) NOT NULL COMMENT '发送者id',
-  `accept_user_id` int(11) NOT NULL COMMENT '接收者id',
+  `send_user_id` varchar(50) NOT NULL COMMENT '发送者id',
+  `accept_user_id` varchar(50) NOT NULL COMMENT '接收者id',
   `msg` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '消息内容',
   `sign_flag` int(11) NOT NULL COMMENT '是否签收',
   `create_time` datetime NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for single_request
+-- ----------------------------
+DROP TABLE IF EXISTS `single_request`;
+CREATE TABLE `single_request` (
+  `id` varchar(50) NOT NULL COMMENT '好友请求关联id',
+  `send_user_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '发送者id',
+  `accept_user_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '接收者id',
+  `accept_status` int(11) NOT NULL DEFAULT '0' COMMENT '请求状态,0:未接收,1:同意,2:拒绝,3:忽略',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -120,18 +122,5 @@ CREATE TABLE `users` (
   `qrCode` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '个人二维码',
   `app_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '手机唯一标识',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建事件',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Table structure for user_message_sign_flag
--- ----------------------------
-DROP TABLE IF EXISTS `user_message_sign_flag`;
-CREATE TABLE `user_message_sign_flag` (
-  `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '消息可靠id',
-  `user_id` int(11) NOT NULL COMMENT '发送者id',
-  `msg_id` int(11) NOT NULL COMMENT '消息id',
-  `sign_flag` int(11) NOT NULL COMMENT '是否签收',
-  `create_time` datetime NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
