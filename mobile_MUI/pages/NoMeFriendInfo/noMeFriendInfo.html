@@ -81,7 +81,7 @@
 						descriptionDOM.innerText = result.description
 						telephoneDOM.innerText = result.telephone
 						nicknameBackDOM.innerText = result.nickname
-						imageURL = window.TimConfig.serverImageUrl + window.TimConfig.avatarPrefix + result.faceImageBig
+						imageURL = window.TimConfig.serverImageUrl + window.TimConfig.avatarPrefix + result.faceImageCut
 						avatarBackDOM.style.backgroundImage = `url(${imageURL})`
 					} else {
 						window.TimUtil.showToast(data.msg, 'error')
@@ -98,7 +98,7 @@
 					})
 				})
 				document.getElementById('confirm-add').addEventListener('tap', function(e){
-					window.RequestApi.requestSingleApi('/request/single', {
+					window.RequestApi.requestSingleSendApi('/request/single/send', {
 						meId: meUser.id,
 						acceptId: userId
 					}, function(data){

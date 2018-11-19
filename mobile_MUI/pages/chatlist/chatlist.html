@@ -9,9 +9,13 @@
 		<link rel="stylesheet" type="text/css" href="../../common/css/header.css"/>
 		<link rel="stylesheet" type="text/css" href="../../download/font_icon/iconfont.css"/>
 		<link rel="stylesheet" type="text/css" href="chatlist.css"/>
+		<link rel="stylesheet" type="text/css" href="singleRequest.css"/>
 		<script src="../../js/mui.min.js"></script>
+		<script src="../../download/jQuery/jquery-3.3.1.min.js"></script>
+		<script src="../../download/handlebars/handlebars-v4.0.12.js"></script>
 		<script src="../../config/TimConfig.js"></script>
 		<script src="../../common/js/TimUtil.js"></script>
+		<script src="../../api/Request/request.js"></script>
 	</head>
 
 	<body>
@@ -19,6 +23,13 @@
 		    <h1 class="mui-title title-color">消息</h1>
 		    <a href="#openMenu" class="mui-pull-right mui-icon mui-icon-plusempty" style="color: #fff;font-size: 30px;"></a>
 		</header>
+		<div class="container">
+			<div class="accept-single-request">
+				<div id="single-request-list" class="single-request-list">
+					
+				</div>
+			</div>
+		</div>
 		<div id="openMenu" class="mui-popover">
 		  <ul class="mui-table-view">
 		    <li class="mui-table-view-cell cell-item" id="addFriend"><a href="#"><span class="iconfont icon-addfriend "></span>加好友</a></li>
@@ -29,10 +40,17 @@
 		<script type="text/javascript">
 			/**
 			 * 绑定弹出菜单
+			 * 加载后获取未处理的好友请求
+			 * 
 			 */
 			mui.init()
 			mui.plusReady(function(){
 				window.TimUtil.setSystemStatusColor()
+				var selfWebview = plus.webview.currentWebview()
+				refreshAcceptRequest()
+				selfWebview.addEventListener('show', function() {
+					refreshAcceptRequest()
+				})
 				document.getElementById('addFriend').addEventListener('tap', function(){
 					mui.openWindow({
 						url: '../AddFriend/addFriend.html',
@@ -47,6 +65,44 @@
 					console.log('saoyisao')
 				})
 			})
+			function refreshAcceptRequest() {
+				var user = window.TimUtil.getCacheNowUserInfo()
+				window.RequestApi.requestSingleAcceptApi('/request/single/accept', {
+					userId: user.id
+				}, function(data){
+					if (data.code == 200) {
+						renderSingleRequestHTML(data.result)
+					} else {
+						window.TimUtil.showToast(data.msg, 'error')
+					}
+				})
+			}
+			function renderSingleRequestHTML(result) {
+				var data = {}
+				data.result = result
+				data.avatarUrlPrefix = window.TimConfig.serverImageUrl + window.TimConfig.avatarPrefix
+				var singleRequestTemplate = $('#singleRequestTemplate').html()
+				var template = Handlebars.compile(singleRequestTemplate)
+				var html = template(data)
+				$('#single-request-list').html(html)				
+			}
+		</script>
+		<script type="text/template" id="singleRequestTemplate">
+			{{#each result}}
+			    <div class="single-request-item" data-id="{{userId}}">
+					<div class="item-avatar">
+						<img src="{{../avatarUrlPrefix}}{{faceImageCut}}" alt="" />
+					</div>
+					<div class="item-info">
+						<div class="item-info-nickname">{{nickname}}</div>
+						<div class="item-info-desc">请求添加你为好友</div>
+					</div>
+					<div class="item-button-group">
+						<button class="blue-button">同意</button>
+						<button class="red-button">拒绝</button>
+					</div>
+				</div>
+			{{/each}}
 		</script>
 	</body>
 

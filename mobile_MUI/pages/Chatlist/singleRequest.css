@@ -1,0 +1,61 @@
+.container .accept-single-request {
+	width: 100%;
+	overflow: hidden;
+}
+.accept-single-request .single-request-list {
+	display: flex;
+	flex-direction: column;
+	margin-top: 10px;
+}
+.single-request-list .single-request-item {
+	display: flex;
+	padding: 10px;
+	height: 80px;
+	align-items: center;
+	
+}
+.single-request-item .item-avatar {
+	width: 40px;
+	height: 40px;
+	margin: 0 5px;
+}
+.single-request-item .item-avatar img {
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+}
+.single-request-item .item-info {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	justify-content: center;
+}
+.single-request-item .item-info .item-info-nickname {
+	font-size: 20px;
+}
+.single-request-item .item-info .item-info-desc {
+	font-size: 15px;
+	color: #999;
+}
+.single-request-item .item-button-group {
+	display: flex;
+	overflow: hidden;
+	height: 100%;
+}
+.single-request-item .item-button-group button {
+	display: flex;
+	justify-content: center;
+	margin: 0 5px;
+	padding: 5px;
+	width: 60px;
+	height: 80%;
+	box-sizing: border-box;
+	color: #fff;
+	text-align: center;
+}
+.item-button-group .blue-button {
+	background-color: #007AFF;
+}
+.item-button-group .red-button {
+	background-color: #C82333;
+}

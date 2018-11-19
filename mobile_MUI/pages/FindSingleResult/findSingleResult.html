@@ -10,6 +10,7 @@
 		<link rel="stylesheet" type="text/css" href="findSingleResult.css"/>
 		<script src="../../js/mui.min.js"></script>
 		<script src="../../download/jQuery/jquery-3.3.1.min.js"></script>
+		<script src="../../download/handlebars/handlebars-v4.0.12.js"></script>
 		<script src="../../config/TimConfig.js"></script>
 		<script src="../../common/js/TimUtil.js"></script>
 		<script src="../../api/Find/find.js"></script>
@@ -27,21 +28,8 @@
 			</div>
 			<div id="hasResult" class="">
 				<div class="findType-title">人</div>
-				<div class="result-list">
-					<div class="result-item" data-id="be027f22c17442a5b58933750431846f">
-						<img class="avatar" src="../../image/default.jpg" width="50" height="50" alt=""/>
-						<div class="info-profile">
-							<span class="nickname">纤月酱</span>
-							<span class="qqnumber">(1246361002)</span>
-						</div>
-					</div>
-					<div class="result-item" data-id="2">
-						<img class="avatar" src="../../image/default.jpg" width="50" height="50" alt=""/>
-						<div class="info-profile">
-							<span class="nickname">纤月酱</span>
-							<span class="qqnumber">(1246361002)</span>
-						</div>
-					</div>
+				<div class="result-list" id="result-list">
+					
 				</div>
 			</div>
 		</div>
@@ -63,6 +51,8 @@
 				if (findResult.length == 0) {
 					$(hasResultDOM).addClass('isNone')
 					$(noResultDOM).removeClass('isNone')
+				} else {
+					renderFindSingResult(findResult)
 				}
 				$('.result-item').each(function(index, item){
 					item.addEventListener('tap', function(){
@@ -90,12 +80,33 @@
 							} 
 							$(noResultDOM).addClass('isNone')	
 							$(hasResultDOM).removeClass('isNone')
+							renderFindSingResult(findResult)
 						} else {
 							window.TimUtil.showToast(data.msg, 'error')
 						}
 					})
 				})
 			})
+			function renderFindSingResult(result) {
+				var data = {}
+				data.result = result
+				data.avatarUrlPrefix = window.TimConfig.serverImageUrl + window.TimConfig.avatarPrefix
+				var findSingResultTemplate = $('#findSingResultTemplate').html()
+				var template = Handlebars.compile(findSingResultTemplate)
+				var html = template(data)
+				$('#result-list').html(html)
+			}
+		</script>
+		<script type="text/template" id="findSingResultTemplate">
+			{{#each result}}
+			    <div class="result-item" data-id="{{id}}">
+					<img class="avatar" src="{{../avatarUrlPrefix}}{{faceImageCut}}" width="50" height="50" alt=""/>
+					<div class="info-profile">
+						<span class="nickname">{{nickname}}</span>
+						<span class="qqnumber">({{qqNumber}})</span>
+					</div>
+				</div>
+			{{/each}}
 		</script>
 	</body>
 
