@@ -52,20 +52,8 @@
 					$(hasResultDOM).addClass('isNone')
 					$(noResultDOM).removeClass('isNone')
 				} else {
-					renderFindSingResult(findResult)
+					renderFindSingResultHTML(findResult)
 				}
-				$('.result-item').each(function(index, item){
-					item.addEventListener('tap', function(){
-						var userId = this.getAttribute('data-id')
-						mui.openWindow({
-							url: '../NoMeFriendInfo/noMeFriendInfo.html',
-							id: 'noMeFriendInfo.html',
-							extras: {
-								userId
-							}
-						})
-					})
-				})
 				document.getElementById('confirm-findSingle').addEventListener('tap', function(){
 					value = friendInput.value
 					window.FindApi.findSingleApi('/findSingle/list', {
@@ -80,14 +68,14 @@
 							} 
 							$(noResultDOM).addClass('isNone')	
 							$(hasResultDOM).removeClass('isNone')
-							renderFindSingResult(findResult)
+							renderFindSingResultHTML(data.result)
 						} else {
 							window.TimUtil.showToast(data.msg, 'error')
 						}
 					})
 				})
 			})
-			function renderFindSingResult(result) {
+			function renderFindSingResultHTML(result) {
 				var data = {}
 				data.result = result
 				data.avatarUrlPrefix = window.TimConfig.serverImageUrl + window.TimConfig.avatarPrefix
@@ -95,6 +83,18 @@
 				var template = Handlebars.compile(findSingResultTemplate)
 				var html = template(data)
 				$('#result-list').html(html)
+				$('.result-item').each(function(index, item){
+					item.addEventListener('tap', function(){
+						var userId = this.getAttribute('data-id')
+						mui.openWindow({
+							url: '../NoMeFriendInfo/noMeFriendInfo.html',
+							id: 'noMeFriendInfo.html',
+							extras: {
+								userId
+							}
+						})
+					})
+				})
 			}
 		</script>
 		<script type="text/template" id="findSingResultTemplate">

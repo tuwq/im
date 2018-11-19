@@ -53,9 +53,9 @@
 	color: #fff;
 	text-align: center;
 }
-.item-button-group .blue-button {
+.item-button-group .agree-button {
 	background-color: #007AFF;
 }
-.item-button-group .red-button {
+.item-button-group .refuse-button {
 	background-color: #C82333;
 }

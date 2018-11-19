@@ -41,7 +41,7 @@
 			/**
 			 * 绑定弹出菜单
 			 * 加载后获取未处理的好友请求
-			 * 
+			 * 绑定好友请求按钮
 			 */
 			mui.init()
 			mui.plusReady(function(){
@@ -71,7 +71,9 @@
 					userId: user.id
 				}, function(data){
 					if (data.code == 200) {
-						renderSingleRequestHTML(data.result)
+						if (data.result.length > 0) {
+							renderSingleRequestHTML(data.result)
+						}
 					} else {
 						window.TimUtil.showToast(data.msg, 'error')
 					}
@@ -84,7 +86,15 @@
 				var singleRequestTemplate = $('#singleRequestTemplate').html()
 				var template = Handlebars.compile(singleRequestTemplate)
 				var html = template(data)
-				$('#single-request-list').html(html)				
+				$('#single-request-list').html(html)	
+				mui('#single-request-list').on('tap', '.agree-button', function(e){
+					var userId = this.getAttribute('data-id')
+					console.log(userId)
+				})
+				mui('#single-request-list').on('tap', '.refuse-button', function(e){
+					var userId = this.getAttribute('data-id')
+					console.log(userId)
+				})
 			}
 		</script>
 		<script type="text/template" id="singleRequestTemplate">
@@ -98,8 +108,8 @@
 						<div class="item-info-desc">请求添加你为好友</div>
 					</div>
 					<div class="item-button-group">
-						<button class="blue-button">同意</button>
-						<button class="red-button">拒绝</button>
+						<button class="agree-button" data-id="{{userId}}">同意</button>
+						<button class="refuse-button" data-id="{{userId}}">拒绝</button>
 					</div>
 				</div>
 			{{/each}}
