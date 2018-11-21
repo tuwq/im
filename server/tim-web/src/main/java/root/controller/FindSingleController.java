@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import root.bean.JsonResult;
+import root.dto.MyFriendUserDto;
 import root.dto.UsersDto;
 import root.service.FindSingleService;
 
@@ -38,4 +39,9 @@ public class FindSingleController {
 		return JsonResult.<UsersDto>success(usersDto);
 	}
 	
+	@GetMapping("myFrientList")
+	public JsonResult<List<MyFriendUserDto>>  myFrientList(@RequestParam("userId") String userId) {
+		List<MyFriendUserDto> list = findSingleService.myFrientList(userId);
+		return JsonResult.<List<MyFriendUserDto>>success(list);
+	}
 }

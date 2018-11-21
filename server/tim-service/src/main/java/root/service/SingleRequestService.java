@@ -96,6 +96,10 @@ public class SingleRequestService {
 		if (isMe == 0) throw new CheckParamException("本人不存在");
 		int isSend = usersMapper.countById(sendId);
 		if (isSend == 0) throw new CheckParamException("目标不存在");
+		int isMyFriend = singleUsersMapper.isMyFriend(meId, sendId);
+		if (isMyFriend > 0) throw new CheckParamException("双方已经是好友了");
+		int isHeFriend = singleUsersMapper.isMyFriend(sendId, meId);
+		if (isHeFriend > 0) throw new CheckParamException("双方已经是好友了");
 		SingleUsers su1 = SingleUsers.builder()
 				.myId(meId).myFriendId(sendId).id(RandomUtil.getUUID()).createTime(new Date()).build();
 		SingleUsers su2 = SingleUsers.builder()

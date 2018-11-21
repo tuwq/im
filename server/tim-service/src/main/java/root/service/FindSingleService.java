@@ -1,6 +1,5 @@
 package root.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,10 +8,10 @@ import javax.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
-import com.google.common.collect.Lists;
-
+import root.dto.MyFriendUserDto;
 import root.dto.UsersDto;
 import root.exception.CheckParamException;
+import root.mapper.SingleUsersMapper;
 import root.mapper.UsersMapper;
 import root.model.Users;
 import root.util.DtoUtil;
@@ -22,6 +21,8 @@ public class FindSingleService {
 
 	@Resource
 	private UsersMapper usersMapper;
+	@Resource
+	private SingleUsersMapper singleUsersMapper;
 	
 	/**
 	 * 寻找用户,根据QQ号/手机号/昵称
@@ -55,5 +56,18 @@ public class FindSingleService {
 		Users user = usersMapper.getByQQNumber(qqNumber);
 		if (user == null) throw new CheckParamException("用户不存在");
 		return DtoUtil.adapt(new UsersDto(), user);
+	}
+	/**
+	 * 查询某用户所有好友信息
+	 * 用户是否存在
+	 * @param userId
+	 * @return
+	 */
+	public List<MyFriendUserDto> myFrientList(String userId) {
+		if (StringUtils.isBlank(userId)) throw new CheckParamException("不能为空值");
+		int count = usersMapper.countById(userId);
+		if (count == 0) throw new CheckParamException("用户不存在");
+		List<MyFriendUserDto> list = singleUsersMapper.getWithMyFriend(userId);
+		return list;
 	}
 }

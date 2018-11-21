@@ -8,7 +8,7 @@
     <result column="accept_status" property="acceptStatus" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
   </resultMap>
-   <resultMap id="requestUserMap" type="root.dto.RequestSingleUserDto" >
+  <resultMap id="requestUserMap" type="root.dto.RequestSingleUserDto" >
     <id column="requestId" property="requestId" jdbcType="VARCHAR" />
     <result column="requestTime" property="requestTime" jdbcType="TIMESTAMP" />
     <result column="userId" property="userId" jdbcType="TIMESTAMP" />

@@ -1,7 +1,10 @@
 package root.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
+import root.dto.MyFriendUserDto;
 import root.model.SingleUsers;
 
 public interface SingleUsersMapper {
@@ -23,4 +26,10 @@ public interface SingleUsersMapper {
      * @return
      */
 	int isMyFriend(@Param("myId") String meId,@Param("friendId") String acceptId);
+	/**
+	 * 获取用户所有好友
+	 * @param userId
+	 * @return
+	 */
+	List<MyFriendUserDto> getWithMyFriend(@Param("userId") String userId);
 }
