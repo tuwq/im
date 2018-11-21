@@ -8,9 +8,32 @@
     <result column="accept_status" property="acceptStatus" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
   </resultMap>
+   <resultMap id="requestUserMap" type="root.dto.RequestSingleUserDto" >
+    <id column="requestId" property="requestId" jdbcType="VARCHAR" />
+    <result column="requestTime" property="requestTime" jdbcType="TIMESTAMP" />
+    <result column="userId" property="userId" jdbcType="TIMESTAMP" />
+    <result column="qqNumber" property="qqNumber" jdbcType="VARCHAR" />
+    <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+    <result column="faceImageCut" property="faceImageCut" jdbcType="VARCHAR" />
+    <result column="faceImageBig" property="faceImageBig" jdbcType="VARCHAR" />
+  </resultMap>
   <sql id="Base_Column_List" >
     id, send_user_id, accept_user_id, accept_status, create_time
   </sql>
+   
+   <update id="updateAcceptStatus" parameterType="map" >
+    update single_request
+    set accept_status = #{acceptStatus,jdbcType=INTEGER}
+    where send_user_id = #{sendUserId,jdbcType=VARCHAR} AND accept_user_id = #{acceptUserId,jdbcType=VARCHAR}
+  </update>
+   
+  <select id="noOperateList" parameterType="map" resultMap="requestUserMap">
+    select sr.id requestId,sr.create_time requestTime,u.id userId,u.qq_number qqNumber,
+    u.nickname nickname,u.face_image_cut faceImageCut,u.face_image_big faceImageBig
+    from single_request sr
+    LEFT JOIN users u ON u.id = sr.send_user_id
+    where accept_user_id = #{acceptId} AND accept_status=0
+  </select>
   
   <select id="isSameRequest" parameterType="map" resultType="int">
     select count(*)

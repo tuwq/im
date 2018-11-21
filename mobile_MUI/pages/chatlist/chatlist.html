@@ -62,24 +62,30 @@
 					console.log('createGroup')
 				})
 				document.getElementById('saoyisao').addEventListener('tap', function(){
-					console.log('saoyisao')
+					mui.openWindow({
+						url: '../Saoyisao/saoyisao.html',
+						id: 'saoyisao.html',
+						show: {autoShow: true, aniShow: 'slide-in-top', duration:100},
+						createNew: true
+					})
 				})
 			})
 			function refreshAcceptRequest() {
 				var user = window.TimUtil.getCacheNowUserInfo()
-				window.RequestApi.requestSingleAcceptApi('/request/single/accept', {
+				window.RequestApi.singleRequestAcceptApi({
 					userId: user.id
 				}, function(data){
 					if (data.code == 200) {
 						if (data.result.length > 0) {
-							renderSingleRequestHTML(data.result)
+							renderSingleRequestAcceptHTML(data.result)
 						}
 					} else {
 						window.TimUtil.showToast(data.msg, 'error')
 					}
 				})
 			}
-			function renderSingleRequestHTML(result) {
+			function renderSingleRequestAcceptHTML(result) {
+				var user = window.TimUtil.getCacheNowUserInfo()
 				var data = {}
 				data.result = result
 				data.avatarUrlPrefix = window.TimConfig.serverImageUrl + window.TimConfig.avatarPrefix
@@ -88,12 +94,24 @@
 				var html = template(data)
 				$('#single-request-list').html(html)	
 				mui('#single-request-list').on('tap', '.agree-button', function(e){
-					var userId = this.getAttribute('data-id')
-					console.log(userId)
+					var sendUserId = this.getAttribute('data-id')
+					window.RequestApi.singleRequestAgree({
+						meId: user.id,
+						sendUserId: sendUserId
+					}, function(data) {
+						if (data.code != 200) window.TimUtil.showToast(data.msg, 'error')
+						window.TimUtil.showToast('已同意对方的请求', 'success')
+					})
 				})
 				mui('#single-request-list').on('tap', '.refuse-button', function(e){
-					var userId = this.getAttribute('data-id')
-					console.log(userId)
+					var sendUserId = this.getAttribute('data-id')
+					window.RequestApi.singleRequestRefuse({
+						meId: user.id,
+						sendUserId: sendUserId
+					}, function(data) {
+						if (data.code != 200) window.TimUtil.showToast(data.msg, 'error')
+						window.TimUtil.showToast('已拒绝对方的请求', 'success')
+					})
 				})
 			}
 		</script>

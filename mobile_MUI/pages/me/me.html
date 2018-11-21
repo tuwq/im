@@ -70,6 +70,7 @@
 			mui.plusReady(function(e){
 				window.TimUtil.setSystemStatusColor()
 				var meWebview = plus.webview.currentWebview()
+				refreshUserInfo()
 				meWebview.addEventListener('show', function() {
 					refreshUserInfo()				
 				})

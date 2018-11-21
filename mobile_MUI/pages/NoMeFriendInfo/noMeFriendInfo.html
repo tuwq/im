@@ -71,7 +71,7 @@
 				var avatarBackDOM = document.getElementById('avatar_back')
 				var nicknameBackDOM = document.getElementById('nickname_back')
 				var imageURL
-				window.FindApi.findUserDetailApi('/findSingle/detail', {
+				window.FindApi.findUserDetailByIdApi({
 					userId
 				}, function(data){
 					if (data.code == 200) {
@@ -98,7 +98,7 @@
 					})
 				})
 				document.getElementById('confirm-add').addEventListener('tap', function(e){
-					window.RequestApi.requestSingleSendApi('/request/single/send', {
+					window.RequestApi.requestSingleSendApi({
 						meId: meUser.id,
 						acceptId: userId
 					}, function(data){

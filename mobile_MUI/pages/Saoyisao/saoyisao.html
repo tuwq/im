@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../common/css/header.css"/>
+		<link rel="stylesheet" type="text/css" href="saoyisao.css"/>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../config/TimConfig.js"></script>
+		<script src="../../common/js/TimUtil.js"></script>
+		<script src="../../api/Find/find.js"></script>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav title-header">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left title-color title-size-left">返回</a>
+		    <h1 class="mui-title title-color">扫一扫</h1>
+		</header>
+		<div id="saoyisaoComponent"></div>
+		
+		<script type="text/javascript">
+			/**
+			 * 开启扫描器
+			 * 扫描QR二维码
+			 */
+			mui.init()
+			mui.plusReady(function(){
+				setTimeout(function(){
+					startScan()	
+				}, 500)
+			})
+			var scan
+			function startScan() {
+				scan = new plus.barcode.Barcode('saoyisaoComponent', null, {
+					frameColor: '#007AFF',
+					scanbarColor: '#007AFF'
+				})
+				scan.onmarked = function (type, result) {
+					if (type == plus.barcode.QR) {
+						var content = result.split(window.TimConfig.TimQrCodePrefix)
+						if (content.length != 2 || result.indexOf(window.TimConfig.TimQrCodePrefix) < 0) {
+							window.TimUtil.showToast('不支持的二维码内容'+ result, 'error')
+							mui.back()
+						} else {
+							var findQQNumber  = content[1]
+							plus.nativeUI.showWaiting( "扫描中..." );
+							window.FindApi.findUserDetailByQQNumberApi({
+								qqNumber: findQQNumber
+							}, function(data){
+								plus.nativeUI.closeWaiting()
+								if (data.code == 200) {
+									mui.openWindow({
+										url: '../NoMeFriendInfo/noMeFriendInfo.html',
+										id: 'noMeFriendInfo.html',
+										extras: {
+											userId: data.result.id
+										},
+										show: {autoShow: true,aniShow:'none',duration: 0}
+									})
+								} else {
+									window.TimUtil.showToast(data.msg, 'error')
+								}
+							})
+						}
+					}
+				}
+				scan.onerror = function (error) {
+					
+				}
+				scan.start()
+			}
+		</script>
+	</body>
+
+</html>

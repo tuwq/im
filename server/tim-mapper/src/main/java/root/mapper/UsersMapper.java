@@ -84,4 +84,10 @@ public interface UsersMapper {
 	 * @return
 	 */
 	List<Users> findByQQNumberOrPhoneOrNickname(@Param("targetInfo") String targetInfo);
+	/**
+	 * 根据QQ号码获得用户信息
+	 * @param qqNumber
+	 * @return
+	 */
+	Users getByQQNumber(@Param("qqNumber") String qqNumber);
 }

@@ -5,6 +5,7 @@ window.TimConfig = {
 	serverImageUrl: 'http://tim.img.mackz.xin/',
 	avatarPrefix: 'user/avatar/',
 	qrCodePrefix: 'user/qrCode/',
+	TimQrCodePrefix: 'tim_qrcode:',
 	// 底部选项卡
 	timFooterBarArray: [
 		{

@@ -11,6 +11,7 @@
     id, my_id, my_friend_id, create_time
   </sql>
   
+  
    <select id="isMyFriend" parameterType="map" resultType="int">
     select count(*)
     from single_users

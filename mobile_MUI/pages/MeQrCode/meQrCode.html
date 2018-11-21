@@ -67,10 +67,15 @@
 				refreshUserInfo()
 				document.getElementById('qrcode-image').src = window.TimConfig.serverImageUrl + window.TimConfig.qrCodePrefix + user.qrcode
 				document.getElementById('shoukuan').addEventListener('tap', function(e) {
-				
+					
 				})
 				document.getElementById('saoyisao').addEventListener('tap', function(e) {
-				
+					mui.openWindow({
+						url: '../Saoyisao/saoyisao.html',
+						id: 'saoyisao.html',
+						show: {autoShow: true, aniShow: 'slide-in-top', duration:100},
+						createNew: true
+					})
 				})
 				document.getElementById('qrCode-content').addEventListener('tap', function(e){
 					mui('#sheet-qrcode').popover('toggle')

@@ -46,7 +46,7 @@
 					var user = window.TimUtil.getCacheNowUserInfo()
 					var userId = user.id
 					var editValue = document.getElementById('me-edit-value').value
-					window.UserApi.editMeInfoApi('/user/editMeInfo', {
+					window.UserApi.editMeInfoApi({
 						userId,editType,editValue
 					}, function(data){
 						if (data.code == 200) {

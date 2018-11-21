@@ -19,11 +19,16 @@
     qrCode, app_id, create_time
   </sql>
   
-   <select id="findByQQNumberOrPhoneOrNickname" parameterType="map" resultMap="BaseResultMap">
+  <select id="getByQQNumber" parameterType="map" resultMap="BaseResultMap">
+  	SELECT <include refid="Base_Column_List" />
+  	FROM users
+  	WHERE qq_number = #{qqNumber}
+  </select>
+  
+  <select id="findByQQNumberOrPhoneOrNickname" parameterType="map" resultMap="BaseResultMap">
   	SELECT <include refid="Base_Column_List" />
   	FROM users
   	WHERE qq_number = #{targetInfo} OR telephone = #{targetInfo} OR nickname like concat('%', #{targetInfo}, '%')
-  	
   </select>
   
   <update id="updateQrCodeByQQNumber" parameterType="map" >

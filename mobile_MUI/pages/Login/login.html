@@ -80,7 +80,7 @@
 					var password = passwordDOM.value
 				    var flag = window.CheckFormUtil.checkLoginForm({loginname, password})
 					if (flag == true) {
-						window.LoginApi.loginApi('/login/login', {
+						window.LoginApi.loginApi({
 							loginname,  password, appId
 						}, function(data){
 							if (data.code == HttpConstantCode.successCode) {

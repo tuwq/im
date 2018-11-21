@@ -14,7 +14,7 @@ import root.dto.UsersDto;
 import root.service.FindSingleService;
 
 @RestController
-@RequestMapping("/findSingle")
+@RequestMapping("/find/single")
 public class FindSingleController {
 
 	@Resource
@@ -26,9 +26,16 @@ public class FindSingleController {
 		return JsonResult.<List<UsersDto>>success(list);
 	}
 	
-	@GetMapping("/detail")
-	public JsonResult<UsersDto> detail(@RequestParam("userId") String userId) {
+	@GetMapping("/id")
+	public JsonResult<UsersDto> id(@RequestParam("userId") String userId) {
 		UsersDto usersDto = findSingleService.detail(userId);
 		return JsonResult.<UsersDto>success(usersDto);
 	}
+	
+	@GetMapping("qqNumber")
+	public JsonResult<UsersDto>  qqNumber(@RequestParam("qqNumber") String qqNumber) {
+		UsersDto usersDto = findSingleService.qqNumber(qqNumber);
+		return JsonResult.<UsersDto>success(usersDto);
+	}
+	
 }

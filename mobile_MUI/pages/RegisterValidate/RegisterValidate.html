@@ -51,7 +51,7 @@
 				document.getElementById('validateCode-input').setAttribute('value', validateCode)
 				document.getElementById('next-confirm').addEventListener('tap', function(e){
 					validateCode = document.getElementById('validateCode-input').value
-					window.LoginApi.validateCodeApi('/login/validateCode', {validateCode,telephone}, function(data){
+					window.LoginApi.validateCodeApi({validateCode,telephone}, function(data){
 		      			if (data.code == 200) {
 							mui.openWindow({
 								url: '../RegisterData/registerData.html',

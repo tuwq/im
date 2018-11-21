@@ -92,7 +92,8 @@
 	},
 	"pages/Chatlist/chatlist.html": {
 		"refer": [
-			"pages/AddFriend/addFriend.html"
+			"pages/AddFriend/addFriend.html",
+			"pages/Saoyisao/saoyisao.html"
 		]
 	},
 	"pages/AddFriend/addFriend.html": {
@@ -108,6 +109,16 @@
 	"pages/NoMeFriendInfo/noMeFriendInfo.html": {
 		"refer": [
 			"pages/ImageResult/imageResult.html"
+		]
+	},
+	"pages/MeQrCode/meQrCode.html": {
+		"refer": [
+			"pages/Saoyisao/saoyisao.html"
+		]
+	},
+	"pages/Saoyisao/saoyisao.html": {
+		"refer": [
+			"pages/NoMeFriendInfo/noMeFriendInfo.html"
 		]
 	}
 }

@@ -45,7 +45,7 @@
 	      	mui.plusReady(function(){
 				document.getElementById('next-confirm').addEventListener('tap', function(e) {
 					var telephone = document.getElementById('telephone-input').value
-					window.LoginApi.validatePhoneApi('/login/validatePhone', {telephone}, function(data) {
+					window.LoginApi.validatePhoneApi({telephone}, function(data) {
 						if (data.code == 200) {
 							mui.openWindow({
 								url: '../RegisterValidate/registerValidate.html',

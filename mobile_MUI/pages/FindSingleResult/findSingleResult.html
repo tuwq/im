@@ -56,7 +56,7 @@
 				}
 				document.getElementById('confirm-findSingle').addEventListener('tap', function(){
 					value = friendInput.value
-					window.FindApi.findSingleApi('/findSingle/list', {
+					window.FindApi.findSingleApi({
 						targetInfo: value
 					}, function(data){
 						value = ''

@@ -236,7 +236,8 @@
 			"pages/Chatlist/chatlist.html": {
 				"resources": [],
 				"refer": [
-					"pages/AddFriend/addFriend.html"
+					"pages/AddFriend/addFriend.html",
+					"pages/Saoyisao/saoyisao.html"
 				],
 				"priority": 0
 			},
@@ -258,6 +259,20 @@
 				"resources": [],
 				"refer": [
 					"pages/ImageResult/imageResult.html"
+				],
+				"priority": 0
+			},
+			"pages/MeQrCode/meQrCode.html": {
+				"resources": [],
+				"refer": [
+					"pages/Saoyisao/saoyisao.html"
+				],
+				"priority": 0
+			},
+			"pages/Saoyisao/saoyisao.html": {
+				"resources": [],
+				"refer": [
+					"pages/NoMeFriendInfo/noMeFriendInfo.html"
 				],
 				"priority": 0
 			}

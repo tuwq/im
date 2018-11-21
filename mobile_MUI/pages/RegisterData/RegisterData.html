@@ -51,7 +51,7 @@
 					var rePassword = document.getElementById('repassword-input').value
 					var appId = plus.push.getClientInfo().clientid
 					plus.nativeUI.showWaiting('等待..')
-					window.LoginApi.registerApi('/login/register', {validateCode, telephone, nickname, password, rePassword, appId}, function(data){
+					window.LoginApi.registerApi({validateCode, telephone, nickname, password, rePassword, appId}, function(data){
 						plus.nativeUI.closeWaiting()
 						if (data.code == 200) {
 							var user = data.result

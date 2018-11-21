@@ -45,4 +45,15 @@ public class FindSingleService {
 		if (user == null) throw new CheckParamException("用户不存在");
 		return DtoUtil.adapt(new UsersDto(), user);
 	}
+	/**
+	 * 查询某用户信息,根据QQ号码
+	 * @param qqNumber
+	 * @return
+	 */
+	public UsersDto qqNumber(String qqNumber) {
+		if (StringUtils.isBlank(qqNumber)) throw new CheckParamException("不能为空值");
+		Users user = usersMapper.getByQQNumber(qqNumber);
+		if (user == null) throw new CheckParamException("用户不存在");
+		return DtoUtil.adapt(new UsersDto(), user);
+	}
 }

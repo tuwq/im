@@ -7,13 +7,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 好友请求录入参数
+ * 发送好友请求录入参数
  * @author tuwq
  *
  */
 @Setter
 @Getter
-public class RequestSingParam {
+public class SendSingleRequestParam {
 	@NotBlank(message="个人id不可为空串")
 	@NotNull(message="个人id不可为空")
 	private String meId;
