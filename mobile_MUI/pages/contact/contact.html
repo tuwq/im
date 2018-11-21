@@ -6,20 +6,162 @@
 		<title></title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../css/mui.indexedlist.css"/>
 		<link rel="stylesheet" type="text/css" href="../../common/css/header.css"/>
+		<link rel="stylesheet" type="text/css" href="contact.css"/>
 		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/mui.indexedlist.js"></script>
+		<script src="../../config/TimConfig.js"></script>
 		<script src="../../common/js/TimUtil.js"></script>
+		<script src="../../common/js/pinyinName.js"></script>
+		<script src="../../api/Find/find.js"></script>
 	</head>
 
 	<body>
-		<header class="mui-bar mui-bar-nav title-header">
+		<header id="contact-header" class="mui-bar mui-bar-nav title-header">
 		    <h1 class="mui-title title-color">通讯录</h1>
 		</header>
+		<div class="mui-content">
+			<div id='contact-list' class="mui-indexed-list">
+				<div class="mui-indexed-list-search mui-input-row mui-search">
+					<input type="search" class="mui-input-clear mui-indexed-list-search-input" placeholder="搜索好友">
+				</div>
+				<div class="mui-indexed-list-bar">
+					<a>A</a>
+					<a>B</a>
+					<a>C</a>
+					<a>D</a>
+					<a>E</a>
+					<a>F</a>
+					<a>G</a>
+					<a>H</a>
+					<a>I</a>
+					<a>J</a>
+					<a>K</a>
+					<a>L</a>
+					<a>M</a>
+					<a>N</a>
+					<a>O</a>
+					<a>P</a>
+					<a>Q</a>
+					<a>R</a>
+					<a>S</a>
+					<a>T</a>
+					<a>U</a>
+					<a>V</a>
+					<a>W</a>
+					<a>X</a>
+					<a>Y</a>
+					<a>Z</a>
+				</div>
+				<div class="mui-indexed-list-alert"></div>
+				<div class="mui-indexed-list-inner">
+					<div class="mui-indexed-list-empty-alert">没有数据</div>
+					<ul id="contactList" class="mui-table-view">
+
+					</ul>
+				</div>
+			</div>
+		</div>
 		<script type="text/javascript">
+			/**
+			 * 获取好友列表
+			 * 渲染通讯录
+			 * 截取昵称的拼音首字母
+			 * 首字母在26个字母中排行第几位
+			 * 将内容放在对应的二维字母数组
+			 * ! 渲染后清空二维数组
+			 */
 			mui.init()
 			mui.plusReady(function(){
 				window.TimUtil.setSystemStatusColor()
+				mui.plusReady(function(){
+					getContactList()
+					var contactWebview = plus.webview.currentWebview()
+					contactWebview.addEventListener('show', function() {
+						renderContactListHTML()
+						renderMUIContactList()
+					})
+					window.addEventListener(window.TimConfig.timSubscribe.refreshContactMyFriendListSubscribe, function() {
+						getContactList()
+					})
+				})
 			})
+			var enWords = [
+				'A', 'B', 'C', 'D', 'E', 'F', 'G', 
+				'H', 'I', 'J', 'K', 'L', 'M', 'N',
+				'O', 'P', 'Q', 'R', 'S', 'T', 
+				'U', 'V', 'W', 'X', 'Y', 'Z',
+				'#'
+			]
+			var contactArray = [
+				[],[],[],[],[],[],[],[],[],
+				[],[],[],[],[],[],[],[],[],
+				[],[],[],[],[],[],[],[],[]
+			]
+			
+			function getIndexOfWords(firstChar) {
+				for (let i = 0; i < enWords.length; i++) {
+					if (firstChar == enWords[i]) {
+						return i
+					}
+				}
+				return enWords.length-1
+			}
+			
+			function renderContactListHTML() {
+				var myFriendList = window.TimUtil.getCacheContactList()
+				for (var i = 0; i < myFriendList.length; i++) {
+					var friendItem = myFriendList[i]
+					var pinyinNickname = window.PinYinWords.convertPinyin(friendItem.nickname)
+					var firstChar = pinyinNickname.substr(0, 1).toUpperCase()
+					var index = getIndexOfWords(firstChar)
+					contactArray[index].push(friendItem)
+				}
+				var contactHtml = ''
+				for (var i = 0; i < contactArray.length; i++) {
+					var friendList = contactArray[i]
+					if (friendList.length > 0) {
+						var nicknameFirst = enWords[i]
+						contactHtml += '<li data-group="' + nicknameFirst + '" class="mui-table-view-divider mui-indexed-list-group">' + nicknameFirst + '</li>';
+						for (var j = 0 ; j < friendList.length ; j ++ ) {
+							contactHtml += '' +
+							'<li data-id="' + friendList[j].userId + '" nickname="' + friendList[j].nickname + '" faceImage="' + friendList[j].faceImageCut + '" class="chat-with-friend mui-media mui-table-view-cell mui-indexed-list-item" style="padding: 8px 10px;">' +
+								'<img class="mui-media-object mui-pull-left" style="max-width: 35px;height: 35px;" src="' + window.TimConfig.serverImageUrl + window.TimConfig.avatarPrefix + friendList[j].faceImageCut + '"/>' +
+								'<div class="mui-media-body" style="line-height: 35px;">' + friendList[j].nickname + '</div>' +
+							'</li>';
+						}
+					}
+				}
+				document.getElementById('contactList').innerHTML = contactHtml
+				clearContactArray()
+			}
+			function clearContactArray() {
+				contactArray = [
+					[],[],[],[],[],[],[],[],[],
+					[],[],[],[],[],[],[],[],[],
+					[],[],[],[],[],[],[],[],[]
+				]
+			}
+			function getContactList() {
+				var user = window.TimUtil.getCacheNowUserInfo()
+				window.FindApi.findMyFriend({
+					userId: user.id
+				}, function(data){
+					if (data.code == 200) {
+						window.TimUtil.setCacheContactList(data.result)
+					} else {
+						window.TimUtil.showToast(data.msg, 'error')
+					}
+				})
+			}
+			function renderMUIContactList() {
+				var contactHeader = document.getElementById('contact-header')
+				var contactListDOM = document.getElementById('contact-list')
+				contactListDOM.style.height = (document.body.offsetHeight - contactHeader.offsetHeight) + "px"
+				window.IndexedList = new mui.IndexedList(contactListDOM)
+			}
+			
 		</script>
 	</body>
 

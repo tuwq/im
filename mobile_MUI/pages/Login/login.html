@@ -9,6 +9,7 @@
 		<script src="../../js/mui.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="login.css"/>
 		<script src="../../common/js/CheckFormUtil.js"></script>
+		<script src="../../config/TimConfig.js"></script>
 		<script src="../../common/js/TimUtil.js"></script>
 		<script src="../../api/Login/login.js"></script>
 		<script src="../../config/HttpConstantCode.js"></script>
@@ -62,6 +63,8 @@
 			mui.back = function() {return false}
 			mui.plusReady(function(){
 				var cacheUser = window.TimUtil.getCacheNowUserInfo()
+				var meWebview = plus.webview.getWebviewById('me.html')
+				var contactWebview = plus.webview.getWebviewById('contact.html')
 				if (cacheUser != null) {
 					mui.openWindow({
 						url: '../../index.html',
@@ -86,10 +89,12 @@
 							if (data.code == HttpConstantCode.successCode) {
 								var user = data.result
 								window.TimUtil.setCacheNowUserInfo(user)
+								mui.fire(meWebview, window.TimConfig.timSubscribe.refreshUserInfoSubscribe)
+								mui.fire(contactWebview, window.TimConfig.timSubscribe.refreshContactMyFriendListSubscribe)
 								mui.openWindow({
 									url: '../../index.html',
 									id: 'index.html',
-									show: {autoShow: true}
+									show: {autoShow: true,aniShow:'none',duration: 0}
 								})
 								window.TimUtil.showToast('登陆成功', 'success')
 							} else {
@@ -104,7 +109,8 @@
 					mui.openWindow({
 						url: '../RegisterPhone/registerPhone.html',
 						id: 'registerPhone.html',
-						show: {autoShow: true, aniShow: 'slide-in-left', duration:200}
+						show: {autoShow: true, aniShow: 'slide-in-left', duration:200},
+						createNew: true
 					})
 				})
 			})

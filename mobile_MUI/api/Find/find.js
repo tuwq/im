@@ -14,5 +14,10 @@ window.FindApi = {
 		window.TimUtil.getJson('/find/single/qqNumber', data, function(data) {
 			if(success) success(data)
 		})
+	},
+	findMyFriend: function(data, success) {
+		window.TimUtil.getJson('/find/single/myFrientList', data, function(data) {
+			if(success) success(data)
+		})
 	}
 }

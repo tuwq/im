@@ -63,14 +63,15 @@
 			 * 当当前webview被渲染时加载用户信息
 			 * 点击头像跳转头像页面
 			 * 点击二维码跳转二维码页面
+			 * 注销时删除所有缓存
 			 * ! 点击昵称签名跳转信息编辑页面 1: 昵称, 2: 签名
 			 * ! 添加修改头像后更新信息的事件
 			 */
 			mui.init()
 			mui.plusReady(function(e){
 				window.TimUtil.setSystemStatusColor()
+				refreshUserInfo()	
 				var meWebview = plus.webview.currentWebview()
-				refreshUserInfo()
 				meWebview.addEventListener('show', function() {
 					refreshUserInfo()				
 				})

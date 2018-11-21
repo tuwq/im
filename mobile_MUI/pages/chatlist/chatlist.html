@@ -42,14 +42,46 @@
 			 * 绑定弹出菜单
 			 * 加载后获取未处理的好友请求
 			 * 绑定好友请求按钮
+			 * ! 同意后更新好友列表
 			 */
 			mui.init()
 			mui.plusReady(function(){
 				window.TimUtil.setSystemStatusColor()
+				var user = window.TimUtil.getCacheNowUserInfo()
 				var selfWebview = plus.webview.currentWebview()
+				var contactWebview = plus.webview.getWebviewById('contact.html')
 				refreshAcceptRequest()
 				selfWebview.addEventListener('show', function() {
 					refreshAcceptRequest()
+				})
+				mui('#single-request-list').on('tap', '.agree-button', function(e){
+					var sendUserId = this.getAttribute('data-id')
+					window.RequestApi.singleRequestAgree({
+						meId: user.id,
+						sendUserId: sendUserId
+					}, function(data) {
+						if (data.code == 200) {
+							window.TimUtil.showToast('已同意对方的请求', 'success')
+							refreshAcceptRequest()
+							mui.fire(contactWebview, window.TimConfig.timSubscribe.refreshContactMyFriendListSubscribe)
+						} else {
+							if (data.code != 200) window.TimUtil.showToast(data.msg, 'error')
+						}
+					})
+				})
+				mui('#single-request-list').on('tap', '.refuse-button', function(e){
+					var sendUserId = this.getAttribute('data-id')
+					window.RequestApi.singleRequestRefuse({
+						meId: user.id,
+						sendUserId: sendUserId
+					}, function(data) {
+						if (data.code == 200) {
+							window.TimUtil.showToast('已拒绝对方的请求', 'success')
+							refreshAcceptRequest()
+						} else {
+							if (data.code != 200) window.TimUtil.showToast(data.msg, 'error')
+						}
+					})
 				})
 				document.getElementById('addFriend').addEventListener('tap', function(){
 					mui.openWindow({
@@ -71,6 +103,7 @@
 				})
 			})
 			function refreshAcceptRequest() {
+				$('#single-request-list').empty()
 				var user = window.TimUtil.getCacheNowUserInfo()
 				window.RequestApi.singleRequestAcceptApi({
 					userId: user.id
@@ -85,7 +118,6 @@
 				})
 			}
 			function renderSingleRequestAcceptHTML(result) {
-				var user = window.TimUtil.getCacheNowUserInfo()
 				var data = {}
 				data.result = result
 				data.avatarUrlPrefix = window.TimConfig.serverImageUrl + window.TimConfig.avatarPrefix
@@ -93,26 +125,6 @@
 				var template = Handlebars.compile(singleRequestTemplate)
 				var html = template(data)
 				$('#single-request-list').html(html)	
-				mui('#single-request-list').on('tap', '.agree-button', function(e){
-					var sendUserId = this.getAttribute('data-id')
-					window.RequestApi.singleRequestAgree({
-						meId: user.id,
-						sendUserId: sendUserId
-					}, function(data) {
-						if (data.code != 200) window.TimUtil.showToast(data.msg, 'error')
-						window.TimUtil.showToast('已同意对方的请求', 'success')
-					})
-				})
-				mui('#single-request-list').on('tap', '.refuse-button', function(e){
-					var sendUserId = this.getAttribute('data-id')
-					window.RequestApi.singleRequestRefuse({
-						meId: user.id,
-						sendUserId: sendUserId
-					}, function(data) {
-						if (data.code != 200) window.TimUtil.showToast(data.msg, 'error')
-						window.TimUtil.showToast('已拒绝对方的请求', 'success')
-					})
-				})
 			}
 		</script>
 		<script type="text/template" id="singleRequestTemplate">
