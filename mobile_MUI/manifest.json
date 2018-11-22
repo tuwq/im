@@ -275,6 +275,13 @@
 					"pages/NoMeFriendInfo/noMeFriendInfo.html"
 				],
 				"priority": 0
+			},
+			"pages/Contact/contact.html": {
+				"resources": [],
+				"refer": [
+					"pages/SingleChatting/singleChatting.html"
+				],
+				"priority": 0
 			}
 		},
 		"idle": {

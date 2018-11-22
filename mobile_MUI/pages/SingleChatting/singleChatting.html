@@ -1,0 +1,139 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../common/css/header.css"/>
+		<link rel="stylesheet" type="text/css" href="singleChatting.css"/>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../download/jQuery/jquery-3.3.1.min.js"></script>
+		<script src="../../download/handlebars/handlebars-v4.0.12.js"></script>
+		<script src="../../config/TimConfig.js"></script>
+		<script src="../../common/js/TimUtil.js"></script>
+		<script src="../../common/js/singChatting.js"></script>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav title-header noshadow">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left title-color title-size-left">消息</a>
+		    <h1 id="single-chatting-nickname" class="mui-title title-color">纤月酱</h1>
+		</header>
+		<div id="msg-outter" class="mui-content">
+			<div id='msg'>
+				
+			</div>
+		</div>
+		
+		<footer>
+			<div class="footer-center">
+				<textarea id='msg-text' type="text" class='input-text'></textarea>
+			</div>
+			<label for="" class="footer-right">
+				<button type="button" class="mui-btn mui-btn-gray send-btn" id="send">发送</button>
+			</label>
+		</footer>
+		<script type="text/javascript">
+			/**
+			 * 显示好友信息
+			 * 设置键盘样式
+			 * 滚动调整至底部
+			 * 发送消息
+			 * ！ 判断网络状态
+			 * ! 清空消息文本框内容
+			 */
+			mui.init()
+			var heUserId
+			var heNickname
+			var heFaceImageCut
+			mui.plusReady(function() {
+				var selfWebview = plus.webview.currentWebview()
+				var Me = window.TimUtil.getCacheNowUserInfo()
+				plus.webview.currentWebview().setStyle({
+					softinputMode: "adjustResize"
+				})
+				heUserId = selfWebview.userId
+				heNickname = selfWebview.nickname
+				heFaceImageCut = selfWebview.faceImageCut
+				document.getElementById('single-chatting-nickname').innerText = heNickname
+				var chatTextDOM = document.getElementById('msg-text')
+				resizeScreen()
+				window.addEventListener('resize', function(){
+					resizeScreen()
+					document.getElementById('msg-outter').style.paddingBottom = '50px'
+				})
+				document.getElementById('send').addEventListener('tap', function(e){
+					var connectionStatus = plus.networkinfo.getCurrentType()
+					if (connectionStatus == 0 || connectionStatus == 1) {
+						window.TimUtil.showToast('当前网络状态不可用', 'error')
+						return
+					}
+					var chat_text = chatTextDOM.value					
+					if ( chat_text.length === 0 ) {
+						return
+					}
+					sendMsg(Me.faceImageCut, chat_text)
+					acceptMsg(heFaceImageCut ,chat_text)
+					chatTextDOM.value = ''
+				})
+			})
+			
+			function acceptMP3() {
+				var audioPlayer = plus.audio.createPlayer('../../common/mp3/qqAccept.mp3')
+				audioPlayer.play()
+			}
+			
+			function sendMsg(faceImageCut, msg) {
+				var msgRightTemplate = $('#msgRightTemplate').html()
+				var template = Handlebars.compile(msgRightTemplate)
+				var data = {}
+				data.avatarPrefix = window.TimConfig.serverImageUrl + window.TimConfig.avatarPrefix
+				data.faceImageCut = faceImageCut
+				data.msg = msg
+				var html = template(data)
+				var msgDOM = document.getElementById('msg')
+				msgDOM.insertAdjacentHTML("beforeend", html)
+			}
+			
+			function acceptMsg(faceImageCut, msg) {
+				var msgLeftTemplate = $('#msgLeftTemplate').html()
+				var template = Handlebars.compile(msgLeftTemplate)
+				var data = {}
+				data.avatarPrefix = window.TimConfig.serverImageUrl + window.TimConfig.avatarPrefix
+				data.faceImageCut = faceImageCut
+				data.msg = msg
+				var html = template(data)
+				var msgDOM = document.getElementById('msg')
+				msgDOM.insertAdjacentHTML("beforeend", html)
+				acceptMP3()
+			}
+			
+			function resizeScreen() {
+				var areaMesContent = document.getElementById('msg')
+				areaMesContent.scrollTop = areaMesContent.scrollHeight + areaMesContent.offsetHeight
+			}
+		</script>
+	</body>
+	<script type="text/template" id="msgLeftTemplate">
+	    <div class="friend_lists">
+			<div class="header_img">
+				<img src="{{avatarPrefix}}{{faceImageCut}}" width="40px" height="40px" />
+			</div>
+			<div class="msg-wrapper right">
+				<p class="msg-left-white">{{msg}}</p>
+			</div>
+		</div>
+	</script>
+	<script type="text/template" id="msgRightTemplate">
+		<div class="me_lists">
+			<div class="header_img">
+				<img src="{{avatarPrefix}}{{faceImageCut}}" width="40px" height="40px" />
+			</div>
+			<div class="msg-wrapper left">
+				<p class="msg-right-green">{{msg}}</p>
+			</div>
+		</div>
+	</script>
+</html>

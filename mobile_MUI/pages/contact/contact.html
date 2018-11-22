@@ -70,6 +70,7 @@
 			 * 截取昵称的拼音首字母
 			 * 首字母在26个字母中排行第几位
 			 * 将内容放在对应的二维字母数组
+			 * 绑定通讯录列表聊天按钮
 			 * ! 渲染后清空二维数组
 			 */
 			mui.init()
@@ -126,7 +127,7 @@
 						contactHtml += '<li data-group="' + nicknameFirst + '" class="mui-table-view-divider mui-indexed-list-group">' + nicknameFirst + '</li>';
 						for (var j = 0 ; j < friendList.length ; j ++ ) {
 							contactHtml += '' +
-							'<li data-id="' + friendList[j].userId + '" nickname="' + friendList[j].nickname + '" faceImage="' + friendList[j].faceImageCut + '" class="chat-with-friend mui-media mui-table-view-cell mui-indexed-list-item" style="padding: 8px 10px;">' +
+							'<li data-id="' + friendList[j].userId + '" nickname="' + friendList[j].nickname + '" faceImageCut="' + friendList[j].faceImageCut + '" class="chat-with-contact mui-media mui-table-view-cell mui-indexed-list-item" style="padding: 8px 10px;">' +
 								'<img class="mui-media-object mui-pull-left" style="max-width: 35px;height: 35px;" src="' + window.TimConfig.serverImageUrl + window.TimConfig.avatarPrefix + friendList[j].faceImageCut + '"/>' +
 								'<div class="mui-media-body" style="line-height: 35px;">' + friendList[j].nickname + '</div>' +
 							'</li>';
@@ -135,6 +136,19 @@
 				}
 				document.getElementById('contactList').innerHTML = contactHtml
 				clearContactArray()
+				mui('#contactList').on('tap', '.chat-with-contact', function(e){
+					var userId = this.getAttribute('data-id')
+					var nickname = this.getAttribute('nickname')
+					var faceImageCut = this.getAttribute('faceImageCut')
+					mui.openWindow({
+						url: '../SingleChatting/singleChatting.html',
+						id: 'singleChatting' + userId,
+						show: {autoShow: true, aniShow: 'slide-in-right', duration:200},
+						extras: {
+							userId,nickname,faceImageCut
+						}
+					})
+				})
 			}
 			function clearContactArray() {
 				contactArray = [

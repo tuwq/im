@@ -37,8 +37,10 @@
 			 * 限制高度防止webview全屏
 			 * 批量绑定tap事件,依靠tabindex映射数组展示不同页面
 			 * ! 禁用返回按钮
+			 * ! 网络连接监听
 			 */
 			window.TimUtil.setSystemStatusColor()
+			netChangeSwitch()
 			var indexWebview = plus.webview.currentWebview()
 			var timFooterBarArray = window.TimConfig.timFooterBarArray
 			var timStyle = window.TimConfig.timStyle
@@ -57,6 +59,16 @@
 				plus.webview.show(timFooterBarArray[tabIndex].pageId, 'none', 0)
 			})
 		})
+		function netChangeSwitch() {
+			document.addEventListener('netchange', function(e){
+				var connectionStatus = plus.networkinfo.getCurrentType()
+				if (connectionStatus != 0 && connectionStatus != 1) {
+					
+				} else {
+					window.TimUtil.showToast('当前网络状态不可用', 'error')
+				}
+			})
+		}
 	</script>
 </body>
 </html>

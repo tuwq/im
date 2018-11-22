@@ -120,5 +120,10 @@
 		"refer": [
 			"pages/NoMeFriendInfo/noMeFriendInfo.html"
 		]
+	},
+	"pages/Contact/contact.html": {
+		"refer": [
+			"pages/SingleChatting/singleChatting.html"
+		]
 	}
 }
