@@ -55,10 +55,10 @@ public class ChatHandler extends SimpleChannelInboundHandler<TextWebSocketFrame>
 		NettyStorage.groups.remove(ctx.channel());
 	}
 	
-	//工程出现异常的时候调用
+	// 工程出现异常的时候调用
+	// 发生异常之后关闭channel
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-		// 发生异常之后关闭channel
 		cause.printStackTrace();
 		ctx.channel().close();
 		NettyStorage.groups.remove(ctx.channel());

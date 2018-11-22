@@ -13,7 +13,7 @@
 		<script src="../../download/handlebars/handlebars-v4.0.12.js"></script>
 		<script src="../../config/TimConfig.js"></script>
 		<script src="../../common/js/TimUtil.js"></script>
-		<script src="../../common/js/singChatting.js"></script>
+		<script src="../../config/websocketContant.js"></script>
 	</head>
 
 	<body>
@@ -26,7 +26,6 @@
 				
 			</div>
 		</div>
-		
 		<footer>
 			<div class="footer-center">
 				<textarea id='msg-text' type="text" class='input-text'></textarea>
@@ -50,6 +49,7 @@
 			var heFaceImageCut
 			mui.plusReady(function() {
 				var selfWebview = plus.webview.currentWebview()
+				var chatlistWebview = plus.webview.getWebviewById('chatlist.html')
 				var Me = window.TimUtil.getCacheNowUserInfo()
 				plus.webview.currentWebview().setStyle({
 					softinputMode: "adjustResize"
@@ -75,7 +75,7 @@
 						return
 					}
 					sendMsg(Me.faceImageCut, chat_text)
-					acceptMsg(heFaceImageCut ,chat_text)
+					mui.fire(chatlistWebview, window.websocketContant.SingleChatSendMsg, {msg: chat_text})
 					chatTextDOM.value = ''
 				})
 			})

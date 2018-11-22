@@ -14,20 +14,20 @@ public class NettyStorage {
 	// 用于记录和管理所有客户端的channle
 	public static ChannelGroup groups = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 	// 记录用户的channel
-	private static ConcurrentHashMap<Integer,Channel> usersMap = new ConcurrentHashMap<Integer,Channel>();
+	private static ConcurrentHashMap<String,Channel> usersMap = new ConcurrentHashMap<String,Channel>();
 	// 映射方法
 	private static HashMap<String, Method> mappingMap = new HashMap<String, Method>();
 	
-	public static void put(Integer senderId,Channel channel) {
+	public static void put(String senderId,Channel channel) {
 		usersMap.put(senderId, channel);
 	}
 	
-	public static Channel get(Integer senderId) {
+	public static Channel get(String senderId) {
 		return usersMap.get(senderId);
 	}
 	
 	public static void output() {
-		for (HashMap.Entry<Integer,Channel> entry:usersMap.entrySet()) {
+		for (HashMap.Entry<String,Channel> entry:usersMap.entrySet()) {
 			System.out.println("userId:"+entry.getKey()+",channelId:"+entry.getValue().id().asLongText());
 		}
 	}
