@@ -6,12 +6,13 @@ class SocketData {
 	}
 }
 class AccepetChatContent {
-	constructor(sendId, acceptId, content, contentForByte, contentType) {			
-	  	this.sendId = sendId
+	constructor(senderId, acceptId, content, contentForByte, contentType, contentId) {			
+	  	this.senderId = senderId
 		this.acceptId = acceptId
 		this.content = content
 		this.contentForByte = contentForByte
 		this.contentType = contentType
+		this.contentId = contentId
 	}
 }
 
@@ -27,6 +28,8 @@ window.TimWebsocket = {
 			TimWebsocket.socket = new WebSocket(window.TimConfig.websocketServerUrl)
 			TimWebsocket.socket.onopen = function() {
 				console.log("连接建立成功...")
+				var user = window.TimUtil.getCacheNowUserInfo()
+				window.websocketUtil.oneOpenWebSocket(user.id)
 			}
 			TimWebsocket.socket.onclose = function() {
 				console.log("连接关闭")
@@ -63,7 +66,7 @@ window.websocketUtil = {
 	listeners: new Map,
 	tigger(action, result) {
 		let callback = websocketUtil.listeners.get(action)
-		callback(result)
+		callback(result, result.accepetChatContent)
 	},
 	subscribe: function(action, callback) {
 		websocketUtil.listeners.set(action,callback)
@@ -77,8 +80,12 @@ window.websocketUtil = {
 		textType: 'text',
 		byteType: 'byte'
 	},
-	sendSingleText: function(msg, extendFields) {
-		let accepetChatContent = new AccepetChatContent(110,180,msg,null,window.websocketUtil.acceptTypeEnums.textType)
-		window.websocketUtil.emit(window.websocketContant.SingleChatSendMsg, accepetChatContent, extendFields)
+	sendSingleText: function(senderId, acceptId, content, extendFields) {
+		let accepetChatContent = new AccepetChatContent(senderId,acceptId,content,null,window.websocketUtil.acceptTypeEnums.textType,null)
+		window.websocketUtil.emit(window.websocketRequestContant.SingleChatSendMsg, accepetChatContent, extendFields)
+	},
+	oneOpenWebSocket: function(senderId, extendFields) {
+		let accepetChatContent = new AccepetChatContent(senderId, null, null, null, window.websocketUtil.acceptTypeEnums.textType, null)
+		window.websocketUtil.emit(window.websocketRequestContant.OpenWebsocket, accepetChatContent, extendFields)
 	}
 }

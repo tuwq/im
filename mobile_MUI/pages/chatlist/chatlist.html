@@ -71,6 +71,7 @@
 				var selfWebview = plus.webview.currentWebview()
 				var contactWebview = plus.webview.getWebviewById('contact.html')
 				refreshAcceptRequest()
+				window.TimWebsocket.init()
 				selfWebview.addEventListener('show', function() {
 					refreshAcceptRequest()
 					window.TimWebsocket.init()
@@ -122,9 +123,11 @@
 						createNew: true
 					})
 				})
-				window.TimWebsocket.init()
-				window.addEventListener(window.websocketContant.SingleChatSendMsg, function(e) {
-					window.websocketUtil.sendSingleText(e.detail.msg, null)
+				window.addEventListener(window.websocketRequestContant.SingleChatSendMsg, function(e) {
+					window.websocketUtil.sendSingleText(e.detail.senderId, e.detail.acceptId, e.detail.content, null)
+				})
+				window.websocketUtil.subscribe(window.websocketResultContant.AcceptSingleChatMsg,function(result, accepetChatContent){
+					console.log(JSON.stringify(result))
 				})
 			})
 			function refreshAcceptRequest() {

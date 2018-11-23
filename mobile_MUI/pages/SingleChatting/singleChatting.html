@@ -75,7 +75,11 @@
 						return
 					}
 					sendMsg(Me.faceImageCut, chat_text)
-					mui.fire(chatlistWebview, window.websocketContant.SingleChatSendMsg, {msg: chat_text})
+					mui.fire(chatlistWebview, window.websocketRequestContant.SingleChatSendMsg, {
+						senderId: Me.id,
+						acceptId: heUserId,
+						content: chat_text
+					})
 					chatTextDOM.value = ''
 				})
 			})
