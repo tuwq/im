@@ -27,7 +27,7 @@
 						</div>
 						<div class="validateCode-control">
 							<span style="color: rgb(128,128,128)">发送验证码至+86&nbsp;</span>
-							<span style="color: #DF5000;">15279167097&nbsp;</span>
+							<span id="phone-span" style="color: #DF5000;">15279167097&nbsp;</span>
 							<span>重新发送</span>
 						</div>
 						<div class="validateCode-control">
@@ -49,6 +49,7 @@
 				var validateCode = selfWebview.validateCode
 				var telephone = selfWebview.telephone
 				document.getElementById('validateCode-input').setAttribute('value', validateCode)
+				document.getElementById('phone-span').innerText = telephone
 				document.getElementById('next-confirm').addEventListener('tap', function(e){
 					validateCode = document.getElementById('validateCode-input').value
 					window.LoginApi.validateCodeApi({validateCode,telephone}, function(data){

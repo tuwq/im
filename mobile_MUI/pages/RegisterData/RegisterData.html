@@ -43,6 +43,8 @@
 			mui.back = function() {return false}
 	      	mui.plusReady(function(){
 				var selfWebview = plus.webview.currentWebview()
+				var meWebview = plus.webview.getWebviewById('me.html')
+				var contactWebview = plus.webview.getWebviewById('contact.html')
 				var validateCode = selfWebview.validateCode
 				var telephone = selfWebview.telephone
 				document.getElementById('regist-confirm').addEventListener('tap', function(e){
@@ -56,6 +58,8 @@
 						if (data.code == 200) {
 							var user = data.result
 							window.TimUtil.setCacheNowUserInfo(user)
+							if(meWebview != null) mui.fire(meWebview, window.TimConfig.timSubscribe.refreshUserInfoSubscribe)
+							if(contactWebview != null) mui.fire(contactWebview, window.TimConfig.timSubscribe.refreshContactContactListSubscribe)
 							mui.openWindow({
 								url: '../../index.html',
 								id: 'index.html',

@@ -23,6 +23,7 @@ window.TimWebsocket = {
 			if (TimWebsocket.socket != null 
 				&& TimWebsocket.socket != undefined
 				&& TimWebsocket.socket.readyState == WebSocket.OPEN) {
+				console.log('已连接,无需再次连接')
 				return false
 			}
 			TimWebsocket.socket = new WebSocket(window.TimConfig.websocketServerUrl)
@@ -46,7 +47,7 @@ window.TimWebsocket = {
 		}
 	},
 	send: function(data) {
-		console.log(data)
+		// console.log(data)
 		if (TimWebsocket.socket != null 
 			&& TimWebsocket.socket != undefined
 			&& TimWebsocket.socket.readyState == WebSocket.OPEN) {
@@ -87,5 +88,9 @@ window.websocketUtil = {
 	oneOpenWebSocket: function(senderId, extendFields) {
 		let accepetChatContent = new AccepetChatContent(senderId, null, null, null, window.websocketUtil.acceptTypeEnums.textType, null)
 		window.websocketUtil.emit(window.websocketRequestContant.OpenWebsocket, accepetChatContent, extendFields)
+	},
+	singleSigningMsg: function(content, extendFields) {
+		let accepetChatContent = new AccepetChatContent(null, null, content, null, window.websocketUtil.acceptTypeEnums.textType, null)
+		window.websocketUtil.emit(window.websocketRequestContant.SingleSigningMsg, accepetChatContent, extendFields)
 	}
 }

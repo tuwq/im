@@ -14,12 +14,13 @@
 		<script src="../../config/TimConfig.js"></script>
 		<script src="../../common/js/TimUtil.js"></script>
 		<script src="../../config/websocketContant.js"></script>
+		<script src="../../common/js/cacheChatHistory.js"></script>
 	</head>
 
 	<body>
 		<header class="mui-bar mui-bar-nav title-header noshadow">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left title-color title-size-left">消息</a>
-		    <h1 id="single-chatting-nickname" class="mui-title title-color">纤月酱</h1>
+		    <h1 id="single-chatting-nickname" class="mui-title title-color"></h1>
 		</header>
 		<div id="msg-outter" class="mui-content">
 			<div id='msg'>
@@ -39,14 +40,15 @@
 			 * 显示好友信息
 			 * 设置键盘样式
 			 * 滚动调整至底部
-			 * 发送消息
+			 * 发送消息,并缓存本地记录
+			 * 加载本地记录
 			 * ！ 判断网络状态
 			 * ! 清空消息文本框内容
 			 */
 			mui.init()
-			var heUserId
-			var heNickname
-			var heFaceImageCut
+			var sideUserId
+			var sideNickname
+			var sideFaceImageCut
 			mui.plusReady(function() {
 				var selfWebview = plus.webview.currentWebview()
 				var chatlistWebview = plus.webview.getWebviewById('chatlist.html')
@@ -54,11 +56,12 @@
 				plus.webview.currentWebview().setStyle({
 					softinputMode: "adjustResize"
 				})
-				heUserId = selfWebview.userId
-				heNickname = selfWebview.nickname
-				heFaceImageCut = selfWebview.faceImageCut
-				document.getElementById('single-chatting-nickname').innerText = heNickname
+				sideUserId = selfWebview.userId
+				sideNickname = selfWebview.nickname
+				sideFaceImageCut = selfWebview.faceImageCut
+				document.getElementById('single-chatting-nickname').innerText = sideNickname
 				var chatTextDOM = document.getElementById('msg-text')
+				refreshChatHistory()
 				resizeScreen()
 				window.addEventListener('resize', function(){
 					resizeScreen()
@@ -77,12 +80,51 @@
 					sendMsg(Me.faceImageCut, chat_text)
 					mui.fire(chatlistWebview, window.websocketRequestContant.SingleChatSendMsg, {
 						senderId: Me.id,
-						acceptId: heUserId,
+						acceptId: sideUserId,
 						content: chat_text
 					})
+					window.cacheChatHistory.cacheSetSingleChatHistory(Me.id, sideUserId, chat_text, window.cacheChatHistory.cacheChatHistoryFlagType.contentForMe)
 					chatTextDOM.value = ''
 				})
+				window.addEventListener(window.websocketResultContant.AcceptSingleChatMsg, function(e) {
+					var content = e.detail.content
+					acceptMsg(sideFaceImageCut, content)
+				})
 			})
+			
+			function refreshChatHistory() {
+				var msgDOM = document.getElementById('msg')
+				var me = window.TimUtil.getCacheNowUserInfo()
+				var meId = me.id
+				var meFaceImageCut = me.faceImageCut
+				var chatHistoryList = window.cacheChatHistory.cacheGetSingleChatHistory(meId, sideUserId)
+				var togetherHTML = ''
+				
+				for (var i = 0; i < chatHistoryList.length; i++) {
+					var chatHistoryItem = chatHistoryList[i]
+					togetherHTML += renderChatHistory(chatHistoryItem, meFaceImageCut)
+				}
+				msgDOM.innerHTML = togetherHTML
+			}
+			
+			function renderChatHistory(chatHistoryItem, meFaceImageCut) {
+				var data = {}
+				var msgTemplate
+				if (chatHistoryItem.flag == window.cacheChatHistory.cacheChatHistoryFlagType.contentForMe) {
+					msgTemplate = $('#msgRightTemplate').html()
+					data.avatarPrefix = window.TimConfig.serverImageUrl + window.TimConfig.avatarPrefix
+					data.faceImageCut = meFaceImageCut
+					data.msg = chatHistoryItem.content
+				} else if(chatHistoryItem.flag == window.cacheChatHistory.cacheChatHistoryFlagType.contentForSide) {
+					msgTemplate = $('#msgLeftTemplate').html()
+					data.avatarPrefix = window.TimConfig.serverImageUrl + window.TimConfig.avatarPrefix
+					data.faceImageCut = sideFaceImageCut
+					data.msg = chatHistoryItem.content
+				}
+				var template = Handlebars.compile(msgTemplate)
+				var html = template(data)
+				return html
+			}
 			
 			function acceptMP3() {
 				var audioPlayer = plus.audio.createPlayer('../../common/mp3/qqAccept.mp3')

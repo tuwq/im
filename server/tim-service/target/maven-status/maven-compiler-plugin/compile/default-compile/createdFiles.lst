@@ -1,0 +1,5 @@
+root\async\UserAsyncDataHandler.class
+root\service\SingleRequestService.class
+root\service\UserService.class
+root\service\FindSingleService.class
+root\pluginService\QiNiuService.class

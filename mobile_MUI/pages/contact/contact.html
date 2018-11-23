@@ -76,16 +76,13 @@
 			mui.init()
 			mui.plusReady(function(){
 				window.TimUtil.setSystemStatusColor()
-				mui.plusReady(function(){
+				getContactList()
+				var contactWebview = plus.webview.currentWebview()
+				contactWebview.addEventListener('show', function() {
 					getContactList()
-					var contactWebview = plus.webview.currentWebview()
-					contactWebview.addEventListener('show', function() {
-						renderContactListHTML()
-						renderMUIContactList()
-					})
-					window.addEventListener(window.TimConfig.timSubscribe.refreshContactContactListSubscribe, function() {
-						getContactList()
-					})
+				})
+				window.addEventListener(window.TimConfig.timSubscribe.refreshContactContactListSubscribe, function() {
+					getContactList()
 				})
 			})
 			var enWords = [
@@ -142,7 +139,7 @@
 					var faceImageCut = this.getAttribute('faceImageCut')
 					mui.openWindow({
 						url: '../SingleChatting/singleChatting.html',
-						id: 'singleChatting' + userId,
+						id: 'singleChatting_' + userId,
 						show: {autoShow: true, aniShow: 'slide-in-right', duration:200},
 						extras: {
 							userId,nickname,faceImageCut
@@ -164,6 +161,8 @@
 				}, function(data){
 					if (data.code == 200) {
 						window.TimUtil.setCacheContactList(data.result)
+						renderContactListHTML()
+						renderMUIContactList()
 					} else {
 						window.TimUtil.showToast(data.msg, 'error')
 					}

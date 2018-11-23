@@ -5,5 +5,7 @@ window.websocketRequestContant = {
 	SingleSigningMsg: 'SingleSigningMsg' // 签收私聊消息
 }
 window.websocketResultContant = {
-	AcceptSingleChatMsg: 'AcceptSingleChatMsg'
+	AcceptSingleChatMsg: 'AcceptSingleChatMsg', // 接收私聊消息
+	PullNewContact: 'PullNewContact',		// 重新渲染通讯录
+	PullNewSingleRequest: 'PullNewSingleRequest'
 }

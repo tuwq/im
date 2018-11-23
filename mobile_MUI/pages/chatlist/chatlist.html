@@ -18,6 +18,7 @@
 		<script src="../../api/Request/request.js"></script>
 		<script src="../../config/websocketContant.js"></script>
 		<script src="../../socket/webSocket.js"></script>
+		<script src="../../common/js/cacheChatHistory.js"></script>
 	</head>
 
 	<body>
@@ -46,24 +47,12 @@
 			 * 绑定好友请求按钮
 			 * 初始化网络连接
 			 * 绑定websocket监听
+			 * 收到消息将消息通知至指定webview
 			 * ! 同意后更新好友列表
+			 * ! 收到消息后证明已签收,并缓存本地
+			 * ! 同意请求被通过后刷新通讯录
+			 * ! 接收新的好友请求刷新请求列表
 			 */
-			/*websocketUtil.subscribe('AR',function(result){
-				console.log(JSON.stringify(result))
-			})
-			websocketUtil.subscribe('BR',function(result){
-				console.log(JSON.stringify(result))
-			})
-			websocketUtil.subscribe('CR',function(result){
-				console.log(JSON.stringify(result))
-			})
-			websocketUtil.subscribe('DR',function(result){
-				console.log(JSON.stringify(result))
-			})
-			window.websocketUtil.emit('A','aaa','111')
-			window.websocketUtil.emit('B','bbb','222')
-			window.websocketUtil.emit('C','ccc')
-			window.websocketUtil.emit('D','ddd')*/
 			mui.init()
 			mui.plusReady(function(){
 				window.TimUtil.setSystemStatusColor()
@@ -127,7 +116,21 @@
 					window.websocketUtil.sendSingleText(e.detail.senderId, e.detail.acceptId, e.detail.content, null)
 				})
 				window.websocketUtil.subscribe(window.websocketResultContant.AcceptSingleChatMsg,function(result, accepetChatContent){
-					console.log(JSON.stringify(result))
+					var senderId = accepetChatContent.senderId
+					var acceptId = accepetChatContent.acceptId
+					var content = accepetChatContent.content
+					var acceptWebview = plus.webview.getWebviewById('singleChatting_' + senderId)
+					if (acceptWebview != null) {
+						mui.fire(acceptWebview, window.websocketResultContant.AcceptSingleChatMsg, {content})
+					}
+					window.websocketUtil.singleSigningMsg(accepetChatContent.contentId, null)
+					window.cacheChatHistory.cacheSetSingleChatHistory(acceptId, senderId, content, window.cacheChatHistory.cacheChatHistoryFlagType.contentForSide)
+				})
+				window.websocketUtil.subscribe(window.websocketResultContant.PullNewContact,function(result, accepetChatContent){
+					mui.fire(contactWebview, window.TimConfig.timSubscribe.refreshContactContactListSubscribe)
+				})
+				window.websocketUtil.subscribe(window.websocketResultContant.PullNewSingleRequest,function(result, accepetChatContent){
+					refreshAcceptRequest()
 				})
 			})
 			function refreshAcceptRequest() {
