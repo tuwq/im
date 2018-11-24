@@ -9,16 +9,20 @@
 		<link rel="stylesheet" type="text/css" href="../../common/css/header.css"/>
 		<link rel="stylesheet" type="text/css" href="../../download/font_icon/iconfont.css"/>
 		<link rel="stylesheet" type="text/css" href="chatlist.css"/>
-		<link rel="stylesheet" type="text/css" href="singleRequest.css"/>
+		<link rel="stylesheet" type="text/css" href="requesList.css"/>
+		<link rel="stylesheet" type="text/css" href="chatSnapshotList.css"/>
 		<script src="../../js/mui.min.js"></script>
 		<script src="../../download/jQuery/jquery-3.3.1.min.js"></script>
 		<script src="../../download/handlebars/handlebars-v4.0.12.js"></script>
 		<script src="../../config/TimConfig.js"></script>
 		<script src="../../common/js/TimUtil.js"></script>
 		<script src="../../api/Request/request.js"></script>
+		<script src="../../api/SingleChatMsg/singleChatMsg.js"></script>
 		<script src="../../config/websocketContant.js"></script>
 		<script src="../../socket/webSocket.js"></script>
 		<script src="../../common/js/cacheChatHistory.js"></script>
+		<script src="../../common/js/cacheChatSnapshot.js"></script>
+		<script src="../../common/js/cacheContact.js"></script>
 	</head>
 
 	<body>
@@ -27,10 +31,11 @@
 		    <a href="#openMenu" class="mui-pull-right mui-icon mui-icon-plusempty" style="color: #fff;font-size: 30px;"></a>
 		</header>
 		<div class="container">
-			<div class="accept-single-request">
-				<div id="single-request-list" class="single-request-list">
-					
-				</div>
+			<div id="request-list" class="request-list">
+				
+			</div>
+			<div id="chatSnapshot-list" class="chatSnapshot-list">
+				
 			</div>
 		</div>
 		<div id="openMenu" class="mui-popover">
@@ -48,10 +53,14 @@
 			 * 初始化网络连接
 			 * 绑定websocket监听
 			 * 收到消息将消息通知至指定webview
+			 * 点击快照后对快照记录进行已读取状态
+			 * 获取未上线时未签收的消息,保存至本地,保存至快照,并批量签收
 			 * ! 同意后更新好友列表
-			 * ! 收到消息后证明已签收,并缓存本地
+			 * ! 收到消息后证明已签收
 			 * ! 同意请求被通过后刷新通讯录
 			 * ! 接收新的好友请求刷新请求列表
+			 * ！  缓存本地聊天记录和快照记录
+			 * ! 通讯录缓存中获得好友信息
 			 */
 			mui.init()
 			mui.plusReady(function(){
@@ -60,12 +69,31 @@
 				var selfWebview = plus.webview.currentWebview()
 				var contactWebview = plus.webview.getWebviewById('contact.html')
 				refreshAcceptRequest()
+				getSingleNoReadChatMsg()
+				refreshSingleChatSnapshot()
 				window.TimWebsocket.init()
 				selfWebview.addEventListener('show', function() {
 					refreshAcceptRequest()
 					window.TimWebsocket.init()
 				})
-				mui('#single-request-list').on('tap', '.agree-button', function(e){
+				mui('#chatSnapshot-list').on('tap', '.single-chatSnapshot-item', function(e) {
+					var sideId = this.getAttribute('sideId')
+					var userNickname = this.getAttribute('userNickname')
+					var userFaceImageCut = this.getAttribute('userFaceImageCut')
+					mui.openWindow({
+						url: '../SingleChatting/singleChatting.html',
+						id: 'singleChatting_' + sideId,
+						show: {autoShow: true, aniShow: 'slide-in-right', duration:200},
+						extras: {
+							userId: sideId,
+							nickname: userNickname,
+							faceImageCut: userFaceImageCut
+						}
+					})
+					window.cacheChatSnapshot.updateReadSingleChatSnapshot(user.id, sideId)
+					refreshSingleChatSnapshot()
+				})
+				mui('#request-list').on('tap', '.agree-button', function(e){
 					var sendUserId = this.getAttribute('data-id')
 					window.RequestApi.singleRequestAgree({
 						meId: user.id,
@@ -80,7 +108,7 @@
 						}
 					})
 				})
-				mui('#single-request-list').on('tap', '.refuse-button', function(e){
+				mui('#request-list').on('tap', '.refuse-button', function(e){
 					var sendUserId = this.getAttribute('data-id')
 					window.RequestApi.singleRequestRefuse({
 						meId: user.id,
@@ -114,17 +142,23 @@
 				})
 				window.addEventListener(window.websocketRequestContant.SingleChatSendMsg, function(e) {
 					window.websocketUtil.sendSingleText(e.detail.senderId, e.detail.acceptId, e.detail.content, null)
+					refreshSingleChatSnapshot()
 				})
 				window.websocketUtil.subscribe(window.websocketResultContant.AcceptSingleChatMsg,function(result, accepetChatContent){
 					var senderId = accepetChatContent.senderId
 					var acceptId = accepetChatContent.acceptId
 					var content = accepetChatContent.content
 					var acceptWebview = plus.webview.getWebviewById('singleChatting_' + senderId)
+					var isRead = window.cacheChatSnapshot.chatSnapshotReadType.YesRead
 					if (acceptWebview != null) {
 						mui.fire(acceptWebview, window.websocketResultContant.AcceptSingleChatMsg, {content})
+					} else {
+						isRead = window.cacheChatSnapshot.chatSnapshotReadType.NoRead
 					}
 					window.websocketUtil.singleSigningMsg(accepetChatContent.contentId, null)
-					window.cacheChatHistory.cacheSetSingleChatHistory(acceptId, senderId, content, window.cacheChatHistory.cacheChatHistoryFlagType.contentForSide)
+					window.cacheChatHistory.setSingleChatHistory(acceptId, senderId, content, window.cacheChatHistory.chatHistoryFlagType.contentForSide)
+					window.cacheChatSnapshot.setSingleChatSnapshot(acceptId, senderId, content, isRead)
+					refreshSingleChatSnapshot()
 				})
 				window.websocketUtil.subscribe(window.websocketResultContant.PullNewContact,function(result, accepetChatContent){
 					mui.fire(contactWebview, window.TimConfig.timSubscribe.refreshContactContactListSubscribe)
@@ -133,8 +167,61 @@
 					refreshAcceptRequest()
 				})
 			})
+			
+			function getSingleNoReadChatMsg() {
+				var me = window.TimUtil.getCacheNowUserInfo()
+				var singleChatMsgIds = ","
+				window.SingleChatMsgApi.getNoReadChatMsgListApi({
+					acceptUserId: me.id
+				}, function(data){
+					if (data.code == 200) {
+						var noReadSingleChatMsgList = data.result
+						for (var i = 0; i < noReadSingleChatMsgList.length; i++) {
+							var noReadSingleChatMsgItem = noReadSingleChatMsgList[i]
+							window.cacheChatHistory.setSingleChatHistory(noReadSingleChatMsgItem.acceptUserId, 
+								noReadSingleChatMsgItem.sendUserId, noReadSingleChatMsgItem.msg, 
+								window.cacheChatHistory.chatHistoryFlagType.contentForSide
+							)
+							window.cacheChatSnapshot.setSingleChatSnapshot(noReadSingleChatMsgItem.acceptUserId, 
+								noReadSingleChatMsgItem.sendUserId, noReadSingleChatMsgItem.msg, 
+								window.cacheChatSnapshot.chatSnapshotReadType.NoRead
+							)
+							singleChatMsgIds += noReadSingleChatMsgItem.id
+							singleChatMsgIds += ","
+						}
+						window.websocketUtil.singleSigningMsg(singleChatMsgIds, null)
+						refreshSingleChatSnapshot()
+					}
+				})
+			}
+			
+			function refreshSingleChatSnapshot() {
+				var chatSnapshotListDOM = document.getElementById('chatSnapshot-list')
+				var me = window.TimUtil.getCacheNowUserInfo()
+				var singleChatSnapshotList =  window.cacheChatSnapshot.getSingleChatSnapshot(me.id)
+				var togetherHTML = ''
+				for (var i = 0; i < singleChatSnapshotList.length; i++) {
+					var singleChatSnapshotItem = singleChatSnapshotList[i]
+					var sideId = singleChatSnapshotItem.sideId
+					var userItem = window.cacheContact.getSingleContactItem(sideId)
+					togetherHTML += renderSingleChatSnapshot(userItem, singleChatSnapshotItem)
+				}
+				chatSnapshotListDOM.innerHTML = togetherHTML
+			}
+			
+			function renderSingleChatSnapshot(userItem, singleChatSnapshotItem) {
+				var data = {}
+				var singleChatSnapshotTemplate = $('#singleChatSnapshotTemplate').html()
+				data.userItem = userItem
+				data.singleChatSnapshotItem = singleChatSnapshotItem
+				data.avatarUrlPrefix = window.TimConfig.serverImageUrl + window.TimConfig.avatarPrefix
+				var template = Handlebars.compile(singleChatSnapshotTemplate)
+				var html = template(data)
+				return html
+			}
+			
 			function refreshAcceptRequest() {
-				$('#single-request-list').empty()
+				$('#request-list').empty()
 				var user = window.TimUtil.getCacheNowUserInfo()
 				window.RequestApi.singleRequestAcceptApi({
 					userId: user.id
@@ -155,7 +242,7 @@
 				var singleRequestTemplate = $('#singleRequestTemplate').html()
 				var template = Handlebars.compile(singleRequestTemplate)
 				var html = template(data)
-				$('#single-request-list').html(html)	
+				$('#request-list').html(html)	
 			}
 		</script>
 		<script type="text/template" id="singleRequestTemplate">
@@ -174,6 +261,21 @@
 					</div>
 				</div>
 			{{/each}}
+		</script>
+		<script type="text/template" id="singleChatSnapshotTemplate">
+		    <div class="single-chatSnapshot-item" sideId="{{userItem.userId}}" userNickname="{{userItem.nickname}}" 
+		    		userFaceImageCut="{{userItem.faceImageCut}}">
+				<div class="item-avatar">
+					<img src="{{avatarUrlPrefix}}{{userItem.faceImageCut}}" alt="" />
+				</div>
+				<div class="item-info">
+					<div class="item-info-nickname">{{userItem.nickname}}</div>
+					<div class="item-info-content">{{singleChatSnapshotItem.content}}</div>
+				</div>
+				{{#unless  singleChatSnapshotItem.isRead}}
+					<span class="newMsg-tip">...</span>
+				{{/unless }}
+			</div>
 		</script>
 	</body>
 

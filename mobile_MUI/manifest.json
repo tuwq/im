@@ -237,7 +237,8 @@
 				"resources": [],
 				"refer": [
 					"pages/AddFriend/addFriend.html",
-					"pages/Saoyisao/saoyisao.html"
+					"pages/Saoyisao/saoyisao.html",
+					"pages/SingleChatting/singleChatting.html"
 				],
 				"priority": 0
 			},

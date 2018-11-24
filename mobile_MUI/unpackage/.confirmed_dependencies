@@ -93,7 +93,8 @@
 	"pages/Chatlist/chatlist.html": {
 		"refer": [
 			"pages/AddFriend/addFriend.html",
-			"pages/Saoyisao/saoyisao.html"
+			"pages/Saoyisao/saoyisao.html",
+			"pages/SingleChatting/singleChatting.html"
 		]
 	},
 	"pages/AddFriend/addFriend.html": {

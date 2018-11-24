@@ -15,6 +15,7 @@
 		<script src="../../common/js/TimUtil.js"></script>
 		<script src="../../config/websocketContant.js"></script>
 		<script src="../../common/js/cacheChatHistory.js"></script>
+		<script src="../../common/js/cacheChatSnapshot.js"></script>
 	</head>
 
 	<body>
@@ -40,10 +41,11 @@
 			 * 显示好友信息
 			 * 设置键盘样式
 			 * 滚动调整至底部
-			 * 发送消息,并缓存本地记录
+			 * 发送消息
 			 * 加载本地记录
 			 * ！ 判断网络状态
 			 * ! 清空消息文本框内容
+			 * ！ 缓存本地聊天记录和快照记录
 			 */
 			mui.init()
 			var sideUserId
@@ -83,12 +85,14 @@
 						acceptId: sideUserId,
 						content: chat_text
 					})
-					window.cacheChatHistory.cacheSetSingleChatHistory(Me.id, sideUserId, chat_text, window.cacheChatHistory.cacheChatHistoryFlagType.contentForMe)
+					window.cacheChatHistory.setSingleChatHistory(Me.id, sideUserId, chat_text, window.cacheChatHistory.chatHistoryFlagType.contentForMe)
+					window.cacheChatSnapshot.setSingleChatSnapshot(Me.id, sideUserId, chat_text, window.cacheChatSnapshot.chatSnapshotReadType.YesRead)
 					chatTextDOM.value = ''
 				})
 				window.addEventListener(window.websocketResultContant.AcceptSingleChatMsg, function(e) {
 					var content = e.detail.content
 					acceptMsg(sideFaceImageCut, content)
+					resizeScreen()
 				})
 			})
 			
@@ -97,9 +101,8 @@
 				var me = window.TimUtil.getCacheNowUserInfo()
 				var meId = me.id
 				var meFaceImageCut = me.faceImageCut
-				var chatHistoryList = window.cacheChatHistory.cacheGetSingleChatHistory(meId, sideUserId)
+				var chatHistoryList = window.cacheChatHistory.getSingleChatHistory(meId, sideUserId)
 				var togetherHTML = ''
-				
 				for (var i = 0; i < chatHistoryList.length; i++) {
 					var chatHistoryItem = chatHistoryList[i]
 					togetherHTML += renderChatHistory(chatHistoryItem, meFaceImageCut)
@@ -110,12 +113,12 @@
 			function renderChatHistory(chatHistoryItem, meFaceImageCut) {
 				var data = {}
 				var msgTemplate
-				if (chatHistoryItem.flag == window.cacheChatHistory.cacheChatHistoryFlagType.contentForMe) {
+				if (chatHistoryItem.flag == window.cacheChatHistory.chatHistoryFlagType.contentForMe) {
 					msgTemplate = $('#msgRightTemplate').html()
 					data.avatarPrefix = window.TimConfig.serverImageUrl + window.TimConfig.avatarPrefix
 					data.faceImageCut = meFaceImageCut
 					data.msg = chatHistoryItem.content
-				} else if(chatHistoryItem.flag == window.cacheChatHistory.cacheChatHistoryFlagType.contentForSide) {
+				} else if(chatHistoryItem.flag == window.cacheChatHistory.chatHistoryFlagType.contentForSide) {
 					msgTemplate = $('#msgLeftTemplate').html()
 					data.avatarPrefix = window.TimConfig.serverImageUrl + window.TimConfig.avatarPrefix
 					data.faceImageCut = sideFaceImageCut

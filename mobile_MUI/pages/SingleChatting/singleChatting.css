@@ -69,15 +69,16 @@ body {
 
 .msg-wrapper.right p {
 	margin-left: 60px;
+	border: 1px solid #2E2A45;
 }
 
 .msg-wrapper.right p:before {
 	width: 0;
 	content: "";	
 	position: absolute;
-	top: 15px;
-	left: -12px;
-	border-color: transparent #160F2E;
+	top: 12px;
+	left: -8px;
+	border-color: transparent #2E2A45;
 	border-width: 8px 8px 8px 0px;
 	border-style: solid;
 }
@@ -105,7 +106,7 @@ body {
 	top: 15px;
 	right: -8px;
 	border-color: transparent #2E2A45;
-	border-width: 8px 0 8px 8px;
+	border-width: 8px 0px 8px 8px;
 }
 
 .cur_time {

@@ -8,7 +8,7 @@ class SingleChatHistory {
 }
 
 window.cacheChatHistory = {
-	cacheChatHistoryFlagType: {
+	chatHistoryFlagType: {
 		contentForMe: 1,	// 我发送的
 		contentForSide: 2	// 对方其他人发送的
 	},
@@ -19,15 +19,15 @@ window.cacheChatHistory = {
 	 * @param {Object} content
 	 * @param {Object} flag 本条消息是我还是朋友发送的, 1: 我, 2:对方
 	 */
-	cacheSetSingleChatHistory: function(meId, sideId, content, flag) {
+	setSingleChatHistory: function(meId, sideId, content, flag) {
 		var self = this
 		var singleChatKey = 'singleChat_' + meId + "-" + sideId
-		var singleChatHistoryList = self.cacheGetSingleChatHistory(meId, sideId)
+		var singleChatHistoryList = self.getSingleChatHistory(meId, sideId)
 		var singleChatHistory = new SingleChatHistory(meId, sideId, content, flag)
 		singleChatHistoryList.push(singleChatHistory)
 		plus.storage.setItem(singleChatKey, JSON.stringify(singleChatHistoryList))
 	},
-	cacheGetSingleChatHistory: function(meId, sideId) {
+	getSingleChatHistory: function(meId, sideId) {
 		var self = this
 		var singleChatKey = 'singleChat_' + meId + "-" + sideId
 		var singleChatHistoryListStr = plus.storage.getItem(singleChatKey)

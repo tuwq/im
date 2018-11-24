@@ -14,6 +14,7 @@
 		<script src="../../config/TimConfig.js"></script>
 		<script src="../../common/js/TimUtil.js"></script>
 		<script src="../../common/js/pinyinName.js"></script>
+		<script src="../../common/js/cacheContact.js"></script>
 		<script src="../../api/Find/find.js"></script>
 	</head>
 
@@ -108,7 +109,7 @@
 			}
 			
 			function renderContactListHTML() {
-				var myFriendList = window.TimUtil.getCacheContactList()
+				var myFriendList = window.cacheContact.getContactList()
 				for (var i = 0; i < myFriendList.length; i++) {
 					var friendItem = myFriendList[i]
 					var pinyinNickname = window.PinYinWords.convertPinyin(friendItem.nickname)
@@ -160,7 +161,7 @@
 					userId: user.id
 				}, function(data){
 					if (data.code == 200) {
-						window.TimUtil.setCacheContactList(data.result)
+						window.cacheContact.setContactList(data.result)
 						renderContactListHTML()
 						renderMUIContactList()
 					} else {

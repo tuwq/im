@@ -1,18 +1,15 @@
-.container .accept-single-request {
-	width: 100%;
-	overflow: hidden;
-}
-.accept-single-request .single-request-list {
+.container .request-list {
 	display: flex;
 	flex-direction: column;
 	margin-top: 10px;
+	width: 100%;
+	overflow: hidden;
 }
-.single-request-list .single-request-item {
+.request-list .single-request-item {
 	display: flex;
 	padding: 10px;
 	height: 80px;
 	align-items: center;
-	
 }
 .single-request-item .item-avatar {
 	width: 40px;

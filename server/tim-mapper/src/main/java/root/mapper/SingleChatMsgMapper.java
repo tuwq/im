@@ -24,4 +24,11 @@ public interface SingleChatMsgMapper {
      * @param integer
      */
 	void batchUpdateSignStatus(@Param("msgIdList") List<String> msgIdList,@Param("signFlag") Integer integer);
+	/**
+	 * 获取指定状态用户的签收消息
+	 * @param acceptUserId
+	 * @param statusCode
+	 * @return
+	 */
+	List<SingleChatMsg> getChatMsgListByStatus(@Param("acceptUserId") String acceptUserId,@Param("statusCode") Integer statusCode);
 }

@@ -42,24 +42,6 @@ window.TimUtil = {
 	removeCacheNowUserInfo: function() {
 		plus.storage.removeItem('nowUserInfo')
 	},
-	/**
-	 * 缓存通讯录列表
-	 * @param {Object} list
-	 */
-	setCacheContactList: function(list) {
-		var contactList = JSON.stringify(list)
-		plus.storage.setItem("contactList", contactList)
-	},
-	getCacheContactList: function() {
-		var contactListStr = plus.storage.getItem('contactList')
-		if (!this.isNotNull(contactListStr)) {
-			return []
-		}
-		return JSON.parse(contactListStr)
-	},
-	removeCacheContactList: function() {
-		plus.storage.removeItem('contactList')
-	},
 	isNotNull: function(str) {
 		if (str != null && str !='' && str != undefined) {
 			return true
