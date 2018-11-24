@@ -28,17 +28,21 @@ window.TimWebsocket = {
 			}
 			TimWebsocket.socket = new WebSocket(window.TimConfig.websocketServerUrl)
 			TimWebsocket.socket.onopen = function() {
-				console.log("连接建立成功...")
 				var user = window.TimUtil.getCacheNowUserInfo()
+				window.websocketUtil.oneOpenWebSocket(user.id)
 				setInterval(function(){
 					window.websocketUtil.keepALive()
-				}, 8000)
+				}, 30000)
+				console.log("连接建立成功...")
+				mui.toast("连接建立成功...")
 			}
 			TimWebsocket.socket.onclose = function() {
 				console.log("连接关闭")
+				mui.toast("连接关闭")
 			}
 			TimWebsocket.socket.onerror = function() {
 				console.log("发送错误")
+				mui.toast("发送错误")
 			}
 			TimWebsocket.socket.onmessage = function(e) {
 				let result = JSON.parse(e.data)

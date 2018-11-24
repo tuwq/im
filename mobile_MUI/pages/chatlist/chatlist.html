@@ -76,8 +76,10 @@
 					window.TimWebsocket.init()
 				}, 2000)*/
 				selfWebview.addEventListener('show', function() {
-					refreshAcceptRequest()
 					window.TimWebsocket.init()
+					refreshAcceptRequest()
+					getSingleNoReadChatMsg()
+					refreshSingleChatSnapshot()
 				})
 				mui('#chatSnapshot-list').on('tap', '.single-chatSnapshot-item', function(e) {
 					var sideId = this.getAttribute('sideId')
@@ -154,7 +156,7 @@
 					window.websocketUtil.sendSingleText(e.detail.senderId, e.detail.acceptId, e.detail.content, null)
 					refreshSingleChatSnapshot()
 				})
-				window.websocketUtil.subscribe(window.websocketResultContant.AcceptSingleChatMsg,function(result, accepetChatContent){
+				window.websocketUtil.subscribe(window.websocketResultContant.AcceptSingleChatMsg,function(result, accepetChatContent){				
 					var senderId = accepetChatContent.senderId
 					var acceptId = accepetChatContent.acceptId
 					var content = accepetChatContent.content

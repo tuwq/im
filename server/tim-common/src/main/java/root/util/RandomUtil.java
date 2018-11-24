@@ -11,7 +11,7 @@ public class RandomUtil {
 	}
 	
 	public static String getQQNumber() {
-		int number = (int)((Math.random()*9+1)*10000000);
+		int number = (int)((Math.random()*9+1)*100000000);
 		return Integer.toString(number);
 	}
 	

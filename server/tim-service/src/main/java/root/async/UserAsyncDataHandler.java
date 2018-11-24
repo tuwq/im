@@ -7,7 +7,6 @@ import javax.annotation.Resource;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion.User;
 
 import root.configConstant.TimConfigProperties;
 import root.constant.ResultCode;

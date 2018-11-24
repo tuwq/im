@@ -1,130 +1,130 @@
 {
-	"index.html": {
-		"resources": [
-			"pages/chatlist/chatlist.html",
-			"pages/Chatlist/chatlist.html",
-			"download/font_icon/iconfont.css"
-		],
-		"refer": [
-			"pages/contact/contact.html",
-			"pages/me/me.html",
-			"pages/chatlist/chatlist.html",
-			"pages/Contact/contact.html",
-			"pages/Me/me.html",
-			"pages/Chatlist/chatlist.html",
-			"pages/Login/login.html"
-		]
-	},
-	"pages/Login/login.html": {
-		"refer": [
-			"pages/Login/login.html",
-			"index.html",
-			"pages/Register/register.html",
-			"pages/RegisterPhone/registerPhone.html"
-		],
-		"resources": []
-	},
-	"pages/Register/register.html": {
-		"refer": [
-			"pages/Register/register.html",
-			"pages/RegisterValidate/registerValidate.html"
-		],
-		"resources": []
-	},
-	"pages/ValidateCode/validateCode.html": {
-		"refer": [
-			"pages/ValidateCode/validateCode.html"
-		],
-		"resources": []
-	},
-	"pages/RegisterData/RegisterData.html": {
-		"refer": [
-			"pages/RegisterData/RegisterData.html"
-		],
-		"resources": []
-	},
-	"pages/RegisterValidate/RegisterValidate.html": {
-		"refer": [
-			"pages/RegisterValidate/RegisterValidate.html"
-		],
-		"resources": []
-	},
-	"pages/Me/me.html": {
-		"refer": [
-			"pages/UpdateAvatar/updateAvatar.html",
-			"pages/Register/register.html",
-			"pages/OperateAvatar/operateAvatar.html",
-			"pages/Login/login.html",
-			"pages/EditMeInfo/editMeInfo.html",
-			"pages/MeQrCode/meQrCode.html"
-		],
-		"resources": [
-			"js/mui.min.js",
-			"common/css/header.css",
-			"css/mui.min.css",
-			"common/js/TimUtil.js",
-			"config/TimConfig.js",
-			"image/default.jpg",
-			"image/qrcode.png",
-			"pages/Me/me.css"
-		]
-	},
-	"pages/OperateAvatar/operateAvatar.html": {
-		"refer": [
-			"pages/CutAvatar/cutAvatar.html"
-		]
-	},
-	"pages/RegisterValidate/registerValidate.html": {
-		"refer": [
-			"pages/RegisterValidate/registerValidate.html",
-			"pages/RegisterData/registerData.html"
-		]
-	},
-	"pages/RegisterData/registerData.html": {
-		"refer": [
-			"index.html"
-		]
-	},
-	"pages/RegisterPhone/registerPhone.html": {
-		"refer": [
-			"pages/RegisterValidate/registerValidate.html"
-		]
-	},
-	"pages/Chatlist/chatlist.html": {
-		"refer": [
-			"pages/AddFriend/addFriend.html",
-			"pages/Saoyisao/saoyisao.html",
-			"pages/SingleChatting/singleChatting.html"
-		]
-	},
-	"pages/AddFriend/addFriend.html": {
-		"refer": [
-			"pages/FindSingleResult/findSingleResult.html"
-		]
-	},
-	"pages/FindSingleResult/findSingleResult.html": {
-		"refer": [
-			"pages/NoMeFriendInfo/noMeFriendInfo.html"
-		]
-	},
-	"pages/NoMeFriendInfo/noMeFriendInfo.html": {
-		"refer": [
-			"pages/ImageResult/imageResult.html"
-		]
-	},
-	"pages/MeQrCode/meQrCode.html": {
-		"refer": [
-			"pages/Saoyisao/saoyisao.html"
-		]
-	},
-	"pages/Saoyisao/saoyisao.html": {
-		"refer": [
-			"pages/NoMeFriendInfo/noMeFriendInfo.html"
-		]
-	},
-	"pages/Contact/contact.html": {
-		"refer": [
-			"pages/SingleChatting/singleChatting.html"
-		]
-	}
+  "index.html": {
+    "resources": [
+      "pages/chatlist/chatlist.html",
+      "pages/Chatlist/chatlist.html",
+      "download/font_icon/iconfont.css"
+    ],
+    "refer": [
+      "pages/contact/contact.html",
+      "pages/me/me.html",
+      "pages/chatlist/chatlist.html",
+      "pages/Contact/contact.html",
+      "pages/Me/me.html",
+      "pages/Chatlist/chatlist.html",
+      "pages/Login/login.html"
+    ]
+  },
+  "pages/Login/login.html": {
+    "refer": [
+      "pages/Login/login.html",
+      "index.html",
+      "pages/Register/register.html",
+      "pages/RegisterPhone/registerPhone.html"
+    ],
+    "resources": []
+  },
+  "pages/Register/register.html": {
+    "refer": [
+      "pages/Register/register.html",
+      "pages/RegisterValidate/registerValidate.html"
+    ],
+    "resources": []
+  },
+  "pages/ValidateCode/validateCode.html": {
+    "refer": [
+      "pages/ValidateCode/validateCode.html"
+    ],
+    "resources": []
+  },
+  "pages/RegisterData/RegisterData.html": {
+    "refer": [
+      "pages/RegisterData/RegisterData.html"
+    ],
+    "resources": []
+  },
+  "pages/RegisterValidate/RegisterValidate.html": {
+    "refer": [
+      "pages/RegisterValidate/RegisterValidate.html"
+    ],
+    "resources": []
+  },
+  "pages/Me/me.html": {
+    "refer": [
+      "pages/UpdateAvatar/updateAvatar.html",
+      "pages/Register/register.html",
+      "pages/OperateAvatar/operateAvatar.html",
+      "pages/Login/login.html",
+      "pages/EditMeInfo/editMeInfo.html",
+      "pages/MeQrCode/meQrCode.html"
+    ],
+    "resources": [
+      "js/mui.min.js",
+      "common/css/header.css",
+      "css/mui.min.css",
+      "common/js/TimUtil.js",
+      "config/TimConfig.js",
+      "image/default.jpg",
+      "image/qrcode.png",
+      "pages/Me/me.css"
+    ]
+  },
+  "pages/OperateAvatar/operateAvatar.html": {
+    "refer": [
+      "pages/CutAvatar/cutAvatar.html"
+    ]
+  },
+  "pages/RegisterValidate/registerValidate.html": {
+    "refer": [
+      "pages/RegisterValidate/registerValidate.html",
+      "pages/RegisterData/registerData.html"
+    ]
+  },
+  "pages/RegisterData/registerData.html": {
+    "refer": [
+      "index.html"
+    ]
+  },
+  "pages/RegisterPhone/registerPhone.html": {
+    "refer": [
+      "pages/RegisterValidate/registerValidate.html"
+    ]
+  },
+  "pages/Chatlist/chatlist.html": {
+    "refer": [
+      "pages/AddFriend/addFriend.html",
+      "pages/Saoyisao/saoyisao.html",
+      "pages/SingleChatting/singleChatting.html"
+    ]
+  },
+  "pages/AddFriend/addFriend.html": {
+    "refer": [
+      "pages/FindSingleResult/findSingleResult.html"
+    ]
+  },
+  "pages/FindSingleResult/findSingleResult.html": {
+    "refer": [
+      "pages/NoMeFriendInfo/noMeFriendInfo.html"
+    ]
+  },
+  "pages/NoMeFriendInfo/noMeFriendInfo.html": {
+    "refer": [
+      "pages/ImageResult/imageResult.html"
+    ]
+  },
+  "pages/MeQrCode/meQrCode.html": {
+    "refer": [
+      "pages/Saoyisao/saoyisao.html"
+    ]
+  },
+  "pages/Saoyisao/saoyisao.html": {
+    "refer": [
+      "pages/NoMeFriendInfo/noMeFriendInfo.html"
+    ]
+  },
+  "pages/Contact/contact.html": {
+    "refer": [
+      "pages/SingleChatting/singleChatting.html"
+    ]
+  }
 }
