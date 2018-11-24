@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80011
 File Encoding         : 65001
 
-Date: 2018-11-19 16:51:38
+Date: 2018-11-24 15:32:16
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -29,14 +29,14 @@ CREATE TABLE `groups` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for group_chat_msg
+-- Table structure for group_chat_content
 -- ----------------------------
-DROP TABLE IF EXISTS `group_chat_msg`;
-CREATE TABLE `group_chat_msg` (
+DROP TABLE IF EXISTS `group_chat_content`;
+CREATE TABLE `group_chat_content` (
   `id` varchar(50) NOT NULL COMMENT '组消息id',
   `send_user_id` varchar(50) NOT NULL COMMENT '发送者id',
   `accept_group_id` varchar(50) NOT NULL COMMENT '接收组id',
-  `msg` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '消息内容',
+  `content` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '消息内容',
   `sign_flag` int(11) NOT NULL COMMENT '是否签收',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
@@ -68,15 +68,15 @@ CREATE TABLE `group_users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for single_chat_msg
+-- Table structure for single_chat_content
 -- ----------------------------
-DROP TABLE IF EXISTS `single_chat_msg`;
-CREATE TABLE `single_chat_msg` (
+DROP TABLE IF EXISTS `single_chat_content`;
+CREATE TABLE `single_chat_content` (
   `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '私人信息id',
   `send_user_id` varchar(50) NOT NULL COMMENT '发送者id',
   `accept_user_id` varchar(50) NOT NULL COMMENT '接收者id',
-  `msg` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '消息内容',
-  `sign_flag` int(11) NOT NULL COMMENT '是否签收',
+  `content` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '消息内容',
+  `sign_flag` int(11) NOT NULL COMMENT '是否签收,0:未签收,1:已签收',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
