@@ -3,41 +3,63 @@
 <mapper namespace="root.mapper.GroupsMapper" >
   <resultMap id="BaseResultMap" type="root.model.Groups" >
     <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="group_number" property="groupNumber" jdbcType="VARCHAR" />
+    <result column="group_faceImage_big" property="groupFaceimageBig" jdbcType="VARCHAR" />
     <result column="group_name" property="groupName" jdbcType="VARCHAR" />
     <result column="group_description" property="groupDescription" jdbcType="VARCHAR" />
+    <result column="qrCode" property="qrcode" jdbcType="VARCHAR" />
     <result column="users_num" property="usersNum" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, group_name, group_description, users_num, create_time
+    id, group_number, group_faceImage_big, group_name, group_description, qrCode, users_num, 
+    create_time
   </sql>
+  
+   <select id="countByGroupNumber" parameterType="map" resultType="int">
+    SELECT count(1)
+  	FROM `groups`
+  	WHERE group_number = #{groupNumber}
+  </select>
+  
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
-    from groups
+    from `groups`
     where id = #{id,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
-    delete from groups
+    delete from `groups`
     where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="root.model.Groups" >
-    insert into groups (id, group_name, group_description, 
+    insert into `groups` (id, group_number, group_faceImage_big, 
+      group_name, group_description, qrCode, 
       users_num, create_time)
-    values (#{id,jdbcType=VARCHAR}, #{groupName,jdbcType=VARCHAR}, #{groupDescription,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{groupNumber,jdbcType=VARCHAR}, #{groupFaceimageBig,jdbcType=VARCHAR}, 
+      #{groupName,jdbcType=VARCHAR}, #{groupDescription,jdbcType=VARCHAR}, #{qrcode,jdbcType=VARCHAR}, 
       #{usersNum,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="root.model.Groups" >
-    insert into groups
+    insert into `groups`
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
+      </if>
+      <if test="groupNumber != null" >
+        group_number,
+      </if>
+      <if test="groupFaceimageBig != null" >
+        group_faceImage_big,
       </if>
       <if test="groupName != null" >
         group_name,
       </if>
       <if test="groupDescription != null" >
         group_description,
+      </if>
+      <if test="qrcode != null" >
+        qrCode,
       </if>
       <if test="usersNum != null" >
         users_num,
@@ -50,11 +72,20 @@
       <if test="id != null" >
         #{id,jdbcType=VARCHAR},
       </if>
+      <if test="groupNumber != null" >
+        #{groupNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="groupFaceimageBig != null" >
+        #{groupFaceimageBig,jdbcType=VARCHAR},
+      </if>
       <if test="groupName != null" >
         #{groupName,jdbcType=VARCHAR},
       </if>
       <if test="groupDescription != null" >
         #{groupDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="qrcode != null" >
+        #{qrcode,jdbcType=VARCHAR},
       </if>
       <if test="usersNum != null" >
         #{usersNum,jdbcType=INTEGER},
@@ -65,13 +96,22 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="root.model.Groups" >
-    update groups
+    update `groups`
     <set >
+      <if test="groupNumber != null" >
+        group_number = #{groupNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="groupFaceimageBig != null" >
+        group_faceImage_big = #{groupFaceimageBig,jdbcType=VARCHAR},
+      </if>
       <if test="groupName != null" >
         group_name = #{groupName,jdbcType=VARCHAR},
       </if>
       <if test="groupDescription != null" >
         group_description = #{groupDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="qrcode != null" >
+        qrCode = #{qrcode,jdbcType=VARCHAR},
       </if>
       <if test="usersNum != null" >
         users_num = #{usersNum,jdbcType=INTEGER},
@@ -83,9 +123,12 @@
     where id = #{id,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="root.model.Groups" >
-    update groups
-    set group_name = #{groupName,jdbcType=VARCHAR},
+    update `groups`
+    set group_number = #{groupNumber,jdbcType=VARCHAR},
+      group_faceImage_big = #{groupFaceimageBig,jdbcType=VARCHAR},
+      group_name = #{groupName,jdbcType=VARCHAR},
       group_description = #{groupDescription,jdbcType=VARCHAR},
+      qrCode = #{qrcode,jdbcType=VARCHAR},
       users_num = #{usersNum,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}

@@ -79,5 +79,32 @@ public class QiNiuService {
 		}
 		return null;
 	}
+
+	/**
+	 * 上传群聊头像
+	 * @param uploadData
+	 * @param fileName
+	 */
+	public String groupAvatarForByte(byte[] uploadBytes, String fileName) {
+		String key = timConfigProperties.getQiniu().getGroupAvatarPrefix() + fileName;
+		Auth auth = Auth.create(timConfigProperties.getQiniu().getAcKey(), timConfigProperties.getQiniu().getSeKey());
+		long expireSeconds = 3600;
+		String upToken = auth.uploadToken(timConfigProperties.getQiniu().getImgBucket(), key, expireSeconds, new StringMap().put("insertOnly",0));
+		try {
+		    Response response = uploadManager.put(uploadBytes, key, upToken);
+		    //解析上传成功的结果
+		    DefaultPutRet putRet = new Gson().fromJson(response.bodyString(), DefaultPutRet.class);
+		    return putRet.key;
+		} catch (QiniuException ex) {
+		    Response r = ex.response;
+		    System.err.println(r.toString());
+		    try {
+		        System.err.println(r.bodyString());
+		    } catch (QiniuException ex2) {
+		    	throw new FileUploadException(ResultCode.FILE_UPLOAD_FAIL,"上传文件至七牛云失败");
+		    }
+		}
+		return null;
+	}
 	
 }

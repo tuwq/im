@@ -1,5 +1,7 @@
 package root.mapper;
 
+import org.apache.ibatis.annotations.Param;
+
 import root.model.Groups;
 
 public interface GroupsMapper {
@@ -14,4 +16,10 @@ public interface GroupsMapper {
     int updateByPrimaryKeySelective(Groups record);
 
     int updateByPrimaryKey(Groups record);
+    /**
+     * 获取唯一群号(同QQ号)
+     * @param qqNumber
+     * @return
+     */
+	int countByGroupNumber(@Param("groupNumber") String groupNumber);
 }

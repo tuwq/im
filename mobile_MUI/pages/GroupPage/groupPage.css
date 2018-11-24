@@ -1,0 +1,15 @@
+li {
+	list-style: none;
+}
+.cell-item a {
+	font-size: 18px;
+}
+.iconfont {
+	margin-right: 10px;
+}
+.mui-popover {
+	width: 140px;	
+}
+.mui-popover-arrow {
+	left: 110px !important;
+}

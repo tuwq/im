@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80011
 File Encoding         : 65001
 
-Date: 2018-11-24 15:32:16
+Date: 2018-11-24 20:37:31
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -21,8 +21,11 @@ SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `groups`;
 CREATE TABLE `groups` (
   `id` varchar(50) NOT NULL COMMENT '组id',
+  `group_number` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '群号',
+  `group_faceImage_big` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '群头像',
   `group_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '组名称',
   `group_description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '组描述',
+  `qrCode` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '群的二维码',
   `users_num` int(11) NOT NULL DEFAULT '0' COMMENT '组的用户数量',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`)
@@ -76,7 +79,7 @@ CREATE TABLE `single_chat_content` (
   `send_user_id` varchar(50) NOT NULL COMMENT '发送者id',
   `accept_user_id` varchar(50) NOT NULL COMMENT '接收者id',
   `content` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '消息内容',
-  `sign_flag` int(11) NOT NULL COMMENT '是否签收,0:未签收,1:已签收',
+  `sign_flag` int(11) NOT NULL COMMENT '对方是否签收,0:未签收,1:已签收',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

@@ -1,0 +1,51 @@
+.container {
+	margin-top: 44px;
+}
+.top {
+	height: 200px;
+	width: 100%;
+	padding: 10px;
+	overflow: hidden;
+	margin-bottom: 20px;
+	position: relative;
+}
+.top .info-avatar-back{
+	height: 100%;
+	width: 100%;
+	background-repeat:no-repeat;
+	background-size:cover;
+	background-position: center;
+	background-image: url(../../image/db4feeaded993080b5ef03cf3121f42b.jpg);
+	left:0;
+	top:0;
+}
+.bottom .info-list {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+.info-list .info-item {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding-left: 10px;
+	margin-bottom: 10px;
+}
+.item-desc {
+	font-size: 15px;
+	color: #999;	
+}
+.item-value {
+	color: #000;
+}
+.container .joinGroup {
+	width: 100%;
+	position: absolute;
+	bottom: 0;
+}
+.joinGroup .confirm-add {
+	width: 100%;
+	height: 50px;
+	color: #fff;
+	background-color: #007BFF;
+}

@@ -11,4 +11,5 @@ public class QiNiuProperties {
 	private String imgBucket;
 	private String avatarPrefix;
 	private String qrCodePrefix;
+	private String groupAvatarPrefix;
 }

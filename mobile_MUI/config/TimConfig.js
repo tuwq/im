@@ -15,6 +15,11 @@ window.TimConfig = {
 			title: '消息'
 		},
 		{
+			pageId: 'groupPage.html',
+			pageUrl: "pages/GroupPage/groupPage.html",
+			title: '群聊'
+		},
+		{
 			pageId: "contact.html",
 			pageUrl: "pages/Contact/contact.html",
 			title: '通讯录'

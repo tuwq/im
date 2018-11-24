@@ -12,7 +12,8 @@
       "pages/Contact/contact.html",
       "pages/Me/me.html",
       "pages/Chatlist/chatlist.html",
-      "pages/Login/login.html"
+      "pages/Login/login.html",
+      "pages/GroupPage/groupPage.html"
     ]
   },
   "pages/Login/login.html": {

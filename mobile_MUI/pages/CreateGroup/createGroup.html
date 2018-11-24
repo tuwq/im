@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="createGroup.css"/>
+		<link rel="stylesheet" type="text/css" href="../../common/css/header.css"/>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../config/TimConfig.js"></script>
+		<script src="../../common/js/TimUtil.js"></script>
+		<script src="../../api/Group/group.js"></script>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav title-header">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left title-color title-size-left">返回</a>
+		    <h1 class="mui-title title-color">创建群</h1>
+		</header>
+		<div class="mui-content">
+			<form class="createGroup-form" onsubmit="return false;">
+				<div class="form-group">
+					<div class="form-control">
+						<img id="editGroupFaceImageBig" src="../../image/db4feeaded993080b5ef03cf3121f42b.jpg" alt="" width="200" height="200"/>
+					</div>
+					<div class="form-control">
+						 <input id="groupName-input" type="text" class="register-input" placeholder="群名称">
+					</div>
+					<div class="form-control">
+						 <input id="groupDescription-input" type="text" class="register-input" placeholder="群描述">
+					</div>
+					<div class="form-control">
+						 <button id="create-confirm" class="input-button">确认创建</button>
+					</div>
+				</div>
+			</form>
+		</div>
+		<script type="text/javascript">
+			/**
+			 * 绑定更换图片与创建按钮
+			 */
+			mui.init()
+			mui.plusReady(function(){
+				var groupNameDOM = document.getElementById('groupName-input')
+				var groupDescriptionDOM = document.getElementById('groupDescription-input')
+				var editGroupFaceDOM = document.getElementById('editGroupFaceImageBig')
+				document.getElementById('editGroupFaceImageBig').addEventListener('tap', function(){
+					plus.gallery.pick(function(path){
+						editGroupFaceDOM.src = path
+					})
+				})
+				document.getElementById('create-confirm').addEventListener('tap', function(){
+					var btnArray = ['否', '是'];
+					mui.confirm('确认创建，确认？', '创建群聊', btnArray, function(e) {
+						if (e.index == 1) {
+							var base64FaceImageBig = getBase64Image(editGroupFaceDOM)
+							var groupName = groupNameDOM.value
+							var groupDescription = groupDescriptionDOM.value
+							plus.nativeUI.showWaiting( "创建中..." );
+							window.GroupApi.createGroupApi({
+								groupFaceImageBig: base64FaceImageBig,
+								groupName, groupDescription
+							}, function(data){
+								plus.nativeUI.closeWaiting()
+								if (data.code == 200) {
+									window.TimUtil.showToast('创建群聊成功', 'success')
+								} else {
+									window.TimUtil.showToast(data.msg, 'error')
+								}
+							})
+						}
+					})
+				})
+			})
+			function getBase64Image(img) {
+				var canvas = document.createElement("canvas")
+				canvas.width = img.width
+				canvas.height = img.height
+				var ctx = canvas.getContext("2d")
+				ctx.drawImage(img, 0, 0, img.width, img.height)
+				var ext = img.src.substring(img.src.lastIndexOf(".") + 1).toLowerCase()
+				var dataURL = canvas.toDataURL("image/" + ext)
+				return dataURL
+			}
+		</script>
+	</body>
+
+</html>

@@ -5,9 +5,15 @@ import java.util.Date;
 public class Groups {
     private String id;
 
+    private String groupNumber;
+
+    private String groupFaceimageBig;
+
     private String groupName;
 
     private String groupDescription;
+
+    private String qrcode;
 
     private Integer usersNum;
 
@@ -19,6 +25,22 @@ public class Groups {
 
     public void setId(String id) {
         this.id = id == null ? null : id.trim();
+    }
+
+    public String getGroupNumber() {
+        return groupNumber;
+    }
+
+    public void setGroupNumber(String groupNumber) {
+        this.groupNumber = groupNumber == null ? null : groupNumber.trim();
+    }
+
+    public String getGroupFaceimageBig() {
+        return groupFaceimageBig;
+    }
+
+    public void setGroupFaceimageBig(String groupFaceimageBig) {
+        this.groupFaceimageBig = groupFaceimageBig == null ? null : groupFaceimageBig.trim();
     }
 
     public String getGroupName() {
@@ -35,6 +57,14 @@ public class Groups {
 
     public void setGroupDescription(String groupDescription) {
         this.groupDescription = groupDescription == null ? null : groupDescription.trim();
+    }
+
+    public String getQrcode() {
+        return qrcode;
+    }
+
+    public void setQrcode(String qrcode) {
+        this.qrcode = qrcode == null ? null : qrcode.trim();
     }
 
     public Integer getUsersNum() {
