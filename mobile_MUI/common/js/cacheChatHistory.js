@@ -39,6 +39,10 @@ window.cacheChatHistory = {
 		}
 		return singleChatHistoryList
 	},
+	deleteSingleChatHistory: function(meId, sideId) {
+		var singleChatKey = 'singleChat_' + meId + "-" + sideId
+		plus.storage.removeItem(singleChatKey)
+	},
 	isNotNull: function(str) {
 		if (str != null && str !='' && str != undefined) {
 			return true

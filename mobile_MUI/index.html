@@ -60,6 +60,12 @@
 			})
 		})
 		function netChangeSwitch() {
+			var connectionStatus = plus.networkinfo.getCurrentType()
+			if (connectionStatus != 0 && connectionStatus != 1) {
+				
+			} else {
+				window.TimUtil.showToast('当前网络状态不可用', 'error')
+			}
 			document.addEventListener('netchange', function(e){
 				var connectionStatus = plus.networkinfo.getCurrentType()
 				if (connectionStatus != 0 && connectionStatus != 1) {

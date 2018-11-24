@@ -1,8 +1,8 @@
 root\mapper\GroupUsersMapper.class
-root\mapper\GroupChatMsgMapper.class
+root\mapper\SingleChatContentMapper.class
 root\mapper\UsersMapper.class
 root\mapper\GroupsMapper.class
 root\mapper\GroupRequestMapper.class
 root\mapper\SingleRequestMapper.class
 root\mapper\SingleUsersMapper.class
-root\mapper\SingleChatMsgMapper.class
+root\mapper\GroupChatContentMapper.class

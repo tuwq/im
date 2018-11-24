@@ -2,4 +2,7 @@ root\async\UserAsyncDataHandler.class
 root\service\SingleRequestService.class
 root\service\UserService.class
 root\service\FindSingleService.class
+root\async\PushNewPullDataHandler.class
+root\service\SingChatContentService.class
 root\pluginService\QiNiuService.class
+root\service\LoginService.class

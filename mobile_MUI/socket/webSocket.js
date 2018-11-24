@@ -30,7 +30,9 @@ window.TimWebsocket = {
 			TimWebsocket.socket.onopen = function() {
 				console.log("连接建立成功...")
 				var user = window.TimUtil.getCacheNowUserInfo()
-				window.websocketUtil.oneOpenWebSocket(user.id)
+				setInterval(function(){
+					window.websocketUtil.keepALive()
+				}, 8000)
 			}
 			TimWebsocket.socket.onclose = function() {
 				console.log("连接关闭")
@@ -81,13 +83,16 @@ window.websocketUtil = {
 		textType: 'text',
 		byteType: 'byte'
 	},
-	sendSingleText: function(senderId, acceptId, content, extendFields) {
-		let accepetChatContent = new AccepetChatContent(senderId,acceptId,content,null,window.websocketUtil.acceptTypeEnums.textType,null)
-		window.websocketUtil.emit(window.websocketRequestContant.SingleChatSendMsg, accepetChatContent, extendFields)
-	},
 	oneOpenWebSocket: function(senderId, extendFields) {
 		let accepetChatContent = new AccepetChatContent(senderId, null, null, null, window.websocketUtil.acceptTypeEnums.textType, null)
 		window.websocketUtil.emit(window.websocketRequestContant.OpenWebsocket, accepetChatContent, extendFields)
+	},
+	keepALive: function() {
+		window.websocketUtil.emit(window.websocketRequestContant.KeepALive, null, null)
+	},
+	sendSingleText: function(senderId, acceptId, content, extendFields) {
+		let accepetChatContent = new AccepetChatContent(senderId,acceptId,content,null,window.websocketUtil.acceptTypeEnums.textType,null)
+		window.websocketUtil.emit(window.websocketRequestContant.SingleChatSendMsg, accepetChatContent, extendFields)
 	},
 	singleSigningMsg: function(content, extendFields) {
 		let accepetChatContent = new AccepetChatContent(null, null, content, null, window.websocketUtil.acceptTypeEnums.textType, null)

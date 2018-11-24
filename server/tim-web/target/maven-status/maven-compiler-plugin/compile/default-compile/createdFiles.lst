@@ -1,5 +1,10 @@
+root\controller\LoginController.class
 root\WebMvcConfig.class
 META-INF\spring-configuration-metadata.json
+root\controller\UserController.class
 root\advice\ExceptionAdvice.class
+root\controller\FindSingleController.class
+root\controller\SingChatMsgController.class
 root\TimApplication.class
+root\controller\SingleRequestController.class
 root\DruidConfig.class

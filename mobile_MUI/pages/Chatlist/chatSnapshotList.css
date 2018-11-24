@@ -7,9 +7,9 @@
 }
 .chatSnapshot-list .single-chatSnapshot-item {
 	display: flex;
-	padding: 10px;
-	height: 80px;
+	width: 100%;
 	align-items: center;
+	position: relative;
 }
 .single-chatSnapshot-item .item-avatar {
 	width: 40px;
@@ -38,6 +38,13 @@
     white-space: nowrap;
     overflow: hidden;
     max-width: 200px;
+}
+.single-chatSnapshot-item .item-body {
+	display: flex;
+	flex: 1;
+	padding: 10px;
+	height: 80px;
+	align-items: center;
 }
 .single-chatSnapshot-item .newMsg-tip {
 	height: 20px;

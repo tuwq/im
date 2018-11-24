@@ -61,6 +61,7 @@
 			 * ! 接收新的好友请求刷新请求列表
 			 * ！  缓存本地聊天记录和快照记录
 			 * ! 通讯录缓存中获得好友信息
+			 * ！  删除本地记录
 			 */
 			mui.init()
 			mui.plusReady(function(){
@@ -71,7 +72,9 @@
 				refreshAcceptRequest()
 				getSingleNoReadChatMsg()
 				refreshSingleChatSnapshot()
-				window.TimWebsocket.init()
+				/*setInterval(function(){
+					window.TimWebsocket.init()
+				}, 2000)*/
 				selfWebview.addEventListener('show', function() {
 					refreshAcceptRequest()
 					window.TimWebsocket.init()
@@ -92,6 +95,13 @@
 					})
 					window.cacheChatSnapshot.updateReadSingleChatSnapshot(user.id, sideId)
 					refreshSingleChatSnapshot()
+				})
+				mui('#chatSnapshot-list').on('tap', '.deleteSingleChatRecordingButton', function(e) {
+					var meId = user.id
+					var sideId = this.getAttribute('sideId')
+					window.cacheChatHistory.deleteSingleChatHistory(meId, sideId)
+					window.cacheChatSnapshot.deleteSingleChatSnapshot(meId, sideId)
+					document.getElementById('chatSnapshot-list').removeChild(this.parentNode.parentNode)
 				})
 				mui('#request-list').on('tap', '.agree-button', function(e){
 					var sendUserId = this.getAttribute('data-id')
@@ -179,11 +189,11 @@
 						for (var i = 0; i < noReadSingleChatMsgList.length; i++) {
 							var noReadSingleChatMsgItem = noReadSingleChatMsgList[i]
 							window.cacheChatHistory.setSingleChatHistory(noReadSingleChatMsgItem.acceptUserId, 
-								noReadSingleChatMsgItem.sendUserId, noReadSingleChatMsgItem.msg, 
+								noReadSingleChatMsgItem.sendUserId, noReadSingleChatMsgItem.content, 
 								window.cacheChatHistory.chatHistoryFlagType.contentForSide
 							)
 							window.cacheChatSnapshot.setSingleChatSnapshot(noReadSingleChatMsgItem.acceptUserId, 
-								noReadSingleChatMsgItem.sendUserId, noReadSingleChatMsgItem.msg, 
+								noReadSingleChatMsgItem.sendUserId, noReadSingleChatMsgItem.content, 
 								window.cacheChatSnapshot.chatSnapshotReadType.NoRead
 							)
 							singleChatMsgIds += noReadSingleChatMsgItem.id
@@ -265,16 +275,18 @@
 		<script type="text/template" id="singleChatSnapshotTemplate">
 		    <div class="single-chatSnapshot-item" sideId="{{userItem.userId}}" userNickname="{{userItem.nickname}}" 
 		    		userFaceImageCut="{{userItem.faceImageCut}}">
-				<div class="item-avatar">
-					<img src="{{avatarUrlPrefix}}{{userItem.faceImageCut}}" alt="" />
-				</div>
-				<div class="item-info">
-					<div class="item-info-nickname">{{userItem.nickname}}</div>
-					<div class="item-info-content">{{singleChatSnapshotItem.content}}</div>
-				</div>
-				{{#unless  singleChatSnapshotItem.isRead}}
-					<span class="newMsg-tip">...</span>
-				{{/unless }}
+		    	<div class="item-body mui-slider-handle">
+		    		<div class="item-avatar">
+						<img src="{{avatarUrlPrefix}}{{userItem.faceImageCut}}" alt="" />
+					</div>
+					<div class="item-info mui-slider-handle">
+						<div class="item-info-nickname">{{userItem.nickname}}</div>
+						<div class="item-info-content">{{singleChatSnapshotItem.content}}</div>
+					</div>
+					{{#unless  singleChatSnapshotItem.isRead}}
+						<span class="mui-badge mui-badge-red">...</span>
+					{{/unless }}
+		    	</div>
 			</div>
 		</script>
 	</body>

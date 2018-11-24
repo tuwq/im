@@ -1,14 +1,14 @@
 D:\eclipse-workspace\tim\tim-model\src\main\java\root\model\GroupRequest.java
 D:\eclipse-workspace\tim\tim-model\src\main\java\root\model\GroupUsers.java
-D:\eclipse-workspace\tim\tim-model\src\main\java\root\model\GroupChatMsg.java
 D:\eclipse-workspace\tim\tim-model\src\main\java\root\model\Groups.java
 D:\eclipse-workspace\tim\tim-model\src\main\java\root\param\LoginParam.java
 D:\eclipse-workspace\tim\tim-model\src\main\java\root\model\Users.java
 D:\eclipse-workspace\tim\tim-model\src\main\java\root\param\UploadAvatarBaseParam.java
-D:\eclipse-workspace\tim\tim-model\src\main\java\root\model\SingleChatMsg.java
 D:\eclipse-workspace\tim\tim-model\src\main\java\root\model\SingleUsers.java
 D:\eclipse-workspace\tim\tim-model\src\main\java\root\dto\MyFriendUserDto.java
+D:\eclipse-workspace\tim\tim-model\src\main\java\root\model\GroupChatContent.java
 D:\eclipse-workspace\tim\tim-model\src\main\java\root\dto\RequestSingleUserDto.java
+D:\eclipse-workspace\tim\tim-model\src\main\java\root\model\SingleChatContent.java
 D:\eclipse-workspace\tim\tim-model\src\main\java\root\param\AcceptSingleRequestParam.java
 D:\eclipse-workspace\tim\tim-model\src\main\java\root\param\ValidateParam.java
 D:\eclipse-workspace\tim\tim-model\src\main\java\root\param\EditMeInfoParam.java

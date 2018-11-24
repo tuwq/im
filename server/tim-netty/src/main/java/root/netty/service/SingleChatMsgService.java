@@ -8,8 +8,8 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import root.enums.ChatMsgStatusEnum;
-import root.mapper.SingleChatMsgMapper;
-import root.model.SingleChatMsg;
+import root.mapper.SingleChatContentMapper;
+import root.model.SingleChatContent;
 import root.netty.dto.AccepetChatContent;
 import root.util.RandomUtil;
 
@@ -17,7 +17,7 @@ import root.util.RandomUtil;
 public class SingleChatMsgService {
 
 	@Resource
-	private SingleChatMsgMapper singleChatMsgMapper;
+	private SingleChatContentMapper singleChatContentMapper;
 	
 	/**
 	 * 保存私聊消息
@@ -26,13 +26,13 @@ public class SingleChatMsgService {
 	 */
 	public String saveSingleChatMsg(AccepetChatContent accepetChatContent) {
 		String uuid = RandomUtil.getUUID();
-		SingleChatMsg singleChatMsg = SingleChatMsg.builder().id(uuid)
+		SingleChatContent singleChatContent = SingleChatContent.builder().id(uuid)
 			.sendUserId(accepetChatContent.getSenderId())
 			.acceptUserId(accepetChatContent.getAcceptId())
-			.msg(accepetChatContent.getContent())
+			.content(accepetChatContent.getContent())
 			.signFlag(ChatMsgStatusEnum.NOSIGN.getStatusCode()).createTime(new Date())
 			.build();
-		singleChatMsgMapper.insertSelective(singleChatMsg);
+		singleChatContentMapper.insertSelective(singleChatContent);
 		return uuid;
 	}
 
@@ -41,6 +41,6 @@ public class SingleChatMsgService {
 	 * @param msgIdList
 	 */
 	public void batchUpdateSignStatus(List<String> msgIdList) {
-		singleChatMsgMapper.batchUpdateSignStatus(msgIdList, ChatMsgStatusEnum.YESSIGN.getStatusCode());
+		singleChatContentMapper.batchUpdateSignStatus(msgIdList, ChatMsgStatusEnum.YESSIGN.getStatusCode());
 	} 
 }

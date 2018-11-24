@@ -37,7 +37,7 @@ public class SocketController {
 		Channel currentChannel = ctx.channel();
 		String sendId = socketData.getAccepetChatContent().getSenderId();
 		NettyStorage.put(sendId, currentChannel);
-		NettyStorage.output();
+		// NettyStorage.output();
 	}
 	/**
 	 * 心跳连接
@@ -47,7 +47,7 @@ public class SocketController {
 	 */
 	@SocketMapping(WebSocketRequestConstant.KeepALive)
 	public void keepALive(SocketData socketData,ChannelHandlerContext ctx, TextWebSocketFrame msg) {
-		
+
 	}
 	/**
 	 * 发送私聊消息

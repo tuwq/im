@@ -65,6 +65,20 @@ window.cacheChatSnapshot = {
 			plus.storage.setItem(singleSnapshotKey, JSON.stringify(singleSnapshotList))
 		}
 	},
+	deleteSingleChatSnapshot: function(meId, sideId) {
+		var self = this
+		var singleSnapshotKey = 'singleSnapshot_' + meId
+		var singleSnapshotList = self.getSingleChatSnapshot(meId)
+		if (singleSnapshotList.length > 0) {
+			for (var i = 0; i < singleSnapshotList.length; i++) {
+				if (singleSnapshotList[i].sideId == sideId) {
+					singleSnapshotList.splice(i, 1)
+					break
+				}
+			}
+			plus.storage.setItem(singleSnapshotKey, JSON.stringify(singleSnapshotList))
+		}
+	},
 	isNotNull: function(str) {
 		if (str != null && str !='' && str != undefined) {
 			return true
