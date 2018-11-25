@@ -40,8 +40,8 @@
 		</div>
 		<div id="openMenu" class="mui-popover">
 		  <ul class="mui-table-view">
-		    <li class="mui-table-view-cell cell-item" id="addFriend"><a href="#"><span class="iconfont icon-addfriend "></span>加好友</a></li>
-		    <li class="mui-table-view-cell cell-item" id="saoyisao"><a href="#"><span class="iconfont icon-saoyisao"></span>扫一扫</a></li>
+		    <li class="mui-table-view-cell cell-item" id="addFriend"><a href="#"><span class="iconfont "></span>加好友</a></li>
+		    <li class="mui-table-view-cell cell-item" id="saoyisao"><a href="#"><span class="iconfont"></span>扫一扫</a></li>
 		  </ul>
 		</div>
 		<script type="text/javascript">
@@ -67,6 +67,7 @@
 				window.TimUtil.setSystemStatusColor()
 				var user = window.TimUtil.getCacheNowUserInfo()
 				var selfWebview = plus.webview.currentWebview()
+				var indexWebview = plus.webview.getWebviewById('index.html')
 				var contactWebview = plus.webview.getWebviewById('contact.html')
 				refreshAcceptRequest()
 				getSingleNoReadChatMsg()
@@ -282,7 +283,7 @@
 						<div class="item-info-content">{{singleChatSnapshotItem.content}}</div>
 					</div>
 					{{#unless  singleChatSnapshotItem.isRead}}
-						<span class="mui-badge mui-badge-red">...</span>
+						<span class="mui-badge mui-badge-red">..</span>
 					{{/unless }}
 		    	</div>
 			</div>

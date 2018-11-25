@@ -54,7 +54,7 @@
 			mui.plusReady(function() {
 				var selfWebview = plus.webview.currentWebview()
 				var chatlistWebview = plus.webview.getWebviewById('chatlist.html')
-				var Me = window.TimUtil.getCacheNowUserInfo()
+				var me = window.TimUtil.getCacheNowUserInfo()
 				plus.webview.currentWebview().setStyle({
 					softinputMode: "adjustResize"
 				})
@@ -79,14 +79,14 @@
 					if ( chat_text.length === 0 ) {
 						return
 					}
-					sendMsg(Me.faceImageCut, chat_text)
+					sendMsg(me.faceImageCut, chat_text)
 					mui.fire(chatlistWebview, window.websocketRequestContant.SingleChatSendMsg, {
-						senderId: Me.id,
+						senderId: me.id,
 						acceptId: sideUserId,
 						content: chat_text
 					})
-					window.cacheChatHistory.setSingleChatHistory(Me.id, sideUserId, chat_text, window.cacheChatHistory.chatHistoryFlagType.contentForMe)
-					window.cacheChatSnapshot.setSingleChatSnapshot(Me.id, sideUserId, chat_text, window.cacheChatSnapshot.chatSnapshotReadType.YesRead)
+					window.cacheChatHistory.setSingleChatHistory(me.id, sideUserId, chat_text, window.cacheChatHistory.chatHistoryFlagType.contentForMe)
+					window.cacheChatSnapshot.setSingleChatSnapshot(me.id, sideUserId, chat_text, window.cacheChatSnapshot.chatSnapshotReadType.YesRead)
 					chatTextDOM.value = ''
 				})
 				window.addEventListener(window.websocketResultContant.AcceptSingleChatMsg, function(e) {
@@ -163,12 +163,21 @@
 				var areaMesContent = document.getElementById('msg')
 				areaMesContent.scrollTop = areaMesContent.scrollHeight + areaMesContent.offsetHeight
 			}
+			function goUserInfo() {
+				mui.openWindow({
+					url: '../UserInfo/userInfo.html',
+					id: 'userInfo.html',
+					extras: {
+						userId: sideUserId
+					}
+				})
+			}
 		</script>
 	</body>
 	<script type="text/template" id="msgLeftTemplate">
 	    <div class="friend_lists">
 			<div class="header_img">
-				<img src="{{avatarPrefix}}{{faceImageCut}}" width="40px" height="40px" />
+				<img src="{{avatarPrefix}}{{faceImageCut}}" width="40px" height="40px" onclick="goUserInfo()"/>
 			</div>
 			<div class="msg-wrapper right">
 				<p class="msg-left-white">{{msg}}</p>

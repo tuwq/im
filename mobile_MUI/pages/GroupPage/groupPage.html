@@ -28,7 +28,11 @@
 			mui.init()
 			mui.plusReady(function(){
 				document.getElementById('createGroup').addEventListener('tap', function(){
-					console.log('createGroup')
+					mui.openWindow({
+						url: '../CreateGroup/createGroup.html',
+						id: 'createGroup.html',
+						show: {autoShow: true, aniShow: 'slide-in-left', duration:100}
+					})
 				})
 				document.getElementById('addFriend').addEventListener('tap', function(){
 					mui.openWindow({

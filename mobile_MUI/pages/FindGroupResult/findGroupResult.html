@@ -7,40 +7,35 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link href="../../css/mui.min.css" rel="stylesheet" />
 		<link rel="stylesheet" type="text/css" href="../../common/css/header.css"/>
-		<link rel="stylesheet" type="text/css" href="findSingleResult.css"/>
+		<link rel="stylesheet" type="text/css" href="findGroupResult.css"/>
 		<script src="../../js/mui.min.js"></script>
 		<script src="../../download/jQuery/jquery-3.3.1.min.js"></script>
 		<script src="../../download/handlebars/handlebars-v4.0.12.js"></script>
 		<script src="../../config/TimConfig.js"></script>
 		<script src="../../common/js/TimUtil.js"></script>
 		<script src="../../api/Find/find.js"></script>
-		
 	</head>
 
 	<body>
 		<header class="mui-bar mui-bar-nav title-header input-header">
-		   	<input id="find-friend-input" type="text" placeholder="QQ号/手机号/昵称/群">
-		    <a id="confirm-findSingle" class="mui-pull-right title-color title-font">搜索</a>
+		   	<input id="find-group-input" type="text" placeholder="QQ号/手机号/昵称/群">
+		    <a id="confirm-findGroup" class="mui-pull-right title-color title-font">搜索</a>
 		</header>
 		<div class="container">
 			<div id="noResult" class="noResult isNone">
 				<h4>没有找到相关结果</h4>
 			</div>
 			<div id="hasResult" class="">
-				<div class="findType-title">人</div>
+				<div class="findType-title">群</div>
 				<div class="result-list" id="result-list">
 					
 				</div>
 			</div>
 		</div>
 		<script type="text/javascript">
-			/**
-			 * 显示搜索结果
-			 * 点击跳转至他人页面
-			 */
 			mui.init()
 			mui.plusReady(function(){
-				var findInput = document.getElementById('find-friend-input')
+				var findInput = document.getElementById('find-group-input')
 				var noResultDOM = document.getElementById('noResult')
 				var hasResultDOM = document.getElementById('hasResult')
 				var findResult
@@ -52,11 +47,11 @@
 					$(hasResultDOM).addClass('isNone')
 					$(noResultDOM).removeClass('isNone')
 				} else {
-					renderFindSingResultHTML(findResult)
+					renderFindGroupResultHTML(findResult)
 				}
-				document.getElementById('confirm-findSingle').addEventListener('tap', function(){
+				document.getElementById('confirm-findGroup').addEventListener('tap', function(){
 					value = findInput.value
-					window.FindApi.findSingleApi({
+					window.FindApi.findGroupApi({
 						targetInfo: value
 					}, function(data){
 						value = ''
@@ -68,46 +63,45 @@
 							} 
 							$(noResultDOM).addClass('isNone')	
 							$(hasResultDOM).removeClass('isNone')
-							renderFindSingResultHTML(data.result)
+							renderFindGroupResultHTML(data.result)
 						} else {
 							window.TimUtil.showToast(data.msg, 'error')
 						}
 					})
 				})
 			})
-			function renderFindSingResultHTML(result) {
+			function renderFindGroupResultHTML(result) {
 				var data = {}
 				data.result = result
-				data.avatarUrlPrefix = window.TimConfig.serverImageUrl + window.TimConfig.avatarPrefix
-				var findSingResultTemplate = $('#findSingResultTemplate').html()
-				var template = Handlebars.compile(findSingResultTemplate)
+				data.avatarUrlPrefix = window.TimConfig.serverImageUrl + window.TimConfig.groupAvatarPrefix
+				var findGroupResultTemplate = $('#findGroupResultTemplate').html()
+				var template = Handlebars.compile(findGroupResultTemplate)
 				var html = template(data)
 				$('#result-list').html(html)
 				$('.result-item').each(function(index, item){
 					item.addEventListener('tap', function(){
-						var userId = this.getAttribute('data-id')
+						var groupId = this.getAttribute('data-id')
 						mui.openWindow({
-							url: '../UserInfo/userInfo.html',
-							id: 'userInfo.html',
+							url: '../GroupInfo/groupInfo.html',
+							id: 'groupInfo.html',
 							extras: {
-								userId
+								groupId
 							}
 						})
 					})
 				})
 			}
 		</script>
-		<script type="text/template" id="findSingResultTemplate">
+		<script type="text/template" id="findGroupResultTemplate">
 			{{#each result}}
 			    <div class="result-item" data-id="{{id}}">
-					<img class="avatar" src="{{../avatarUrlPrefix}}{{faceImageCut}}" width="50" height="50" alt=""/>
+					<img class="avatar" src="{{../avatarUrlPrefix}}{{groupFaceimageBig}}" width="50" height="50" alt=""/>
 					<div class="info-profile">
-						<span class="nickname">{{nickname}}</span>
-						<span class="qqnumber">({{qqNumber}})</span>
+						<span class="nickname">{{groupName}}</span>
+						<span class="qqnumber">({{groupNumber}})</span>
 					</div>
 				</div>
 			{{/each}}
 		</script>
 	</body>
-
 </html>

@@ -46,6 +46,7 @@
 				var groupNameDOM = document.getElementById('groupName-input')
 				var groupDescriptionDOM = document.getElementById('groupDescription-input')
 				var editGroupFaceDOM = document.getElementById('editGroupFaceImageBig')
+				var me = window.TimUtil.getCacheNowUserInfo()
 				document.getElementById('editGroupFaceImageBig').addEventListener('tap', function(){
 					plus.gallery.pick(function(path){
 						editGroupFaceDOM.src = path
@@ -61,11 +62,13 @@
 							plus.nativeUI.showWaiting( "创建中..." );
 							window.GroupApi.createGroupApi({
 								groupFaceImageBig: base64FaceImageBig,
+								creatorId: me.id,
 								groupName, groupDescription
 							}, function(data){
 								plus.nativeUI.closeWaiting()
 								if (data.code == 200) {
 									window.TimUtil.showToast('创建群聊成功', 'success')
+									mui.back()
 								} else {
 									window.TimUtil.showToast(data.msg, 'error')
 								}

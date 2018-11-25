@@ -5,3 +5,6 @@
 .mui-bar-tab .mui-tab-item.mui-active{
 	color: #fff;
 }
+.hide {
+	display: none;
+}

@@ -76,6 +76,23 @@
 				})
 				document.getElementById('confirm-findGroup').addEventListener('tap', function(){
 					var findvalue = findGroupTextDOM.innerText
+					window.FindApi.findGroupApi({
+						targetInfo: findvalue
+					}, function(data) {
+						if (data.code == 200) {
+							mui.openWindow({
+								url: '../FindGroupResult/findGroupResult.html',
+								id: 'findGroupResult.html',
+								extras: {
+									findResult: data.result,
+									findValue: value
+								}
+							})
+						} else {
+							window.TimUtil.showToast(data.msg, 'error')
+						}
+						value = ''
+					})
 				})
 			})
 		</script>

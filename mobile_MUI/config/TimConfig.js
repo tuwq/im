@@ -6,6 +6,7 @@ window.TimConfig = {
 	serverImageUrl: 'http://tim.img.mackz.xin/',
 	avatarPrefix: 'user/avatar/',
 	qrCodePrefix: 'user/qrCode/',
+	groupAvatarPrefix: 'group/avatar/',
 	TimQrCodePrefix: 'tim_qrcode:',
 	// 底部选项卡
 	timFooterBarArray: [
@@ -33,6 +34,7 @@ window.TimConfig = {
 	timSubscribe: {
 		refreshUserInfoSubscribe: 'refreshUserInfoSubscribe',
 		refreshContactContactListSubscribe: 'refreshContactContactListSubscribe',
+		refreshNewMessageSubscribe: 'refreshNewMessageSubscribe'
 	},
 	// 中间webview所需减少的距离(防止全屏)
 	timStyle: {

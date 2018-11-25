@@ -18,7 +18,9 @@ public class CreateGroupParam {
 	@NotNull(message="群头像不能为空")
 	@NotBlank(message="群头像不能为空串")
 	private String groupFaceImageBig;
-	
+	@NotNull(message="创建者id不能为空")
+	@NotBlank(message="创建者id不能为空串")
+	private String creatorId;
 	@NotNull(message="群名称不能为空")
 	@NotBlank(message="群名称不能为空串")
 	@Length(min = 1, max = 10, message = "群名称保持在1-10之间")

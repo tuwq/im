@@ -15,7 +15,6 @@
 	background-repeat:no-repeat;
 	background-size:cover;
 	background-position: center;
-	background-image: url(../../image/db4feeaded993080b5ef03cf3121f42b.jpg);
 	left:0;
 	top:0;
 }
@@ -43,7 +42,7 @@
 	position: absolute;
 	bottom: 0;
 }
-.joinGroup .confirm-add {
+.joinGroup .confirm {
 	width: 100%;
 	height: 50px;
 	color: #fff;

@@ -23,4 +23,6 @@ public class UsersDto {
 	
 	private Date createTime;
 	
+	private boolean friended;
+	
 }

@@ -10,6 +10,7 @@
     <link rel="stylesheet" type="text/css" href="css/index.css"/>
     <link rel="stylesheet" type="text/css" href="download/font_icon/iconfont.css"/>
     <link rel="stylesheet" type="text/css" href="common/css/header.css"/>
+     <script src="download/jQuery/jquery-3.3.1.min.js"></script>
     <script src="config/TimConfig.js"></script>
     <script src="common/js/TimUtil.js"></script>
 </head>
@@ -62,6 +63,7 @@
 				plus.webview.show(timFooterBarArray[tabIndex].pageId, 'none', 0)
 			})
 		})
+		
 		function netChangeSwitch() {
 			var connectionStatus = plus.networkinfo.getCurrentType()
 			if (connectionStatus != 0 && connectionStatus != 1) {

@@ -9,6 +9,8 @@ public class GroupChatContent {
 
     private String acceptGroupId;
 
+    private String acceptUserId;
+
     private String content;
 
     private Integer signFlag;
@@ -37,6 +39,14 @@ public class GroupChatContent {
 
     public void setAcceptGroupId(String acceptGroupId) {
         this.acceptGroupId = acceptGroupId == null ? null : acceptGroupId.trim();
+    }
+
+    public String getAcceptUserId() {
+        return acceptUserId;
+    }
+
+    public void setAcceptUserId(String acceptUserId) {
+        this.acceptUserId = acceptUserId == null ? null : acceptUserId.trim();
     }
 
     public String getContent() {

@@ -16,6 +16,24 @@
     create_time
   </sql>
   
+  <update id="incrUserSum" parameterType="root.model.Groups" >
+    update `groups`
+    set users_num = users_num + 1
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="countById" parameterType="map" resultType="int">
+    SELECT count(1)
+  	FROM `groups`
+  	WHERE id = #{id}
+  </select>
+  
+   <select id="findByGroupNumberOrGroupName" parameterType="map" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List" />
+  	FROM `groups`
+  	WHERE group_number = #{targetInfo} OR group_name like concat('%', #{targetInfo}, '%')
+  </select>
+  
    <select id="countByGroupNumber" parameterType="map" resultType="int">
     SELECT count(1)
   	FROM `groups`

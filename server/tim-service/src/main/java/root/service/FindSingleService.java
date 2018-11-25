@@ -37,14 +37,19 @@ public class FindSingleService {
 	}
 	/**
 	 * 查询某用户信息
+	 * 是否已是好友
 	 * @param userId
+	 * @param meId 
 	 * @return
 	 */
-	public UsersDto detail(String userId) {
+	public UsersDto id(String userId, String meId) {
 		if (StringUtils.isBlank(userId)) throw new CheckParamException("不能为空值");
 		Users user = usersMapper.selectByPrimaryKey(userId);
 		if (user == null) throw new CheckParamException("用户不存在");
-		return DtoUtil.adapt(new UsersDto(), user);
+		UsersDto userDto = DtoUtil.adapt(new UsersDto(), user);
+		int friended = singleUsersMapper.isMyFriend(meId, userId);
+		userDto.setFriended(friended>0?true:false);
+		return userDto;
 	}
 	/**
 	 * 查询某用户信息,根据QQ号码

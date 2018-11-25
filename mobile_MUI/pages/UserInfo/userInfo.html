@@ -1,0 +1,139 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../common/css/header.css"/>
+		<link rel="stylesheet" type="text/css" href="userInfo.css"/>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../download/jQuery/jquery-3.3.1.min.js"></script>
+		<script src="../../download/handlebars/handlebars-v4.0.12.js"></script>
+		<script src="../../config/TimConfig.js"></script>
+		<script src="../../common/js/TimUtil.js"></script>
+		<script src="../../api/Find/find.js"></script>
+		<script src="../../api/Request/request.js"></script>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav title-header">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left title-color title-size-left">返回</a>
+		</header>
+		<div class="container" id="userInfo">
+			
+		</div>
+		<script type="text/javascript">
+			/**
+			 * 渲染用户详情页面
+			 * 绑定加好友按钮
+			 */
+			var userId
+			var me
+			mui.init()
+			mui.plusReady(function(){
+				var selfWebview = plus.webview.currentWebview()
+				userId = selfWebview.userId
+				if (userId == null || userId == undefined) {
+					mui.back()
+					return
+				}
+				me = window.TimUtil.getCacheNowUserInfo()
+				window.FindApi.findUserDetailByIdApi({
+					userId, meId: me.id
+				}, function(data){
+					if (data.code == 200) {
+						var result = data.result
+						renderUserInfo(result)
+					} else {
+						window.TimUtil.showToast(data.msg, 'error')
+					}
+				})
+			})
+			
+			function renderUserInfo(result) {
+				var data = {}
+				var userInfoTemplate = $('#userInfoTemplate').html()
+				data.result = result
+				data.userAvatarPrefix = window.TimConfig.serverImageUrl + window.TimConfig.avatarPrefix
+				var template = Handlebars.compile(userInfoTemplate)
+				var html = template(data)
+				$('#userInfo').html(html)
+				if (result.friended) {
+					document.getElementById('send-content').addEventListener('tap', function(e){
+						mui.openWindow({
+							url: '../SingleChatting/singleChatting.html',
+							id: 'singleChatting_' + userId,
+							show: {autoShow: true, aniShow: 'slide-in-right', duration:200},
+							extras: {
+								userId,
+								nickname: result.nickname,
+								faceImageCut: result.faceImageCut
+							}
+						})
+					})
+				} else {
+					document.getElementById('confirm-add').addEventListener('tap', function(e){
+						window.RequestApi.requestSingleSendApi({
+							meId: me.id,
+							acceptId: userId
+						}, function(data){
+							if (data.code == 200) {
+								window.TimUtil.showToast('以发送好友请求,请等待对方同意', 'success')
+							} else {
+								window.TimUtil.showToast(data.msg, 'error')
+							}
+						})
+					})
+				}
+				document.getElementById('avatar_back').addEventListener('tap', function(){
+					mui.openWindow({
+						url: '../ImageResult/imageResult.html',
+						id: 'imageResult.html',
+						show: {autoShow: true, aniShow: 'slide-in-top', duration:200},
+						extras: {
+							imageURL: data.userAvatarPrefix + result.faceImageBig
+						}
+					})
+				})
+			}
+		</script>
+		<script type="text/template" id="userInfoTemplate">
+		    <div class="top">
+				<div id="avatar_back" class="info-avatar-back" style="background-image: url({{userAvatarPrefix}}{{result.faceImageCut}});"></div>
+			</div>
+			<div class="bottom">
+				<div class="info-list">
+					<div class="info-item">
+						<span class="item-desc">QQ号</span>
+						<span id="qqnumber_span" class="item-value">{{result.qqNumber}}</span>
+					</div>
+					<div class="info-item">
+						<span class="item-desc">昵称</span>
+						<span id="nickname_span" class="item-value">{{result.nickname}}</span>
+					</div>
+					<div class="info-item">
+						<span class="item-desc">签名</span>
+						<span id="description_span" class="item-value">{{result.description}}</span>
+					</div>
+					<div class="info-item">
+						<span class="item-desc">电话</span>
+						<span id="telephone_span" class="item-value">{{result.telephone}}</span>
+					</div>
+				</div>			
+			</div>
+			{{#unless result.friended}}
+			<div class="addFriend">
+				<button id="confirm-add" class="confirm">加好友</button>
+			</div>
+			{{/unless}}
+			{{#if result.friended}}
+			<div class="addFriend">
+				<button id="send-content" class="confirm">发送消息</button>
+			</div>
+			{{/if}}
+		</script>
+	</body>
+
+</html>

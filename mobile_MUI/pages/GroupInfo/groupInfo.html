@@ -9,6 +9,12 @@
 		<link rel="stylesheet" type="text/css" href="groupInfo.css"/>
 		<link rel="stylesheet" type="text/css" href="../../common/css/header.css"/>
 		<script src="../../js/mui.min.js"></script>
+		<script src="../../download/jQuery/jquery-3.3.1.min.js"></script>
+		<script src="../../download/handlebars/handlebars-v4.0.12.js"></script>
+		<script src="../../config/TimConfig.js"></script>
+		<script src="../../common/js/TimUtil.js"></script>
+		<script src="../../api/Find/find.js"></script>
+		<script src="../../api/Request/request.js"></script>
 	</head>
 
 	<body>
@@ -16,48 +22,110 @@
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left title-color title-size-left">返回</a>
 		    <h1 class="mui-title title-color">群信息</h1>
 		</header>
-		<div class="container">
-			<div class="top">
-				<div id="avatar_back" class="info-avatar-back"></div>
+		<div class="container" id="groupInfo">
+		</div>
+		<script type="text/javascript">
+			mui.init()
+			var groupId
+			var me
+			var selfWebview
+			mui.plusReady(function(){
+				selfWebview = plus.webview.currentWebview()
+				groupId = selfWebview.groupId
+				me = window.TimUtil.getCacheNowUserInfo()
+				if (groupId == null || groupId == undefined) {
+					mui.back()
+					return
+				}
+				window.FindApi.findGroupDetailByIdApi({
+					groupId, meId: me.id
+				}, function(data){
+					if (data.code == 200) {
+						var result = data.result
+						renderGroupInfo(result)
+					} else {
+						window.TimUtil.showToast(data.msg, 'error')
+					}
+				})
+			})
+			function renderGroupInfo(result) {
+				var data = {}
+				var groupInfoTemplate = $('#groupInfoTemplate').html()
+				data.result = result
+				data.groupAvatarPrefix = window.TimConfig.serverImageUrl + window.TimConfig.groupAvatarPrefix
+				data.userAvatarPrefix = window.TimConfig.serverImageUrl + window.TimConfig.avatarPrefix
+				var template = Handlebars.compile(groupInfoTemplate)
+				var html = template(data)
+				$('#groupInfo').html(html)
+				if (result.joined) {
+					document.getElementById('send-content').addEventListener('tap', function(e){
+						console.log('send-content')
+					})
+				} else {
+					document.getElementById('confirm-join').addEventListener('tap', function(e){
+						window.RequestApi.requestGroupJoinApi({
+							groupId, 
+							meId: me.id
+						}, function(data){
+							if (data.code == 200) {
+								window.TimUtil.showToast('成功入群', 'success')
+								selfWebview.reload()
+							} else {
+								window.TimUtil.showToast(data.msg, 'error')
+							}
+						})
+					})
+				}
+				document.getElementById('avatar_back').addEventListener('tap', function(){
+					mui.openWindow({
+						url: '../ImageResult/imageResult.html',
+						id: 'imageResult.html',
+						show: {autoShow: true, aniShow: 'slide-in-top', duration:200},
+						extras: {
+							imageURL: data.groupAvatarPrefix + result.groupFaceimageBig
+						}
+					})
+				})
+			}
+		</script>
+		<script type="text/template" id="groupInfoTemplate">
+		    <div class="top">
+				<div id="avatar_back" class="info-avatar-back" style="background-image: url({{groupAvatarPrefix}}{{result.groupFaceimageBig}});"></div>
 			</div>
 			<div class="bottom">
 				<div class="info-list">
 					<div class="info-item">
 						<span class="item-desc">群号</span>
-						<span id="qqnumber_span" class="item-value">515074326</span>
+						<span id="groupnumber_span" class="item-value">{{result.groupNumber}}</span>
 					</div>
 					<div class="info-item">
 						<span class="item-desc">群名称</span>
-						<span id="nickname_span" class="item-value">二刺螈</span>
+						<span id="groupname_span" class="item-value">{{result.groupName}}</span>
 					</div>
 					<div class="info-item">
 						<span class="item-desc">群描述</span>
-						<span id="telephone_span" class="item-value">yyy</span>
+						<span id="groupdescription_span" class="item-value">{{result.groupDescription}}</span>
 					</div>
 					<div class="info-item">
-						<span class="item-desc">群成员</span>
-						<span id="member_span" class="item-value">
-							<img src="../../image/default.jpg" alt="" width="40" height="40"/>
-							<img src="../../image/default.jpg" alt="" width="40" height="40"/>
-							<img src="../../image/default.jpg" alt="" width="40" height="40"/>
-							<img src="../../image/default.jpg" alt="" width="40" height="40"/>
-							<img src="../../image/default.jpg" alt="" width="40" height="40"/>
-							<span class="item-desc">23人</span>
+						<span class="item-desc">群成员 <span class="item-desc" id="member_sum_span">{{result.usersNum}}</span>人</span>
+						<span id="member_info_span">
+							{{#each result.memberList}}
+							<img class="member-avatar" src="{{../userAvatarPrefix}}{{faceImageCut}}" alt="" width="40" height="40"/>
+							{{/each}}
 						</span>
 					</div>
-				</div>			
+				</div>		
+				{{#unless result.joined}}
+				<div class="joinGroup">
+					<button id="confirm-join" class="confirm">加入该群</button>
+				</div>
+				{{/unless}}
+				{{#if result.joined}}
+				<div class="joinGroup">
+					<button id="send-content" class="confirm">发消息</button>
+				</div>
+				{{/if}}
 			</div>
-			<div class="joinGroup">
-				<button id="confirm-join" class="confirm-add">加入该群</button>
-			</div>
-		</div>
-		<script type="text/javascript">
-			mui.init()
-			mui.plusReady(function(){
-				document.getElementById('confirm-join').addEventListener('tap', function(){
-					
-				})
-			})
 		</script>
 	</body>
 

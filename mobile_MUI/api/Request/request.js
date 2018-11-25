@@ -19,5 +19,10 @@ window.RequestApi = {
 		window.TimUtil.postJson('/request/single/refuse', data, function(data) {
 			if(success) success(data)
 		})
+	},
+	requestGroupJoinApi: function(data, success) {
+		window.TimUtil.postJson('/request/group/join', data, function(data) {
+			if(success) success(data)
+		})
 	}
 }

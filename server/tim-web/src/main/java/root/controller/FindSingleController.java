@@ -28,8 +28,8 @@ public class FindSingleController {
 	}
 	
 	@GetMapping("/id")
-	public JsonResult<UsersDto> id(@RequestParam("userId") String userId) {
-		UsersDto usersDto = findSingleService.detail(userId);
+	public JsonResult<UsersDto> id(@RequestParam("userId") String userId, @RequestParam("meId") String meId) {
+		UsersDto usersDto = findSingleService.id(userId, meId);
 		return JsonResult.<UsersDto>success(usersDto);
 	}
 	

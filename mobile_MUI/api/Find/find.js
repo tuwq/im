@@ -19,5 +19,15 @@ window.FindApi = {
 		window.TimUtil.getJson('/find/single/myFrientList', data, function(data) {
 			if(success) success(data)
 		})
+	},
+	findGroupApi: function(data, success) {
+		window.TimUtil.getJson('/find/group/list', data, function(data) {
+			if(success) success(data)
+		}) 
+	},
+	findGroupDetailByIdApi: function(data, success) {
+		window.TimUtil.getJson('/find/group/id', data, function(data) {
+			if(success) success(data)
+		})
 	}
 }
