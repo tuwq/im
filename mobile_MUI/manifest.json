@@ -316,7 +316,15 @@
 			"pages/GroupInfo/groupInfo.html": {
 				"resources": [],
 				"refer": [
-					"pages/ImageResult/imageResult.html"
+					"pages/ImageResult/imageResult.html",
+					"pages/GroupMemberList/groupMemberList.html"
+				],
+				"priority": 0
+			},
+			"pages/GroupMemberList/groupMemberList.html": {
+				"resources": [],
+				"refer": [
+					"pages/UserInfo/userInfo.html"
 				],
 				"priority": 0
 			}

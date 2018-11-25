@@ -77,13 +77,13 @@
 			mui.init()
 			mui.plusReady(function(){
 				window.TimUtil.setSystemStatusColor()
-				getContactList()
 				var contactWebview = plus.webview.currentWebview()
+				apiContactList()
 				contactWebview.addEventListener('show', function() {
-					getContactList()
+					apiContactList()
 				})
 				window.addEventListener(window.TimConfig.timSubscribe.refreshContactContactListSubscribe, function() {
-					getContactList()
+					apiContactList()
 				})
 			})
 			var enWords = [
@@ -155,7 +155,7 @@
 					[],[],[],[],[],[],[],[],[]
 				]
 			}
-			function getContactList() {
+			function apiContactList() {
 				var user = window.TimUtil.getCacheNowUserInfo()
 				window.FindApi.findMyFriend({
 					userId: user.id
@@ -163,13 +163,13 @@
 					if (data.code == 200) {
 						window.cacheContact.setContactList(data.result)
 						renderContactListHTML()
-						renderMUIContactList()
+						renderMUIPinYinList()
 					} else {
 						window.TimUtil.showToast(data.msg, 'error')
 					}
 				})
 			}
-			function renderMUIContactList() {
+			function renderMUIPinYinList() {
 				var contactHeader = document.getElementById('contact-header')
 				var contactListDOM = document.getElementById('contact-list')
 				contactListDOM.style.height = (document.body.offsetHeight - contactHeader.offsetHeight) + "px"

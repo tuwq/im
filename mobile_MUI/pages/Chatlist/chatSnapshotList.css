@@ -46,14 +46,3 @@
 	height: 80px;
 	align-items: center;
 }
-.single-chatSnapshot-item .newMsg-tip {
-	height: 20px;
-	width: 20px;
-	border-radius: 50%;
-	text-align: center;
-	background-color: #F56C0B;
-	color: #fff;
-	text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-}

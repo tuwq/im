@@ -12,13 +12,41 @@
     <id column="userId" property="id" jdbcType="VARCHAR" />
     <result column="nickname" property="nickname" jdbcType="VARCHAR" />
     <result column="faceImageCut" property="faceImageCut" jdbcType="VARCHAR" />
+    <result column="qqNumber" property="qqNumber" jdbcType="VARCHAR" />
   </resultMap>
+  <resultMap id="groupMap" type="root.model.Groups" >
+    <id column="groupId" property="id" jdbcType="VARCHAR" />
+    <result column="group_number" property="groupNumber" jdbcType="VARCHAR" />
+    <result column="group_faceImage_big" property="groupFaceimageBig" jdbcType="VARCHAR" />
+    <result column="group_name" property="groupName" jdbcType="VARCHAR" />
+    <result column="group_description" property="groupDescription" jdbcType="VARCHAR" />
+    <result column="qrCode" property="qrcode" jdbcType="VARCHAR" />
+    <result column="users_num" property="usersNum" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
   <sql id="Base_Column_List" >
     id, group_id, user_id, create_time
   </sql>
   
+  <select id="groupListByUserId" parameterType="map" resultMap="groupMap">
+    select g.id groupId, g.group_faceImage_big group_faceImage_big, g.group_name group_name,
+    g.group_number group_number,g.users_num users_num
+    from group_users gu
+    LEFT JOIN `groups` g ON g.id = gu.group_id
+    where user_id = #{userId}
+  </select>
+  
+   <select id="memberListByGroupId" parameterType="map" resultMap="memberUserMap">
+    select u.id userId, u.nickname nickname, u.face_image_cut faceImageCut,u.qq_number qqNumber
+    from group_users gu
+    LEFT JOIN users u ON u.id = gu.user_id
+    where group_id = #{groupId}
+  </select>
+  
+  
    <select id="findGroupMemberInfo" parameterType="map" resultMap="memberUserMap">
-    select u.id userId, u.nickname nickname, u.face_image_cut faceImageCut
+    select u.id userId, u.nickname nickname, u.face_image_cut faceImageCut,u.qq_number qqNumber
     from group_users gu
     LEFT JOIN users u ON u.id = gu.user_id
     where group_id = #{groupId}

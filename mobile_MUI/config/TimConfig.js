@@ -34,7 +34,7 @@ window.TimConfig = {
 	timSubscribe: {
 		refreshUserInfoSubscribe: 'refreshUserInfoSubscribe',
 		refreshContactContactListSubscribe: 'refreshContactContactListSubscribe',
-		refreshNewMessageSubscribe: 'refreshNewMessageSubscribe'
+		refreshGroupPageListSubscribe: 'refreshGroupPageListSubscribe'
 	},
 	// 中间webview所需减少的距离(防止全屏)
 	timStyle: {

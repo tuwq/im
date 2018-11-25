@@ -25,12 +25,19 @@
 		<div class="container" id="groupInfo">
 		</div>
 		<script type="text/javascript">
+			/**
+			 * 获取群与群成员信息
+			 * 加入群与发送消息按钮绑定
+			 * ! 加入群后刷新群聊列表
+			 */
 			mui.init()
 			var groupId
 			var me
 			var selfWebview
+			var groupPageWebview
 			mui.plusReady(function(){
 				selfWebview = plus.webview.currentWebview()
+				groupPageWebview = plus.webview.getWebviewById('groupPage.html')
 				groupId = selfWebview.groupId
 				me = window.TimUtil.getCacheNowUserInfo()
 				if (groupId == null || groupId == undefined) {
@@ -70,6 +77,7 @@
 							if (data.code == 200) {
 								window.TimUtil.showToast('成功入群', 'success')
 								selfWebview.reload()
+								mui.fire(groupPageWebview, window.TimConfig.timSubscribe.refreshGroupPageListSubscribe)
 							} else {
 								window.TimUtil.showToast(data.msg, 'error')
 							}
@@ -83,6 +91,16 @@
 						show: {autoShow: true, aniShow: 'slide-in-top', duration:200},
 						extras: {
 							imageURL: data.groupAvatarPrefix + result.groupFaceimageBig
+						}
+					})
+				})
+				document.getElementById('goMemberList').addEventListener('tap', function(){
+					mui.openWindow({
+						url: '../GroupMemberList/groupMemberList.html',
+						id: 'groupMemberList.html',
+						show: {autoShow: true, aniShow: 'slide-in-right', duration:200},
+						extras: {
+							groupId
 						}
 					})
 				})
@@ -106,7 +124,7 @@
 						<span class="item-desc">群描述</span>
 						<span id="groupdescription_span" class="item-value">{{result.groupDescription}}</span>
 					</div>
-					<div class="info-item">
+					<div class="info-item" id="goMemberList">
 						<span class="item-desc">群成员 <span class="item-desc" id="member_sum_span">{{result.usersNum}}</span>人</span>
 						<span id="member_info_span">
 							{{#each result.memberList}}

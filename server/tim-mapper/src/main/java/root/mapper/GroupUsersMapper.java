@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import root.model.GroupUsers;
+import root.model.Groups;
 import root.model.Users;
 
 public interface GroupUsersMapper {
@@ -20,7 +21,7 @@ public interface GroupUsersMapper {
 
     int updateByPrimaryKey(GroupUsers record);
     /**
-     * 寻找群友们的信息
+     * 寻找部分群成员的信息
      * @param groupId
      * @return
      */
@@ -32,4 +33,16 @@ public interface GroupUsersMapper {
 	 * @return
 	 */
 	int isJoined(@Param("groupId") String groupId,@Param("userId") String meId);
+	/**
+	 * 所有群成员的信息
+	 * @param groupId
+	 * @return
+	 */
+	List<Users> memberListByGroupId(@Param("groupId") String groupId);
+	/**
+	 * 用户已加入的群信息
+	 * @param userId
+	 * @return
+	 */
+	List<Groups> groupListByUserId(@Param("userId") String userId);
 }

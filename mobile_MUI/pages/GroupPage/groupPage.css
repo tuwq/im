@@ -13,3 +13,51 @@ li {
 .mui-popover-arrow {
 	left: 110px !important;
 }
+.mui-content .group-list {
+	display: flex;
+	flex-direction: column;
+	margin-top: 10px;
+	width: 100%;
+	overflow: hidden;
+}
+.group-list .group-item {
+	display: flex;
+	width: 100%;
+	align-items: center;
+	position: relative;
+}
+.group-item .item-avatar {
+	width: 40px;
+	height: 40px;
+	margin: 0 5px;
+}
+.group-item .item-avatar img {
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+}
+.group-item .item-info {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	justify-content: center;
+	padding-left: 5px;
+}
+.group-item .item-info .item-info-nickname {
+	font-size: 18px;
+}
+.group-item .item-info .item-info-content {
+	font-size: 15px;
+	color: #999;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 200px;
+}
+.group-item .item-body {
+	display: flex;
+	flex: 1;
+	padding: 10px;
+	height: 80px;
+	align-items: center;
+}

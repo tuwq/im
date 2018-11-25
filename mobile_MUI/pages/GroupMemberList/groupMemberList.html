@@ -1,0 +1,164 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../css/mui.indexedlist.css"/>
+		<link rel="stylesheet" type="text/css" href="../../common/css/header.css"/>
+		<link rel="stylesheet" type="text/css" href="groupMemberList.css"/>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/mui.indexedlist.js"></script>
+		<script src="../../config/TimConfig.js"></script>
+		<script src="../../common/js/TimUtil.js"></script>
+		<script src="../../common/js/pinyinName.js"></script>
+		<script src="../../api/Group/group.js"></script>
+	</head>
+
+	<body>
+		<header id="memberList-header" class="mui-bar mui-bar-nav title-header">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left title-color title-size-left">返回</a>
+		    <h1 class="mui-title title-color">群成员</h1>
+		</header>
+		<div class="mui-content">
+			<div id='member-list' class="mui-indexed-list">
+				<div class="mui-indexed-list-search mui-input-row mui-search">
+					<input type="search" class="mui-input-clear mui-indexed-list-search-input" placeholder="搜索成员">
+				</div>
+				<div class="mui-indexed-list-bar">
+					<a>A</a>
+					<a>B</a>
+					<a>C</a>
+					<a>D</a>
+					<a>E</a>
+					<a>F</a>
+					<a>G</a>
+					<a>H</a>
+					<a>I</a>
+					<a>J</a>
+					<a>K</a>
+					<a>L</a>
+					<a>M</a>
+					<a>N</a>
+					<a>O</a>
+					<a>P</a>
+					<a>Q</a>
+					<a>R</a>
+					<a>S</a>
+					<a>T</a>
+					<a>U</a>
+					<a>V</a>
+					<a>W</a>
+					<a>X</a>
+					<a>Y</a>
+					<a>Z</a>
+				</div>
+				<div class="mui-indexed-list-alert"></div>
+				<div class="mui-indexed-list-inner">
+					<div class="mui-indexed-list-empty-alert">没有数据</div>
+					<ul id="memberList" class="mui-table-view">
+
+					</ul>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			mui.init()
+			mui.plusReady(function(){
+				apiGroupMemberList()
+			})
+			
+			var enWords = [
+				'A', 'B', 'C', 'D', 'E', 'F', 'G', 
+				'H', 'I', 'J', 'K', 'L', 'M', 'N',
+				'O', 'P', 'Q', 'R', 'S', 'T', 
+				'U', 'V', 'W', 'X', 'Y', 'Z',
+				'#'
+			]
+			var memberArray = [
+				[],[],[],[],[],[],[],[],[],
+				[],[],[],[],[],[],[],[],[],
+				[],[],[],[],[],[],[],[],[]
+			]
+			
+			function apiGroupMemberList() {
+				var selfWebview = plus.webview.currentWebview()
+				var groupId = selfWebview.groupId
+				window.GroupApi.groupMemberListApi({
+					groupId
+				}, function(data){
+					if (data.code == 200) {
+						renderGroupMemberList(data.result)
+						renderMUIPinYinList()
+					} else {
+						window.TimUtil.showToast(data.msg, 'error')
+					}
+				})
+			}
+			function renderGroupMemberList(memberList) {
+				for (var i = 0; i < memberList.length; i++) {
+					var memberItem = memberList[i]
+					var pinyinNickname = window.PinYinWords.convertPinyin(memberItem.nickname)
+					var firstChar = pinyinNickname.substr(0, 1).toUpperCase()
+					var index = getIndexOfWords(firstChar)
+					memberArray[index].push(memberItem)
+				}
+				var togetherHtml = ''
+				for (var i = 0; i < memberArray.length; i++) {
+					var memberList = memberArray[i]
+					if (memberList.length > 0) {
+						var nicknameFirst = enWords[i]
+						togetherHtml += '<li data-group="' + nicknameFirst + '" class="mui-table-view-divider mui-indexed-list-group">' + nicknameFirst + '</li>';
+						for (var j = 0 ; j < memberList.length ; j ++ ) {
+							togetherHtml += '' +
+							'<li data-id="' + memberList[j].id + '" nickname="' + memberList[j].nickname + '" faceImageCut="' + memberList[j].faceImageCut + '" class="chat-with-contact mui-media mui-table-view-cell mui-indexed-list-item" style="padding: 8px 10px;">' +
+								'<img class="mui-media-object mui-pull-left" style="max-width: 35px;height: 35px;" src="' + window.TimConfig.serverImageUrl + window.TimConfig.avatarPrefix + memberList[j].faceImageCut + '"/>' +
+								'<div class="mui-media-body" style="line-height: 35px;">' + memberList[j].nickname + '</div>' +
+							'</li>';
+						}
+					}
+				}
+				document.getElementById('memberList').innerHTML = togetherHtml
+				clearArray()
+				mui('#memberList').on('tap', '.chat-with-contact', function(e){
+					var userId = this.getAttribute('data-id')
+					mui.openWindow({
+						url: '../UserInfo/userInfo.html',
+						id: 'userInfo.html',
+						show: {autoShow: true, aniShow: 'slide-in-right', duration:200},
+						extras: {
+							userId
+						}
+					})
+				})
+			}
+			
+			function clearArray() {
+				contactArray = [
+					[],[],[],[],[],[],[],[],[],
+					[],[],[],[],[],[],[],[],[],
+					[],[],[],[],[],[],[],[],[]
+				]
+			}
+			
+			function getIndexOfWords(firstChar) {
+				for (let i = 0; i < enWords.length; i++) {
+					if (firstChar == enWords[i]) {
+						return i
+					}
+				}
+				return enWords.length-1
+			}
+			
+			function renderMUIPinYinList() {
+				var contactHeader = document.getElementById('memberList-header')
+				var contactListDOM = document.getElementById('member-list')
+				contactListDOM.style.height = (document.body.offsetHeight - contactHeader.offsetHeight) + "px"
+				window.IndexedList = new mui.IndexedList(contactListDOM)
+			}
+		</script>
+	</body>
+
+</html>

@@ -154,7 +154,13 @@
 	},
 	"pages/GroupInfo/groupInfo.html": {
 		"refer": [
-			"pages/ImageResult/imageResult.html"
+			"pages/ImageResult/imageResult.html",
+			"pages/GroupMemberList/groupMemberList.html"
+		]
+	},
+	"pages/GroupMemberList/groupMemberList.html": {
+		"refer": [
+			"pages/UserInfo/userInfo.html"
 		]
 	}
 }

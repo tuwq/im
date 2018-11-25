@@ -2,15 +2,18 @@ package root.service;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.sun.tools.doclets.internal.toolkit.util.Group;
-
+import root.bean.JsonResult;
 import root.constant.ResultCode;
+import root.dto.UsersDto;
 import root.exception.CheckParamException;
 import root.exception.FileUploadException;
 import root.mapper.GroupUsersMapper;
@@ -18,9 +21,11 @@ import root.mapper.GroupsMapper;
 import root.mapper.UsersMapper;
 import root.model.GroupUsers;
 import root.model.Groups;
+import root.model.Users;
 import root.param.CreateGroupParam;
 import root.pluginService.QiNiuService;
 import root.util.Base64Util;
+import root.util.DtoUtil;
 import root.util.RandomUtil;
 import root.util.ValidatorUtil;
 
@@ -84,6 +89,34 @@ public class GroupService {
 			if (count == 0) {flag = false;}
 		}
 		return qqNumber;
+	}
+
+	/**
+	 * 获取群成员信息
+	 * 检查参数
+	 * @param groupId
+	 * @return
+	 */
+	public List<UsersDto> memberList(String groupId) {
+		if (StringUtils.isBlank(groupId)) throw new CheckParamException("群id不能为空");
+		int groupExist = groupsMapper.countById(groupId);
+		if(groupExist == 0) throw new CheckParamException("群不存在");
+		List<Users> list = groupUsersMapper.memberListByGroupId(groupId);
+		return list.stream().map(item -> DtoUtil.adapt(new UsersDto(), item)).collect(Collectors.toList());
+	}
+
+	/**
+	 * 获取用户已加入的群
+	 * 检查参数
+	 * @param userId
+	 * @return
+	 */
+	public List<Groups> listByUserId(String userId) {
+		if (StringUtils.isBlank(userId)) throw new CheckParamException("用户id不能为空");
+		int userExist = usersMapper.countById(userId);
+		if(userExist == 0) throw new CheckParamException("用户不存在");
+		List<Groups> list = groupUsersMapper.groupListByUserId(userId);
+		return list;
 	}
 
 }

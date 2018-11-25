@@ -43,6 +43,7 @@
 			 */
 			mui.init()
 			mui.plusReady(function(){
+				var groupPageWebview = plus.webview.getWebviewById('groupPage.html')
 				var groupNameDOM = document.getElementById('groupName-input')
 				var groupDescriptionDOM = document.getElementById('groupDescription-input')
 				var editGroupFaceDOM = document.getElementById('editGroupFaceImageBig')
@@ -68,6 +69,7 @@
 								plus.nativeUI.closeWaiting()
 								if (data.code == 200) {
 									window.TimUtil.showToast('创建群聊成功', 'success')
+									mui.fire(groupPageWebview, window.TimConfig.timSubscribe.refreshGroupPageListSubscribe)
 									mui.back()
 								} else {
 									window.TimUtil.showToast(data.msg, 'error')
