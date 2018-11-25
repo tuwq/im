@@ -128,15 +128,15 @@
 				"resources": [
 					"pages/chatlist/chatlist.html",
 					"pages/Chatlist/chatlist.html",
-					"download/font_icon/iconfont.css"
+					"download/font_icon/iconfont.css",
+					"pages/GroupPage/groupPage.html"
 				],
 				"refer": [
 					"pages/contact/contact.html",
 					"pages/me/me.html",
 					"pages/Contact/contact.html",
 					"pages/Me/me.html",
-					"pages/Login/login.html",
-					"pages/GroupPage/groupPage.html"
+					"pages/Login/login.html"
 				],
 				"priority": 0
 			},
@@ -287,7 +287,8 @@
 				"resources": [],
 				"refer": [
 					"pages/AddFriend/addFriend.html",
-					"pages/CreateGroup/createGroup.html"
+					"pages/CreateGroup/createGroup.html",
+					"pages/GroupChatting/groupChatting.html"
 				],
 				"priority": 0
 			},
@@ -317,7 +318,8 @@
 				"resources": [],
 				"refer": [
 					"pages/ImageResult/imageResult.html",
-					"pages/GroupMemberList/groupMemberList.html"
+					"pages/GroupMemberList/groupMemberList.html",
+					"pages/GroupChatting/groupChatting.html"
 				],
 				"priority": 0
 			},
@@ -325,6 +327,13 @@
 				"resources": [],
 				"refer": [
 					"pages/UserInfo/userInfo.html"
+				],
+				"priority": 0
+			},
+			"pages/GroupChatting/groupChatting.html": {
+				"resources": [],
+				"refer": [
+					"pages/GroupInfo/groupInfo.html"
 				],
 				"priority": 0
 			}

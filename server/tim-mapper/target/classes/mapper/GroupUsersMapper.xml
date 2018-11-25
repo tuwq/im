@@ -29,6 +29,12 @@
     id, group_id, user_id, create_time
   </sql>
   
+  <select id="memberIdListByGroupId" parameterType="map" resultType="string">
+    select user_id
+    from group_users
+    where group_id = #{groupId}
+  </select>
+  
   <select id="groupListByUserId" parameterType="map" resultMap="groupMap">
     select g.id groupId, g.group_faceImage_big group_faceImage_big, g.group_name group_name,
     g.group_number group_number,g.users_num users_num

@@ -60,6 +60,17 @@
 				})
 			})
 			
+			function startGroupChatting(groupId, groupName) {
+				mui.openWindow({
+					url: '../GroupChatting/groupChatting.html',
+					id: 'groupChatting_' + groupId,
+					show: {autoShow: true, aniShow: 'slide-in-right', duration:200},
+					extras: {
+						groupId,groupName
+					}
+				})
+			}
+			
 			function apiGroupList() {
 				window.GroupApi.groupListByJoinedApi({
 					userId: me.id
@@ -84,7 +95,7 @@
 		</script>
 		<script type="text/template" id="groupItemTemplate">
 			{{#each result}}
-		    <div class="group-item">
+		    <div class="group-item" onclick="startGroupChatting('{{id}}','{{groupName}}')">
 		    	<div class="item-body mui-slider-handle">
 		    		<div class="item-avatar">
 						<img src="{{../avatarUrlPrefix}}{{groupFaceimageBig}}" alt="" width="40" height="40"/>

@@ -1,0 +1,193 @@
+html,
+body {
+	height: 100%;
+	margin: 0px;
+	padding: 0px;
+	overflow: hidden;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+}
+.mui-content {
+	height: 100%;
+	padding: 0px 0px 50px 0px;
+	overflow: auto;
+	background-color: #130E28;
+}
+#msg {
+	height: 100%;
+	padding: 0px 0px 50px 0px;
+	overflow: auto;
+	background-color: #130E28;
+}
+/*图片气泡*/
+.friend_lists {
+	margin: 0 50px 0px 10px;
+	position: relative;
+}
+
+.friend_lists .header_img {
+	position: absolute;
+	top: 5px;
+}
+
+.me_lists {
+	position: relative;
+	margin: 0 10px 0px 50px;
+}
+
+.me_lists .msg {
+	float: right;
+	margin-right: 73px;
+}
+
+.me_lists .header_img {
+	position: absolute;
+	top: 5px;
+	right: 0px;
+}
+
+
+/*背景气泡*/
+.msg-left-white {
+	background-color: #160F2E;
+	font-size: 16px;
+}
+
+.msg-right-green {
+	background-color: #2E2A45;
+	font-size: 16px;
+}
+
+.msg-wrapper p {
+	color: #FFF;
+	display: inline-block;
+	position: relative;
+	padding: 12px;
+	margin: 10px;
+	border-radius: 5px;
+}
+
+.msg-wrapper.right p {
+	margin-left: 60px;
+	border: 1px solid #2E2A45;
+}
+
+.msg-wrapper.right p:before {
+	width: 0;
+	content: "";	
+	position: absolute;
+	top: 12px;
+	left: -8px;
+	border-color: transparent #2E2A45;
+	border-width: 8px 8px 8px 0px;
+	border-style: solid;
+}
+.msg-wrapper.left p:before {
+	width: 0;
+	content: "";
+	position: absolute;
+	top: 15px;
+	border-style: solid;
+}
+
+.msg-wrapper.left p {
+	margin-right: 60px;
+}
+
+.msg-wrapper.left {
+	text-align: right;
+}
+
+.text-left {
+	text-align: left;
+}
+
+.msg-wrapper.left p:before {
+	top: 15px;
+	right: -8px;
+	border-color: transparent #2E2A45;
+	border-width: 8px 0px 8px 8px;
+}
+
+.cur_time {
+	text-align: center;
+	width: 100%;
+	margin-top: 10px;
+}
+
+.cur_time span {
+	width: auto;
+	display: inline-block;
+	padding: 2px 10px;
+	font-size: 14px;
+	border-radius: 3px;
+	background: #CECECE;
+	color: white;
+}
+footer {
+	position: fixed;
+	width: 100%;
+	height: 50px;
+	min-height: 50px;
+	border-top: solid 1px #bbb;
+	left: 0px;
+	bottom: 0px;
+	overflow: hidden;
+	padding: 0px 65px 0 10px;
+	background-color: #000;
+}
+.footer-left {
+	position: absolute;
+	width: 50px;
+	height: 50px;
+	left: 0px;
+	bottom: 0px;
+	text-align: center;
+	vertical-align: middle;
+	line-height: 100%;
+	padding: 12px 4px;
+}
+
+.footer-right {
+	position: absolute;
+	width: 60px;
+	height: 50px;
+	right: 0px;
+	bottom: 0px;
+	text-align: center;
+	vertical-align: middle;
+	line-height: 100%;
+	padding: 8px 15px 0 0;
+	display: inline-block;
+}
+.footer-right .send-btn{
+	color: #FFF;
+	background-color: #160F2E;
+	text-align: center;
+}
+.footer-center {
+	height: 100%;
+	padding: 5px 0px;
+}
+.footer-center [class*=input] {
+	width: 100%;
+	height: 100%;
+	border-radius: 5px;
+}
+
+.footer-center .input-text {
+	background: #fff;
+	border: solid 1px #ddd;
+	padding: 10px !important;
+	font-size: 16px !important;
+	line-height: 18px !important;
+	font-family: verdana !important;
+	overflow: hidden;
+}
+.footer-center .input-sound {
+	background-color: #eee;
+}
+
+
+
+

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80011
 File Encoding         : 65001
 
-Date: 2018-11-24 20:37:31
+Date: 2018-11-25 20:36:55
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -32,18 +32,19 @@ CREATE TABLE `groups` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for group_chat_content
+-- Table structure for group_accept_chat_content
 -- ----------------------------
-DROP TABLE IF EXISTS `group_chat_content`;
-CREATE TABLE `group_chat_content` (
-  `id` varchar(50) NOT NULL COMMENT '组消息id',
-  `send_user_id` varchar(50) NOT NULL COMMENT '发送者id',
-  `accept_group_id` varchar(50) NOT NULL COMMENT '接收组id',
-  `content` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '消息内容',
-  `sign_flag` int(11) NOT NULL COMMENT '是否签收',
-  `create_time` datetime NOT NULL COMMENT '创建时间',
+DROP TABLE IF EXISTS `group_accept_chat_content`;
+CREATE TABLE `group_accept_chat_content` (
+  `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '组用户接收消息id',
+  `group_send_content_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '群发送消息的id',
+  `accept_user_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '接收用户的id',
+  `accept_group_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '群聊组的id',
+  `content` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '消息内容',
+  `sign_flag` int(11) NOT NULL DEFAULT '0' COMMENT '是否签收',
+  `create_time` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='群聊接收消息表';
 
 -- ----------------------------
 -- Table structure for group_request
@@ -57,6 +58,19 @@ CREATE TABLE `group_request` (
   `create_time` datetime NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for group_send_chat_content
+-- ----------------------------
+DROP TABLE IF EXISTS `group_send_chat_content`;
+CREATE TABLE `group_send_chat_content` (
+  `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '组用户发送消息id',
+  `send_user_id` varchar(50) NOT NULL COMMENT '发送者id',
+  `accept_group_id` varchar(50) NOT NULL COMMENT '接收组id',
+  `content` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '消息内容',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='群聊发送消息表';
 
 -- ----------------------------
 -- Table structure for group_users

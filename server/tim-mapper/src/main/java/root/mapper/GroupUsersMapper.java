@@ -45,4 +45,10 @@ public interface GroupUsersMapper {
 	 * @return
 	 */
 	List<Groups> groupListByUserId(@Param("userId") String userId);
+	/**
+	 * 所有群成员的id
+	 * @param groupId
+	 * @return
+	 */
+	List<String> memberIdListByGroupId(@Param("groupId") String groupId);
 }

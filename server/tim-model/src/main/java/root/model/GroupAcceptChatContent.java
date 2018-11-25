@@ -2,14 +2,22 @@ package root.model;
 
 import java.util.Date;
 
-public class GroupChatContent {
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class GroupAcceptChatContent {
     private String id;
 
-    private String sendUserId;
-
-    private String acceptGroupId;
+    private String groupSendContentId;
 
     private String acceptUserId;
+
+    private String acceptGroupId;
 
     private String content;
 
@@ -25,20 +33,12 @@ public class GroupChatContent {
         this.id = id == null ? null : id.trim();
     }
 
-    public String getSendUserId() {
-        return sendUserId;
+    public String getGroupSendContentId() {
+        return groupSendContentId;
     }
 
-    public void setSendUserId(String sendUserId) {
-        this.sendUserId = sendUserId == null ? null : sendUserId.trim();
-    }
-
-    public String getAcceptGroupId() {
-        return acceptGroupId;
-    }
-
-    public void setAcceptGroupId(String acceptGroupId) {
-        this.acceptGroupId = acceptGroupId == null ? null : acceptGroupId.trim();
+    public void setGroupSendContentId(String groupSendContentId) {
+        this.groupSendContentId = groupSendContentId == null ? null : groupSendContentId.trim();
     }
 
     public String getAcceptUserId() {
@@ -47,6 +47,14 @@ public class GroupChatContent {
 
     public void setAcceptUserId(String acceptUserId) {
         this.acceptUserId = acceptUserId == null ? null : acceptUserId.trim();
+    }
+
+    public String getAcceptGroupId() {
+        return acceptGroupId;
+    }
+
+    public void setAcceptGroupId(String acceptGroupId) {
+        this.acceptGroupId = acceptGroupId == null ? null : acceptGroupId.trim();
     }
 
     public String getContent() {

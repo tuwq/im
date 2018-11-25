@@ -31,10 +31,11 @@
 			 * ! 加入群后刷新群聊列表
 			 */
 			mui.init()
-			var groupId
 			var me
 			var selfWebview
 			var groupPageWebview
+			var groupId
+			var groupName
 			mui.plusReady(function(){
 				selfWebview = plus.webview.currentWebview()
 				groupPageWebview = plus.webview.getWebviewById('groupPage.html')
@@ -49,6 +50,7 @@
 				}, function(data){
 					if (data.code == 200) {
 						var result = data.result
+						groupName = result.groupName
 						renderGroupInfo(result)
 					} else {
 						window.TimUtil.showToast(data.msg, 'error')
@@ -66,7 +68,14 @@
 				$('#groupInfo').html(html)
 				if (result.joined) {
 					document.getElementById('send-content').addEventListener('tap', function(e){
-						console.log('send-content')
+						mui.openWindow({
+							url: '../GroupChatting/groupChatting.html',
+							id: 'groupChatting_' + groupId,
+							show: {autoShow: true, aniShow: 'slide-in-right', duration:200},
+							extras: {
+								groupId,groupName
+							}
+						})
 					})
 				} else {
 					document.getElementById('confirm-join').addEventListener('tap', function(e){

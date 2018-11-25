@@ -13,5 +13,8 @@ public class WebSocketRequestConstant {
 	public final static String SingleChatSendMsg = "SingleChatSendMsg";
 	// 签收私聊消息
 	public final static String SingleSigningMsg = "SingleSigningMsg";
-	
+	// 发送群聊消息
+	public final static String GroupChatSendMsg = "GroupChatSendMsg";
+	// 签收群聊消息
+	public final static String GroupSigningMsg = "GroupSigningMsg";
 }

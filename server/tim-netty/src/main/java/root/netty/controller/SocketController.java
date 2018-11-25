@@ -1,30 +1,44 @@
 package root.netty.controller;
 
 
+import java.awt.MenuBar;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.google.common.collect.Lists;
+import com.sun.tools.classfile.StackMapTable_attribute.append_frame;
+import com.sun.tools.extcheck.Main;
+
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelId;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
+import net.minidev.json.JSONUtil;
+import root.dto.UsersDto;
+import root.mapper.UsersMapper;
+import root.model.Users;
 import root.netty.NettyChannelGroup;
 import root.netty.NettyStorage;
 import root.netty.annotations.SocketMapping;
 import root.netty.dto.AccepetChatContent;
+import root.netty.dto.AcceptMsgIdBindMember;
 import root.netty.dto.SocketData;
 import root.netty.dto.SocketResult;
 import root.netty.enums.WebSocketRequestConstant;
 import root.netty.enums.WebSocketResultContant;
+import root.netty.service.GroupChatMsgService;
 import root.netty.service.SingleChatMsgService;
 import root.util.ApplicationContextUtil;
+import root.util.DtoUtil;
 import root.util.JsonUtils;
 
 public class SocketController {
 	
 	private SingleChatMsgService singleChatMsgService = ApplicationContextUtil.popBean(SingleChatMsgService.class);
+	private GroupChatMsgService groupChatMsgService = ApplicationContextUtil.popBean(GroupChatMsgService.class);
+	private UsersMapper usersMapper = ApplicationContextUtil.popBean(UsersMapper.class);
 	/**
 	 * 打开连接
 	 * 连接用户关系入concurrentHashMap
@@ -54,7 +68,7 @@ public class SocketController {
 	 * 保存聊天消息
 	 * 向接收者推送消息
 	 * ! 接收者未上线
-	 * ! channel是否在netty的channel存在
+	 * ! 用户channel是否在netty的channel存在
 	 * @param socketData
 	 * @param ctx
 	 * @param msg
@@ -104,4 +118,41 @@ public class SocketController {
 			singleChatMsgService.batchUpdateSignStatus(msgIdList);
 		}
 	}
+	
+	/**
+	 * 发送群聊消息
+	 * 保存群聊消息
+	 * 让群友们接收消息
+	 * ! 接收者未上线
+	 * ! 发送者的相关信息
+	 * ! 用户channel是否在netty的channel存在
+	 * @param socketData
+	 * @param ctx
+	 * @param msg
+	 */
+	@SocketMapping(WebSocketRequestConstant.GroupChatSendMsg)
+	public void groupChatMsg(SocketData socketData,ChannelHandlerContext ctx, TextWebSocketFrame msg) {
+		Channel currentChannel = ctx.channel();
+		AccepetChatContent accepetChatContent = socketData.getAccepetChatContent();
+		String groupSendContentId = groupChatMsgService.saveGroupSendMsgContent(accepetChatContent);
+		List<String> groupMemberIdList = groupChatMsgService.getGroupMemberList(accepetChatContent.getAcceptId());
+		List<AcceptMsgIdBindMember> acceptMsgBindMemberList = groupChatMsgService.saveBatchGroupAcceptMsgContent(groupSendContentId, 
+				accepetChatContent, groupMemberIdList);
+		Users sender = usersMapper.selectByPrimaryKey(accepetChatContent.getSenderId());
+		acceptMsgBindMemberList.stream().forEach(item -> {
+			String memberId = item.getMemberId();
+			String acceptMsgId = item.getAcceptMsgId();
+			Channel memberChannel = NettyStorage.get(memberId);
+			if (memberChannel != null) {
+				Channel findChannel = NettyChannelGroup.groups.find(memberChannel.id());
+				if (findChannel != null) {
+					accepetChatContent.setContentId(acceptMsgId);
+					accepetChatContent.setSenderId(JsonUtils.objectToJson(DtoUtil.adapt(new UsersDto(), sender)));
+					SocketResult socketResult = SocketResult.success(WebSocketResultContant.AcceptGroupChatMsg, accepetChatContent);
+					findChannel.writeAndFlush(new TextWebSocketFrame(JsonUtils.objectToJson(socketResult)));
+				}
+			}
+		});
+	}
+	
 }

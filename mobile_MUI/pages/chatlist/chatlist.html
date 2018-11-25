@@ -54,6 +54,7 @@
 			 * 收到消息将消息通知至指定webview
 			 * 点击快照后对快照记录进行已读取状态
 			 * 获取未上线时未签收的消息,保存至本地,保存至快照,并批量签收
+			 * 监听群聊消息
 			 * ! 同意后更新好友列表
 			 * ! 收到消息后证明已签收
 			 * ! 同意请求被通过后刷新通讯录
@@ -153,6 +154,9 @@
 					window.websocketUtil.sendSingleText(e.detail.senderId, e.detail.acceptId, e.detail.content, null)
 					refreshSingleChatSnapshot()
 				})
+				window.addEventListener(window.websocketRequestContant.GroupChatSendMsg, function(e){
+					window.websocketUtil.sendGroupText(e.detail.senderId, e.detail.acceptId, e.detail.content, null)
+				})
 				window.websocketUtil.subscribe(window.websocketResultContant.AcceptSingleChatMsg,function(result, accepetChatContent){				
 					var senderId = accepetChatContent.senderId
 					var acceptId = accepetChatContent.acceptId
@@ -164,10 +168,22 @@
 					} else {
 						isRead = window.cacheChatSnapshot.chatSnapshotReadType.NoRead
 					}
-					window.websocketUtil.singleSigningMsg(accepetChatContent.contentId, null)
+					window.websocketUtil.signingSingleMsg(accepetChatContent.contentId, null)
 					window.cacheChatHistory.setSingleChatHistory(acceptId, senderId, content, window.cacheChatHistory.chatHistoryFlagType.contentForSide)
 					window.cacheChatSnapshot.setSingleChatSnapshot(acceptId, senderId, content, isRead)
 					refreshSingleChatSnapshot()
+				})
+				var me = window.TimUtil.getCacheNowUserInfo()
+				window.websocketUtil.subscribe(window.websocketResultContant.AcceptGroupChatMsg,function(result, accepetChatContent){
+					var sender = JSON.parse(accepetChatContent.senderId)
+					var groupId = accepetChatContent.acceptId
+					var content = accepetChatContent.content
+					var groupChattingWebview = plus.webview.getWebviewById('groupChatting_' + groupId)
+					if (groupChattingWebview != null && sender.id != me.id) {
+						mui.fire(groupChattingWebview, window.websocketResultContant.AcceptGroupChatMsg, {
+							content,sender
+						})
+					}
 				})
 				window.websocketUtil.subscribe(window.websocketResultContant.PullNewContact,function(result, accepetChatContent){
 					mui.fire(contactWebview, window.TimConfig.timSubscribe.refreshContactContactListSubscribe)
@@ -198,7 +214,7 @@
 							singleChatMsgIds += noReadSingleChatMsgItem.id
 							singleChatMsgIds += ","
 						}
-						window.websocketUtil.singleSigningMsg(singleChatMsgIds, null)
+						window.websocketUtil.signingSingleMsg(singleChatMsgIds, null)
 						refreshSingleChatSnapshot()
 					}
 				})

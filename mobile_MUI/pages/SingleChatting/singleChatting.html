@@ -134,25 +134,25 @@
 				audioPlayer.play()
 			}
 			
-			function sendMsg(faceImageCut, msg) {
+			function sendMsg(faceImageCut, cotent) {
 				var msgRightTemplate = $('#msgRightTemplate').html()
 				var template = Handlebars.compile(msgRightTemplate)
 				var data = {}
 				data.avatarPrefix = window.TimConfig.serverImageUrl + window.TimConfig.avatarPrefix
 				data.faceImageCut = faceImageCut
-				data.msg = msg
+				data.msg = cotent
 				var html = template(data)
 				var msgDOM = document.getElementById('msg')
 				msgDOM.insertAdjacentHTML("beforeend", html)
 			}
 			
-			function acceptMsg(faceImageCut, msg) {
+			function acceptMsg(faceImageCut, cotent) {
 				var msgLeftTemplate = $('#msgLeftTemplate').html()
 				var template = Handlebars.compile(msgLeftTemplate)
 				var data = {}
 				data.avatarPrefix = window.TimConfig.serverImageUrl + window.TimConfig.avatarPrefix
 				data.faceImageCut = faceImageCut
-				data.msg = msg
+				data.msg = cotent
 				var html = template(data)
 				var msgDOM = document.getElementById('msg')
 				msgDOM.insertAdjacentHTML("beforeend", html)
