@@ -51,11 +51,10 @@
 			var sideUserId
 			var sideNickname
 			var sideFaceImageCut
-			var me
 			mui.plusReady(function() {
 				var selfWebview = plus.webview.currentWebview()
 				var chatlistWebview = plus.webview.getWebviewById('chatlist.html')
-				me = window.TimUtil.getCacheNowUserInfo()
+				var me = window.TimUtil.getCacheNowUserInfo()
 				plus.webview.currentWebview().setStyle({
 					softinputMode: "adjustResize"
 				})
@@ -71,6 +70,7 @@
 					document.getElementById('msg-outter').style.paddingBottom = '50px'
 				})
 				document.getElementById('send').addEventListener('tap', function(e){
+					var me = window.TimUtil.getCacheNowUserInfo()
 					var connectionStatus = plus.networkinfo.getCurrentType()
 					if (connectionStatus == 0 || connectionStatus == 1) {
 						window.TimUtil.showToast('当前网络状态不可用', 'error')

@@ -16,6 +16,7 @@
 		<script src="../../common/js/TimUtil.js"></script>
 		<script src="../../config/websocketContant.js"></script>
 		<script src="../../common/js/cacheChatHistory.js"></script>
+		<script src="../../common/js/cacheChatSnapshot.js"></script>
 	</head>
 
 	<body>
@@ -46,7 +47,6 @@
 			 * ！ 判断网络状态
 			 */
 			mui.init()
-			var me
 			var selfWebview
 			var chatlistWebview
 			var groupId
@@ -54,7 +54,7 @@
 			var chatTextDOM
 			var msgDOM
 			mui.plusReady(function(){
-				me = window.TimUtil.getCacheNowUserInfo()
+				var me = window.TimUtil.getCacheNowUserInfo()
 				selfWebview = plus.webview.currentWebview()
 				chatlistWebview = plus.webview.getWebviewById('chatlist.html')
 				setSetting()
@@ -62,6 +62,7 @@
 				chatTextDOM = document.getElementById('msg-text')
 				msgDOM = document.getElementById('msg')
 				document.getElementById('send').addEventListener('tap', function(e){
+					var me = window.TimUtil.getCacheNowUserInfo()
 					var connectionStatus = plus.networkinfo.getCurrentType()
 					if (connectionStatus == 0 || connectionStatus == 1) {
 						window.TimUtil.showToast('当前网络状态不可用', 'error')
@@ -71,13 +72,14 @@
 					if ( chat_text.length === 0 ) {
 						return
 					}
-					sendMsg(me.faceImageCut, chat_text)
+					sendMsg(me, chat_text)
 					mui.fire(chatlistWebview, window.websocketRequestContant.GroupChatSendMsg, {
 						senderId: me.id,
 						acceptId: groupId,
 						content: chat_text
 					})
 					window.cacheChatHistory.setGroupChatHistory(me.id, me, groupId, chat_text, window.cacheChatHistory.chatHistoryFlagType.contentForMe)
+					window.cacheChatSnapshot.setGroupChatSnapshot(me.id, groupId, chat_text, window.cacheChatSnapshot.chatSnapshotReadType.YesRead)
 					chatTextDOM.value = ''
 				})
 				window.addEventListener(window.websocketResultContant.AcceptGroupChatMsg, function(e) {
@@ -132,7 +134,7 @@
 				acceptMP3()
 			}
 			
-			function sendMsg(faceImageCut, cotent) {
+			function sendMsg(me, cotent) {
 				var msgRightTemplate = $('#msgRightTemplate').html()
 				var template = Handlebars.compile(msgRightTemplate)
 				var data = {}

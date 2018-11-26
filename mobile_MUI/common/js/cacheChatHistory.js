@@ -72,7 +72,7 @@ window.cacheChatHistory = {
 		}
 		return groupChatHistoryList
 	},
-	deleteSingleChatHistory: function(meId, groupId) {
+	deleteGroupChatHistory: function(meId, groupId) {
 		var groupChatKey = 'groupChat_' + meId + "-" + groupId
 		plus.storage.removeItem(groupChatKey)
 	},

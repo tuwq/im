@@ -14,6 +14,7 @@
 		<script src="../../config/TimConfig.js"></script>
 		<script src="../../common/js/TimUtil.js"></script>
 		<script src="../../api/Group/group.js"></script>
+		<script src="../../common/js/cacheGroupList.js"></script>
 	</head>
 
 	<body>
@@ -77,6 +78,7 @@
 				}, function(data) {
 					if (data.code == 200) {
 						renderGroupList(data.result)
+						window.cacheGroupList.setGroupList(data.result)
 					} else {
 						window.TimUtil.showToast(data.msg, 'error')
 					}

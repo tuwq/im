@@ -24,6 +24,7 @@
 		<script src="../../common/js/cacheChatHistory.js"></script>
 		<script src="../../common/js/cacheChatSnapshot.js"></script>
 		<script src="../../common/js/cacheContact.js"></script>
+		<script src="../../common/js/cacheGroupList.js"></script>
 	</head>
 
 	<body>
@@ -35,7 +36,10 @@
 			<div id="request-list" class="request-list">
 				
 			</div>
-			<div id="chatSnapshot-list" class="chatSnapshot-list">
+			<div id="chatSnapshot-single-list" class="chatSnapshot-list">
+				
+			</div>
+			<div id="chatSnapshot-group-list" class="chatSnapshot-list">
 				
 			</div>
 		</div>
@@ -79,14 +83,41 @@
 				getSingleNoReadChatMsg()
 				getGroupNoReadChatMsg()
 				refreshSingleChatSnapshot()
+				refreshGroupChatSnapshot()
 				selfWebview.addEventListener('show', function() {
 					window.TimWebsocket.init()
 					refreshAcceptRequest()
 					getSingleNoReadChatMsg()
 					getGroupNoReadChatMsg()
 					refreshSingleChatSnapshot()
+					refreshGroupChatSnapshot()
 				})
-				mui('#chatSnapshot-list').on('tap', '.single-chatSnapshot-item', function(e) {
+				mui('#chatSnapshot-group-list').on('tap', '.single-chatSnapshot-item', function(e) {
+					var me = window.TimUtil.getCacheNowUserInfo()
+					var groupId = this.getAttribute('groupId')
+					var groupName = this.getAttribute('groupName')
+					var groupFaceimageBig = this.getAttribute('groupFaceimageBig')
+					mui.openWindow({
+						url: '../GroupChatting/groupChatting.html',
+						id: 'groupChatting_' + groupId,
+						show: {autoShow: true, aniShow: 'slide-in-right', duration:200},
+						extras: {
+							groupId,groupName
+						}
+					})
+					window.cacheChatSnapshot.updateReadGroupChatSnapshot(me.id, groupId)
+					refreshGroupChatSnapshot()
+				})
+				mui('#chatSnapshot-group-list').on('tap', '.deleteSingleChatRecordingButton', function(e) {
+					var me = window.TimUtil.getCacheNowUserInfo()
+					var meId = me.id
+					var groupId = this.getAttribute('groupId')
+					window.cacheChatHistory.deleteGroupChatHistory(meId, groupId)
+					window.cacheChatSnapshot.deleteGroupChatSnapshot(meId, groupId)
+					document.getElementById('chatSnapshot-group-list').removeChild(this.parentNode.parentNode)
+				})
+				mui('#chatSnapshot-single-list').on('tap', '.single-chatSnapshot-item', function(e) {
+					var me = window.TimUtil.getCacheNowUserInfo()
 					var sideId = this.getAttribute('sideId')
 					var userNickname = this.getAttribute('userNickname')
 					var userFaceImageCut = this.getAttribute('userFaceImageCut')
@@ -100,21 +131,22 @@
 							faceImageCut: userFaceImageCut
 						}
 					})
-					window.cacheChatSnapshot.updateReadSingleChatSnapshot(user.id, sideId)
+					window.cacheChatSnapshot.updateReadSingleChatSnapshot(me.id, sideId)
 					refreshSingleChatSnapshot()
 				})
-				mui('#chatSnapshot-list').on('tap', '.deleteSingleChatRecordingButton', function(e) {
+				mui('#chatSnapshot-single-list').on('tap', '.deleteSingleChatRecordingButton', function(e) {
 					var me = window.TimUtil.getCacheNowUserInfo()
 					var meId = me.id
 					var sideId = this.getAttribute('sideId')
 					window.cacheChatHistory.deleteSingleChatHistory(meId, sideId)
 					window.cacheChatSnapshot.deleteSingleChatSnapshot(meId, sideId)
-					document.getElementById('chatSnapshot-list').removeChild(this.parentNode.parentNode)
+					document.getElementById('chatSnapshot-single-list').removeChild(this.parentNode.parentNode)
 				})
 				mui('#request-list').on('tap', '.agree-button', function(e){
+					var me = window.TimUtil.getCacheNowUserInfo()
 					var sendUserId = this.getAttribute('data-id')
 					window.RequestApi.singleRequestAgree({
-						meId: user.id,
+						meId: me.id,
 						sendUserId: sendUserId
 					}, function(data) {
 						if (data.code == 200) {
@@ -127,9 +159,10 @@
 					})
 				})
 				mui('#request-list').on('tap', '.refuse-button', function(e){
+					var me = window.TimUtil.getCacheNowUserInfo()
 					var sendUserId = this.getAttribute('data-id')
 					window.RequestApi.singleRequestRefuse({
-						meId: user.id,
+						meId: me.id,
 						sendUserId: sendUserId
 					}, function(data) {
 						if (data.code == 200) {
@@ -161,6 +194,7 @@
 				})
 				window.addEventListener(window.websocketRequestContant.GroupChatSendMsg, function(e){
 					window.websocketUtil.sendGroupText(e.detail.senderId, e.detail.acceptId, e.detail.content, null)
+					refreshGroupChatSnapshot()
 				})
 				window.websocketUtil.subscribe(window.websocketResultContant.AcceptSingleChatMsg,function(result, accepetChatContent){				
 					var senderId = accepetChatContent.senderId
@@ -186,6 +220,7 @@
 					var content = accepetChatContent.content
 					var contentId = accepetChatContent.contentId
 					var groupChattingWebview = plus.webview.getWebviewById('groupChatting_' + groupId)
+					var isRead = window.cacheChatSnapshot.chatSnapshotReadType.YesRead
 					if (sender.id != me.id) {
 						window.cacheChatHistory.setGroupChatHistory(me.id, sender, groupId, content, window.cacheChatHistory.chatHistoryFlagType.contentForSide)
 					}
@@ -194,9 +229,11 @@
 							content,sender
 						})
 					} else {
-						
+						isRead = window.cacheChatSnapshot.chatSnapshotReadType.NoRead
 					}
 					window.websocketUtil.groupSigningMsg(contentId, null)
+					window.cacheChatSnapshot.setGroupChatSnapshot(me.id, groupId, content, isRead)
+					refreshGroupChatSnapshot()
 				})
 				window.websocketUtil.subscribe(window.websocketResultContant.PullNewContact,function(result, accepetChatContent){
 					mui.fire(contactWebview, window.TimConfig.timSubscribe.refreshContactContactListSubscribe)
@@ -205,6 +242,31 @@
 					refreshAcceptRequest()
 				})
 			})
+			
+			function refreshGroupChatSnapshot() {
+				var chatSnapshotListDOM = document.getElementById('chatSnapshot-group-list')
+				var me = window.TimUtil.getCacheNowUserInfo()
+				var groupChatSnapshotList =  window.cacheChatSnapshot.getGroupChatSnapshot(me.id)
+				var togetherHTML = ''
+				for (var i = 0; i < groupChatSnapshotList.length; i++) {
+					var groupChatSnapshotItem = groupChatSnapshotList[i]
+					var groupId = groupChatSnapshotItem.groupId
+					var groupItem = window.cacheGroupList.getGroupItem(groupId)
+					togetherHTML += renderGroupChatSnapshot(groupItem, groupChatSnapshotItem)
+				}
+				chatSnapshotListDOM.innerHTML = togetherHTML
+			}
+			
+			function renderGroupChatSnapshot(groupItem, groupChatSnapshotItem) {
+				var data = {}
+				var groupChatSnapshotTemplate = $('#groupChatSnapshotTemplate').html()
+				data.groupItem = groupItem
+				data.groupChatSnapshotItem = groupChatSnapshotItem
+				data.avatarUrlPrefix = window.TimConfig.serverImageUrl + window.TimConfig.groupAvatarPrefix
+				var template = Handlebars.compile(groupChatSnapshotTemplate)
+				var html = template(data)
+				return html
+			}
 			
 			function getGroupNoReadChatMsg() {
 				var me = window.TimUtil.getCacheNowUserInfo()
@@ -254,7 +316,7 @@
 			}
 			
 			function refreshSingleChatSnapshot() {
-				var chatSnapshotListDOM = document.getElementById('chatSnapshot-list')
+				var chatSnapshotListDOM = document.getElementById('chatSnapshot-single-list')
 				var me = window.TimUtil.getCacheNowUserInfo()
 				var singleChatSnapshotList =  window.cacheChatSnapshot.getSingleChatSnapshot(me.id)
 				var togetherHTML = ''
@@ -280,9 +342,9 @@
 			
 			function refreshAcceptRequest() {
 				$('#request-list').empty()
-				var user = window.TimUtil.getCacheNowUserInfo()
+				var me = window.TimUtil.getCacheNowUserInfo()
 				window.RequestApi.singleRequestAcceptApi({
-					userId: user.id
+					userId: me.id
 				}, function(data){
 					if (data.code == 200) {
 						if (data.result.length > 0) {
@@ -332,6 +394,23 @@
 						<div class="item-info-content">{{singleChatSnapshotItem.content}}</div>
 					</div>
 					{{#unless  singleChatSnapshotItem.isRead}}
+						<span class="mui-badge mui-badge-red">..</span>
+					{{/unless }}
+		    	</div>
+			</div>
+		</script>
+		<script type="text/template" id="groupChatSnapshotTemplate">
+		    <div class="single-chatSnapshot-item" groupId="{{groupItem.id}}" groupName="{{groupItem.groupName}}" 
+		    		groupFaceimageBig="{{groupItem.groupFaceimageBig}}">
+		    	<div class="item-body mui-slider-handle">
+		    		<div class="item-avatar">
+						<img src="{{avatarUrlPrefix}}{{groupItem.groupFaceimageBig}}" alt="" />
+					</div>
+					<div class="item-info mui-slider-handle">
+						<div class="item-info-nickname">{{groupItem.groupName}}(群)</div>
+						<div class="item-info-content">{{groupChatSnapshotItem.content}}</div>
+					</div>
+					{{#unless  groupChatSnapshotItem.isRead}}
 						<span class="mui-badge mui-badge-red">..</span>
 					{{/unless }}
 		    	</div>

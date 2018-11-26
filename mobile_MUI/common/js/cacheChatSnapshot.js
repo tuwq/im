@@ -7,6 +7,15 @@ class SingleChatSnapshot {
 	}
 }
 
+class GroupChatSnapshot {
+	constructor(meId, groupId, content, isRead) {
+	    this.meId = meId
+	    this.groupId = groupId
+	    this.content = content
+	    this.isRead = isRead
+	}
+}
+
 window.cacheChatSnapshot = {
 	chatSnapshotReadType: {
 		YesRead: true,	// 我发送的
@@ -77,6 +86,63 @@ window.cacheChatSnapshot = {
 				}
 			}
 			plus.storage.setItem(singleSnapshotKey, JSON.stringify(singleSnapshotList))
+		}
+	},
+	setGroupChatSnapshot: function(meId, groupId, content, isRead) {
+		var self = this
+		var groupSnapshotKey = 'groupSnapshot_' + meId
+		var groupSnapshotList = self.getGroupChatSnapshot(meId)
+		if (groupSnapshotList.length > 0) {
+			for (var i = 0; i < groupSnapshotList.length; i++) {
+				if (groupSnapshotList[i].groupId == groupId) {
+					groupSnapshotList.splice(i, 1)
+					break
+				}
+			}
+		}
+		var groupChatSnapshot = new GroupChatSnapshot(meId, groupId, content, isRead)
+		groupSnapshotList.unshift(groupChatSnapshot)
+		plus.storage.setItem(groupSnapshotKey, JSON.stringify(groupSnapshotList))
+	},
+	getGroupChatSnapshot: function(meId) {
+		var self = this
+		var groupSnapshotKey = 'groupSnapshot_' + meId
+		var groupSnapshotListStr = plus.storage.getItem(groupSnapshotKey)
+		var groupSnapshotList
+		if (self.isNotNull(groupSnapshotListStr)) {
+			groupSnapshotList = JSON.parse(groupSnapshotListStr)
+		} else {
+			groupSnapshotList = []
+		}
+		return groupSnapshotList
+	},
+	updateReadGroupChatSnapshot: function(meId, groupId) {
+		var self = this
+		var groupSnapshotKey = 'groupSnapshot_' + meId
+		var groupSnapshotList = self.getGroupChatSnapshot(meId)
+		if (groupSnapshotList.length > 0) {
+			for (var i = 0; i < groupSnapshotList.length; i++) {
+				if (groupSnapshotList[i].groupId == groupId) {
+					groupSnapshotList[i].isRead = window.cacheChatSnapshot.chatSnapshotReadType.YesRead
+					groupSnapshotList.splice(i, 1, groupSnapshotList[i])
+					break
+				}
+			}
+			plus.storage.setItem(groupSnapshotKey, JSON.stringify(groupSnapshotList))
+		}
+	},
+	deleteGroupChatSnapshot: function(meId, groupId) {
+		var self = this
+		var groupSnapshotKey = 'groupSnapshot_' + meId
+		var groupSnapshotList = self.getGroupChatSnapshot(meId)
+		if (groupSnapshotList.length > 0) {
+			for (var i = 0; i < groupSnapshotList.length; i++) {
+				if (groupSnapshotList[i].groupId == groupId) {
+					groupSnapshotList.splice(i, 1)
+					break
+				}
+			}
+			plus.storage.setItem(groupSnapshotKey, JSON.stringify(groupSnapshotList))
 		}
 	},
 	isNotNull: function(str) {
