@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80011
 File Encoding         : 65001
 
-Date: 2018-11-25 20:36:55
+Date: 2018-11-26 16:33:08
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -38,6 +38,7 @@ DROP TABLE IF EXISTS `group_accept_chat_content`;
 CREATE TABLE `group_accept_chat_content` (
   `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '组用户接收消息id',
   `group_send_content_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '群发送消息的id',
+  `send_user_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '发送者的id',
   `accept_user_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '接收用户的id',
   `accept_group_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '群聊组的id',
   `content` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '消息内容',
