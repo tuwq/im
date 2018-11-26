@@ -161,6 +161,7 @@
 					var senderId = accepetChatContent.senderId
 					var acceptId = accepetChatContent.acceptId
 					var content = accepetChatContent.content
+					var contentId = accepetChatContent.contentId
 					var acceptWebview = plus.webview.getWebviewById('singleChatting_' + senderId)
 					var isRead = window.cacheChatSnapshot.chatSnapshotReadType.YesRead
 					if (acceptWebview != null) {
@@ -168,7 +169,7 @@
 					} else {
 						isRead = window.cacheChatSnapshot.chatSnapshotReadType.NoRead
 					}
-					window.websocketUtil.signingSingleMsg(accepetChatContent.contentId, null)
+					window.websocketUtil.signingSingleMsg(contentId, null)
 					window.cacheChatHistory.setSingleChatHistory(acceptId, senderId, content, window.cacheChatHistory.chatHistoryFlagType.contentForSide)
 					window.cacheChatSnapshot.setSingleChatSnapshot(acceptId, senderId, content, isRead)
 					refreshSingleChatSnapshot()
@@ -178,12 +179,16 @@
 					var sender = JSON.parse(accepetChatContent.senderId)
 					var groupId = accepetChatContent.acceptId
 					var content = accepetChatContent.content
+					var contentId = accepetChatContent.contentId
 					var groupChattingWebview = plus.webview.getWebviewById('groupChatting_' + groupId)
 					if (groupChattingWebview != null && sender.id != me.id) {
 						mui.fire(groupChattingWebview, window.websocketResultContant.AcceptGroupChatMsg, {
 							content,sender
 						})
+					} else {
+						
 					}
+					window.websocketUtil.groupSigningMsg(contentId, null)
 				})
 				window.websocketUtil.subscribe(window.websocketResultContant.PullNewContact,function(result, accepetChatContent){
 					mui.fire(contactWebview, window.TimConfig.timSubscribe.refreshContactContactListSubscribe)

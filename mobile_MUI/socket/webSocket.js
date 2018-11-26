@@ -98,12 +98,16 @@ window.websocketUtil = {
 		let accepetChatContent = new AccepetChatContent(senderId,acceptId,content,null,window.websocketUtil.acceptTypeEnums.textType,null)
 		window.websocketUtil.emit(window.websocketRequestContant.SingleChatSendMsg, accepetChatContent, extendFields)
 	},
-	signingSingleMsg: function(content, extendFields) {
-		let accepetChatContent = new AccepetChatContent(null, null, content, null, window.websocketUtil.acceptTypeEnums.textType, null)
+	signingSingleMsg: function(contentId, extendFields) {
+		let accepetChatContent = new AccepetChatContent(null, null, null, null, window.websocketUtil.acceptTypeEnums.textType, contentId)
 		window.websocketUtil.emit(window.websocketRequestContant.SingleSigningMsg, accepetChatContent, extendFields)
 	},
 	sendGroupText: function(senderId, groupId, content, extendFields) {
 		let accepetChatContent = new AccepetChatContent(senderId,groupId,content,null,window.websocketUtil.acceptTypeEnums.textType,null)
 		window.websocketUtil.emit(window.websocketRequestContant.GroupChatSendMsg, accepetChatContent, extendFields)
+	},
+	groupSigningMsg: function(contentId, extendFields) {
+		let accepetChatContent = new AccepetChatContent(null, null, null, null, window.websocketUtil.acceptTypeEnums.textType, contentId)
+		window.websocketUtil.emit(window.websocketRequestContant.GroupSigningMsg, accepetChatContent, extendFields)
 	}
 }
