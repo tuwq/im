@@ -5,11 +5,14 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import com.beust.jcommander.internal.Lists;
 
+import root.dto.GroupChatContentDto;
 import root.enums.ChatMsgStatusEnum;
+import root.exception.CheckParamException;
 import root.mapper.GroupAcceptChatContentMapper;
 import root.mapper.GroupSendChatContentMapper;
 import root.mapper.GroupUsersMapper;
@@ -63,12 +66,14 @@ public class GroupChatMsgService {
 	public List<AcceptMsgIdBindMember> saveBatchGroupAcceptMsgContent(String groupSendContentId, AccepetChatContent accepetChatContent, List<String> groupMemberIdList) {
 		List<AcceptMsgIdBindMember> bindList = Lists.newArrayList();
 		List<GroupAcceptChatContent> groupAcceptChatContentList = Lists.newArrayList();
+		String senderId = accepetChatContent.getSenderId();
 		String acceptGroupId = accepetChatContent.getAcceptId();
 		String content = accepetChatContent.getContent();
 		groupMemberIdList.stream().forEach(memberId -> {
 			String uuid = RandomUtil.getUUID();
 			GroupAcceptChatContent groupAcceptChatContent = GroupAcceptChatContent.builder()
 			.id(uuid).groupSendContentId(groupSendContentId)
+			.sendUserId(senderId)
 			.acceptGroupId(acceptGroupId).acceptUserId(memberId)
 			.content(content).signFlag(ChatMsgStatusEnum.NOSIGN.getStatusCode())
 			.createTime(new Date()).build();
@@ -79,5 +84,16 @@ public class GroupChatMsgService {
 		});
 		groupAcceptChatContentMapper.inertBatch(groupAcceptChatContentList);
 		return bindList;
+	}
+	
+	/**
+	 * 获取未读的群聊消息
+	 * 获取发送者的信息
+	 * @param acceptUserId
+	 */
+	public List<GroupChatContentDto> getNoReadChatMsgList(String acceptUserId) {
+		if (StringUtils.isBlank(acceptUserId)) throw new CheckParamException("用户id不能为空");
+		List<GroupChatContentDto> list = groupAcceptChatContentMapper.getNoReadListByAcceptUserId(acceptUserId, ChatMsgStatusEnum.NOSIGN.getStatusCode());
+		return list;
 	}
 }

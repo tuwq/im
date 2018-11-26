@@ -15,6 +15,7 @@
 		<script src="../../config/TimConfig.js"></script>
 		<script src="../../common/js/TimUtil.js"></script>
 		<script src="../../config/websocketContant.js"></script>
+		<script src="../../common/js/cacheChatHistory.js"></script>
 	</head>
 
 	<body>
@@ -40,7 +41,8 @@
 			/**
 			 * 绑定按钮
 			 * 绑定滚动至底部
-			 * 发送消息
+			 * 发送群聊消息
+			 * 缓存群聊消息
 			 * ！ 判断网络状态
 			 */
 			mui.init()
@@ -56,6 +58,7 @@
 				selfWebview = plus.webview.currentWebview()
 				chatlistWebview = plus.webview.getWebviewById('chatlist.html')
 				setSetting()
+				refreshChatHistory()
 				chatTextDOM = document.getElementById('msg-text')
 				msgDOM = document.getElementById('msg')
 				document.getElementById('send').addEventListener('tap', function(e){
@@ -74,6 +77,7 @@
 						acceptId: groupId,
 						content: chat_text
 					})
+					window.cacheChatHistory.setGroupChatHistory(me.id, me, groupId, chat_text, window.cacheChatHistory.chatHistoryFlagType.contentForMe)
 					chatTextDOM.value = ''
 				})
 				window.addEventListener(window.websocketResultContant.AcceptGroupChatMsg, function(e) {
@@ -84,12 +88,44 @@
 				})
 			})
 			
+			function refreshChatHistory() {
+				var msgDOM = document.getElementById('msg')
+				var me = window.TimUtil.getCacheNowUserInfo()
+				var meId = me.id
+				var chatHistoryList = window.cacheChatHistory.getGroupChatHistory(meId, groupId)
+				var togetherHTML = ''
+				for (var i = 0; i < chatHistoryList.length; i++) {
+					var chatHistoryItem = chatHistoryList[i]
+					togetherHTML += renderChatHistory(chatHistoryItem, me)
+				}
+				msgDOM.innerHTML = togetherHTML
+			}
+			
+			function renderChatHistory(chatHistoryItem, me) {
+				var data = {}
+				var msgTemplate
+				if (chatHistoryItem.flag == window.cacheChatHistory.chatHistoryFlagType.contentForMe) {
+					msgTemplate = $('#msgRightTemplate').html()
+					data.avatarPrefix = window.TimConfig.serverImageUrl + window.TimConfig.avatarPrefix
+					data.person = me
+					data.msg = chatHistoryItem.content
+				} else if(chatHistoryItem.flag == window.cacheChatHistory.chatHistoryFlagType.contentForSide) {
+					msgTemplate = $('#msgLeftTemplate').html()
+					data.avatarPrefix = window.TimConfig.serverImageUrl + window.TimConfig.avatarPrefix
+					data.person = chatHistoryItem.sender
+					data.msg = chatHistoryItem.content
+				}
+				var template = Handlebars.compile(msgTemplate)
+				var html = template(data)
+				return html
+			}
+			
 			function acceptMsg(sender, cotent) {
 				var msgLeftTemplate = $('#msgLeftTemplate').html()
 				var template = Handlebars.compile(msgLeftTemplate)
 				var data = {}
 				data.avatarPrefix = window.TimConfig.serverImageUrl + window.TimConfig.avatarPrefix
-				data.faceImageCut = sender.faceImageCut
+				data.person = sender
 				data.msg = cotent
 				var html = template(data)
 				msgDOM.insertAdjacentHTML("beforeend", html)
@@ -101,7 +137,7 @@
 				var template = Handlebars.compile(msgRightTemplate)
 				var data = {}
 				data.avatarPrefix = window.TimConfig.serverImageUrl + window.TimConfig.avatarPrefix
-				data.faceImageCut = faceImageCut
+				data.person = me
 				data.msg = cotent
 				var html = template(data)
 				msgDOM.insertAdjacentHTML("beforeend", html)
@@ -138,11 +174,21 @@
 					document.getElementById('msg-outter').style.paddingBottom = '50px'
 				})
 			}
+			
+			function goUserInfo(userId) {
+				mui.openWindow({
+					url: '../UserInfo/userInfo.html',
+					id: 'userInfo.html',
+					extras: {
+						userId
+					}
+				})
+			}
 		</script>
 		<script type="text/template" id="msgLeftTemplate">
 		    <div class="friend_lists">
 				<div class="header_img">
-					<img src="{{avatarPrefix}}{{faceImageCut}}" width="40px" height="40px"/>
+					<img src="{{avatarPrefix}}{{person.faceImageCut}}" width="40px" height="40px" onclick="goUserInfo('{{person.id}}')"/>
 				</div>
 				<div class="msg-wrapper right">
 					<p class="msg-left-white">{{msg}}</p>
@@ -152,7 +198,7 @@
 		<script type="text/template" id="msgRightTemplate">
 			<div class="me_lists">
 				<div class="header_img">
-					<img src="{{avatarPrefix}}{{faceImageCut}}" width="40px" height="40px" />
+					<img src="{{avatarPrefix}}{{person.faceImageCut}}" width="40px" height="40px" onclick="goUserInfo('{{person.id}}')"/>
 				</div>
 				<div class="msg-wrapper left">
 					<p class="msg-right-green">{{msg}}</p>

@@ -18,6 +18,7 @@
 		<script src="../../common/js/TimUtil.js"></script>
 		<script src="../../api/Request/request.js"></script>
 		<script src="../../api/SingleChatMsg/singleChatMsg.js"></script>
+		<script src="../../api/GroupChatMsg/groupChatMsg.js"></script>
 		<script src="../../config/websocketContant.js"></script>
 		<script src="../../socket/webSocket.js"></script>
 		<script src="../../common/js/cacheChatHistory.js"></script>
@@ -52,14 +53,17 @@
 			 * 初始化网络连接
 			 * 绑定websocket监听
 			 * 收到消息将消息通知至指定webview
+			 * 缓存私聊本地聊天记录和快照记录
+			 * 缓存群聊本地聊天记录和快照记录
 			 * 点击快照后对快照记录进行已读取状态
 			 * 获取未上线时未签收的消息,保存至本地,保存至快照,并批量签收
+			 * 获取未读私聊群聊消息
 			 * 监听群聊消息
+			 * ! 群聊本人发送的消息不保存
 			 * ! 同意后更新好友列表
 			 * ! 收到消息后证明已签收
 			 * ! 同意请求被通过后刷新通讯录
 			 * ! 接收新的好友请求刷新请求列表
-			 * ！  缓存本地聊天记录和快照记录
 			 * ! 通讯录缓存中获得好友信息
 			 * ！  删除本地记录
 			 */
@@ -70,16 +74,16 @@
 				var selfWebview = plus.webview.currentWebview()
 				var indexWebview = plus.webview.getWebviewById('index.html')
 				var contactWebview = plus.webview.getWebviewById('contact.html')
+				window.TimWebsocket.init()
 				refreshAcceptRequest()
 				getSingleNoReadChatMsg()
+				getGroupNoReadChatMsg()
 				refreshSingleChatSnapshot()
-				/*setInterval(function(){
-					window.TimWebsocket.init()
-				}, 2000)*/
 				selfWebview.addEventListener('show', function() {
 					window.TimWebsocket.init()
 					refreshAcceptRequest()
 					getSingleNoReadChatMsg()
+					getGroupNoReadChatMsg()
 					refreshSingleChatSnapshot()
 				})
 				mui('#chatSnapshot-list').on('tap', '.single-chatSnapshot-item', function(e) {
@@ -100,7 +104,8 @@
 					refreshSingleChatSnapshot()
 				})
 				mui('#chatSnapshot-list').on('tap', '.deleteSingleChatRecordingButton', function(e) {
-					var meId = user.id
+					var me = window.TimUtil.getCacheNowUserInfo()
+					var meId = me.id
 					var sideId = this.getAttribute('sideId')
 					window.cacheChatHistory.deleteSingleChatHistory(meId, sideId)
 					window.cacheChatSnapshot.deleteSingleChatSnapshot(meId, sideId)
@@ -174,13 +179,16 @@
 					window.cacheChatSnapshot.setSingleChatSnapshot(acceptId, senderId, content, isRead)
 					refreshSingleChatSnapshot()
 				})
-				var me = window.TimUtil.getCacheNowUserInfo()
 				window.websocketUtil.subscribe(window.websocketResultContant.AcceptGroupChatMsg,function(result, accepetChatContent){
+					var me = window.TimUtil.getCacheNowUserInfo()
 					var sender = JSON.parse(accepetChatContent.senderId)
 					var groupId = accepetChatContent.acceptId
 					var content = accepetChatContent.content
 					var contentId = accepetChatContent.contentId
 					var groupChattingWebview = plus.webview.getWebviewById('groupChatting_' + groupId)
+					if (sender.id != me.id) {
+						window.cacheChatHistory.setGroupChatHistory(me.id, sender, groupId, content, window.cacheChatHistory.chatHistoryFlagType.contentForSide)
+					}
 					if (groupChattingWebview != null && sender.id != me.id) {
 						mui.fire(groupChattingWebview, window.websocketResultContant.AcceptGroupChatMsg, {
 							content,sender
@@ -197,6 +205,26 @@
 					refreshAcceptRequest()
 				})
 			})
+			
+			function getGroupNoReadChatMsg() {
+				var me = window.TimUtil.getCacheNowUserInfo()
+				var groupChatMsgIds = ","
+				window.GroupChatMsgApi.getNoReadChatMsgListApi({
+					acceptUserId: me.id
+				}, function(data){
+					if (data.code == 200) {
+						var noReadGroupChatMsgList = data.result
+						for (var i = 0; i < noReadGroupChatMsgList.length; i++) {
+							var noReadGroupChatMsgItem = noReadGroupChatMsgList[i]
+							window.cacheChatHistory.setGroupChatHistory(me.id, noReadGroupChatMsgItem.sender, 
+							noReadGroupChatMsgItem.groupId, noReadGroupChatMsgItem.content, window.cacheChatHistory.chatHistoryFlagType.contentForSide)
+							groupChatMsgIds += noReadGroupChatMsgItem.contentId
+							groupChatMsgIds += ","
+						}
+						window.websocketUtil.groupSigningMsg(groupChatMsgIds, null)
+					}
+				})
+			}
 			
 			function getSingleNoReadChatMsg() {
 				var me = window.TimUtil.getCacheNowUserInfo()

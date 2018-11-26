@@ -1,21 +1,16 @@
 package root.netty.controller;
 
 
-import java.awt.MenuBar;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.google.common.collect.Lists;
-import com.sun.tools.classfile.StackMapTable_attribute.append_frame;
-import com.sun.tools.extcheck.Main;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelId;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
-import net.minidev.json.JSONUtil;
 import root.dto.UsersDto;
 import root.mapper.UsersMapper;
 import root.model.Users;
@@ -28,6 +23,7 @@ import root.netty.dto.SocketData;
 import root.netty.dto.SocketResult;
 import root.netty.enums.WebSocketRequestConstant;
 import root.netty.enums.WebSocketResultContant;
+import root.netty.service.GroupAcceptChatContentService;
 import root.netty.service.GroupChatMsgService;
 import root.netty.service.SingleChatMsgService;
 import root.util.ApplicationContextUtil;
@@ -39,6 +35,7 @@ public class SocketController {
 	private SingleChatMsgService singleChatMsgService = ApplicationContextUtil.popBean(SingleChatMsgService.class);
 	private GroupChatMsgService groupChatMsgService = ApplicationContextUtil.popBean(GroupChatMsgService.class);
 	private UsersMapper usersMapper = ApplicationContextUtil.popBean(UsersMapper.class);
+	private GroupAcceptChatContentService groupAcceptChatContentService = ApplicationContextUtil.popBean(GroupAcceptChatContentService.class);
 	/**
 	 * 打开连接
 	 * 连接用户关系入concurrentHashMap
@@ -105,8 +102,7 @@ public class SocketController {
 	 */
 	@SocketMapping(WebSocketRequestConstant.SingleSigningMsg)
 	public void singleSigningMsg(SocketData socketData,ChannelHandlerContext ctx, TextWebSocketFrame msg) {
-		Channel currentChannel = ctx.channel();
-		String chatMsgIdsStr = socketData.getAccepetChatContent().getContent();
+		String chatMsgIdsStr = socketData.getAccepetChatContent().getContentId();
 		String[] chatMsgIdArray = chatMsgIdsStr.split(",");
 		List<String> msgIdList = new ArrayList<String>();
 		for (String msgId : chatMsgIdArray) {
@@ -153,6 +149,27 @@ public class SocketController {
 				}
 			}
 		});
+	}
+	
+	/**
+	 * 签收群聊接收消息
+	 * @param socketData
+	 * @param ctx
+	 * @param msg
+	 */
+	@SocketMapping(WebSocketRequestConstant.GroupSigningMsg)
+	public void groupSigningMsg(SocketData socketData,ChannelHandlerContext ctx, TextWebSocketFrame msg) {
+		String acceptMsgIdsStr = socketData.getAccepetChatContent().getContentId();
+		String[] acceptMsgIdArray = acceptMsgIdsStr.split(",");
+		List<String> msgIdList = new ArrayList<String>();
+		for (String msgId : acceptMsgIdArray) {
+			if (StringUtils.isNotBlank(msgId)) {
+				msgIdList.add(msgId);
+			}
+		}
+		if (msgIdList != null && !msgIdList.isEmpty() && msgIdList.size() > 0) {
+			groupAcceptChatContentService.batchUpdateSignStatus(msgIdList);
+		}
 	}
 	
 }

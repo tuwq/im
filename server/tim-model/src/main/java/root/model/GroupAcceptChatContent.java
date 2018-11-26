@@ -5,7 +5,6 @@ import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Builder
 @AllArgsConstructor
@@ -14,6 +13,8 @@ public class GroupAcceptChatContent {
     private String id;
 
     private String groupSendContentId;
+
+    private String sendUserId;
 
     private String acceptUserId;
 
@@ -39,6 +40,14 @@ public class GroupAcceptChatContent {
 
     public void setGroupSendContentId(String groupSendContentId) {
         this.groupSendContentId = groupSendContentId == null ? null : groupSendContentId.trim();
+    }
+
+    public String getSendUserId() {
+        return sendUserId;
+    }
+
+    public void setSendUserId(String sendUserId) {
+        this.sendUserId = sendUserId == null ? null : sendUserId.trim();
     }
 
     public String getAcceptUserId() {

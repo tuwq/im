@@ -97,6 +97,9 @@
 			"pages/AddFriend/addFriend.html",
 			"pages/Saoyisao/saoyisao.html",
 			"pages/SingleChatting/singleChatting.html"
+		],
+		"resources": [
+			"socket/webSocket.js"
 		]
 	},
 	"pages/AddFriend/addFriend.html": {
@@ -168,7 +171,8 @@
 	},
 	"pages/GroupChatting/groupChatting.html": {
 		"refer": [
-			"pages/GroupInfo/groupInfo.html"
+			"pages/GroupInfo/groupInfo.html",
+			"pages/UserInfo/userInfo.html"
 		]
 	}
 }

@@ -28,8 +28,8 @@ window.TimWebsocket = {
 			}
 			TimWebsocket.socket = new WebSocket(window.TimConfig.websocketServerUrl)
 			TimWebsocket.socket.onopen = function() {
-				var user = window.TimUtil.getCacheNowUserInfo()
-				window.websocketUtil.oneOpenWebSocket(user.id)
+				var me = window.TimUtil.getCacheNowUserInfo()
+				window.websocketUtil.oneOpenWebSocket(me.id)
 				setInterval(function(){
 					window.websocketUtil.keepALive()
 				}, 30000)
@@ -59,8 +59,8 @@ window.TimWebsocket = {
 			&& TimWebsocket.socket.readyState == WebSocket.OPEN) {
 			TimWebsocket.socket.send(data)
 		} else {
-			TimWebsocket.init()
-			TimWebsocket.reSend(data)
+			// TimWebsocket.init()
+			// TimWebsocket.reSend(data)
 		}
 	},
 	reSend: function(data) {

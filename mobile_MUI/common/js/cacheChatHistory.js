@@ -6,6 +6,15 @@ class SingleChatHistory {
 	    this.flag = flag
 	}
 }
+class GroupChatHistory {
+	constructor(meId, sender, groupId, content, flag) {
+	    this.meId = meId
+	    this.sender = sender
+	    this.groupId = groupId
+	    this.content = content
+	    this.flag = flag
+	}
+}
 
 window.cacheChatHistory = {
 	chatHistoryFlagType: {
@@ -42,6 +51,30 @@ window.cacheChatHistory = {
 	deleteSingleChatHistory: function(meId, sideId) {
 		var singleChatKey = 'singleChat_' + meId + "-" + sideId
 		plus.storage.removeItem(singleChatKey)
+	},
+	setGroupChatHistory: function(meId, sender, groupId, content, flag) {
+		var self = this
+		var groupChatKey = 'groupChat_' + meId + "-" + groupId
+		var groupChatHistoryList = self.getGroupChatHistory(meId, groupId)
+		var groupChatHistory = new GroupChatHistory(meId, sender, groupId, content, flag)
+		groupChatHistoryList.push(groupChatHistory)
+		plus.storage.setItem(groupChatKey, JSON.stringify(groupChatHistoryList))
+	},
+	getGroupChatHistory: function(meId, groupId) {
+		var self = this
+		var groupChatKey = 'groupChat_' + meId + "-" + groupId
+		var groupChatHistoryListStr = plus.storage.getItem(groupChatKey)
+		var groupChatHistoryList
+		if (self.isNotNull(groupChatHistoryListStr)) {
+			groupChatHistoryList = JSON.parse(groupChatHistoryListStr)
+		} else {
+			groupChatHistoryList = []
+		}
+		return groupChatHistoryList
+	},
+	deleteSingleChatHistory: function(meId, groupId) {
+		var groupChatKey = 'groupChat_' + meId + "-" + groupId
+		plus.storage.removeItem(groupChatKey)
 	},
 	isNotNull: function(str) {
 		if (str != null && str !='' && str != undefined) {

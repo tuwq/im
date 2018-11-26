@@ -7,6 +7,8 @@ public class GroupAcceptChatContent {
 
     private String groupSendContentId;
 
+    private String sendUserId;
+
     private String acceptUserId;
 
     private String acceptGroupId;
@@ -31,6 +33,14 @@ public class GroupAcceptChatContent {
 
     public void setGroupSendContentId(String groupSendContentId) {
         this.groupSendContentId = groupSendContentId == null ? null : groupSendContentId.trim();
+    }
+
+    public String getSendUserId() {
+        return sendUserId;
+    }
+
+    public void setSendUserId(String sendUserId) {
+        this.sendUserId = sendUserId == null ? null : sendUserId.trim();
     }
 
     public String getAcceptUserId() {

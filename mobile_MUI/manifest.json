@@ -231,7 +231,9 @@
 				"priority": 0
 			},
 			"pages/Chatlist/chatlist.html": {
-				"resources": [],
+				"resources": [
+					"socket/webSocket.js"
+				],
 				"refer": [
 					"pages/AddFriend/addFriend.html",
 					"pages/Saoyisao/saoyisao.html",
@@ -333,7 +335,8 @@
 			"pages/GroupChatting/groupChatting.html": {
 				"resources": [],
 				"refer": [
-					"pages/GroupInfo/groupInfo.html"
+					"pages/GroupInfo/groupInfo.html",
+					"pages/UserInfo/userInfo.html"
 				],
 				"priority": 0
 			}
