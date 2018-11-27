@@ -11,7 +11,7 @@
 5. 二维码添加好友更换剪切头像
 
 ## 效果
-<img src="./showImage/me.png" width ='400' height='800' /><img src="./showImage/saoyisao.png" width ='400' height='800' />
+<img src="./showImage/mePage.png" width ='400' height='800' /><img src="./showImage/saoyisao.png" width ='400' height='800' />
 <img src="./showImage/noRead.png" width ='400' height='800' /><img src="./showImage/request.png" width ='400' height='800' />
 <img src="./showImage/single1.png" width ='400' height='800' /><img src="./showImage/single2.png" width ='400' height='800' />
 <img src="./showImage/group1.png" width ='400' height='800' /><img src="./showImage/group2.png" width ='400' height='800' />
