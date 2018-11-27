@@ -36,7 +36,7 @@
 				<button type="button" class="mui-btn mui-btn-gray send-btn" id="send-image">图片</button>
 			</label>
 			<label for="" class="footer-right">
-				<button type="button" class="mui-btn mui-btn-gray send-btn" id="send-text">文字</button>
+				<button type="button" class="mui-btn mui-btn-gray send-btn" id="send-text">发送</button>
 			</label>
 		</footer>
 		<script type="text/javascript">
@@ -105,8 +105,8 @@
 					plus.gallery.pick(function(path){
 						var chooseImageDOM = document.createElement('img')
 						chooseImageDOM.src = path
-						chooseImageDOM.width = 100
-						chooseImageDOM.height = 100
+						chooseImageDOM.width = 80
+						chooseImageDOM.height = 80
 						chooseImageDOM.onload = function() {
 							var chooseImageBase64 = getBase64Image(chooseImageDOM)
 							sendImage(me, path)

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80011
 File Encoding         : 65001
 
-Date: 2018-11-26 16:33:08
+Date: 2018-11-27 16:19:18
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -41,7 +41,8 @@ CREATE TABLE `group_accept_chat_content` (
   `send_user_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '发送者的id',
   `accept_user_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '接收用户的id',
   `accept_group_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '群聊组的id',
-  `content` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '消息内容',
+  `content` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '消息内容',
+  `content_type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '消息类型',
   `sign_flag` int(11) NOT NULL DEFAULT '0' COMMENT '是否签收',
   `create_time` datetime NOT NULL,
   PRIMARY KEY (`id`)
@@ -68,7 +69,8 @@ CREATE TABLE `group_send_chat_content` (
   `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '组用户发送消息id',
   `send_user_id` varchar(50) NOT NULL COMMENT '发送者id',
   `accept_group_id` varchar(50) NOT NULL COMMENT '接收组id',
-  `content` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '消息内容',
+  `content` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '消息内容',
+  `content_type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '内容类型',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='群聊发送消息表';
@@ -93,7 +95,8 @@ CREATE TABLE `single_chat_content` (
   `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '私人信息id',
   `send_user_id` varchar(50) NOT NULL COMMENT '发送者id',
   `accept_user_id` varchar(50) NOT NULL COMMENT '接收者id',
-  `content` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '消息内容',
+  `content` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '消息内容',
+  `content_type` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '内容的类型',
   `sign_flag` int(11) NOT NULL COMMENT '对方是否签收,0:未签收,1:已签收',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)

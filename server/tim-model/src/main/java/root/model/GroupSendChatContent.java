@@ -16,9 +16,11 @@ public class GroupSendChatContent {
 
     private String acceptGroupId;
 
-    private String content;
+    private String contentType;
 
     private Date createTime;
+
+    private String content;
 
     public String getId() {
         return id;
@@ -44,12 +46,12 @@ public class GroupSendChatContent {
         this.acceptGroupId = acceptGroupId == null ? null : acceptGroupId.trim();
     }
 
-    public String getContent() {
-        return content;
+    public String getContentType() {
+        return contentType;
     }
 
-    public void setContent(String content) {
-        this.content = content == null ? null : content.trim();
+    public void setContentType(String contentType) {
+        this.contentType = contentType == null ? null : contentType.trim();
     }
 
     public Date getCreateTime() {
@@ -58,5 +60,13 @@ public class GroupSendChatContent {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content == null ? null : content.trim();
     }
 }

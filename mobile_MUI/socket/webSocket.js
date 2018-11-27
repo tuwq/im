@@ -110,6 +110,10 @@ window.websocketUtil = {
 		let accepetChatContent = new AccepetChatContent(senderId,groupId,content,null,window.websocketUtil.acceptTypeEnums.textType,null)
 		window.websocketUtil.emit(window.websocketRequestContant.GroupChatSendMsg, accepetChatContent, extendFields)
 	},
+	senderGroupImage: function(senderId, groupId, content, extendFields) {
+		let accepetChatContent = new AccepetChatContent(senderId,groupId,content,null,window.websocketUtil.acceptTypeEnums.imageType,null)
+		window.websocketUtil.emit(window.websocketRequestContant.GroupChatSendImage, accepetChatContent, extendFields)
+	},
 	groupSigningMsg: function(contentId, extendFields) {
 		let accepetChatContent = new AccepetChatContent(null, null, null, null, window.websocketUtil.acceptTypeEnums.textType, contentId)
 		window.websocketUtil.emit(window.websocketRequestContant.GroupSigningMsg, accepetChatContent, extendFields)

@@ -21,6 +21,7 @@ import root.model.GroupSendChatContent;
 import root.model.Users;
 import root.netty.dto.AccepetChatContent;
 import root.netty.dto.AcceptMsgIdBindMember;
+import root.netty.enums.AcceptTypeEnums;
 import root.util.RandomUtil;
 
 @Service
@@ -33,7 +34,7 @@ public class GroupChatMsgService {
 	@Resource
 	private GroupUsersMapper groupUsersMapper;
 	/**
-	 * 保存群聊发送消息
+	 * 保存群聊发送文字
 	 * @param accepetChatContent
 	 * @return
 	 */
@@ -44,10 +45,30 @@ public class GroupChatMsgService {
 		String content = accepetChatContent.getContent();
 		GroupSendChatContent build = GroupSendChatContent.builder()
 		.id(uuid).sendUserId(senderId).acceptGroupId(groupId)
-		.content(content).createTime(new Date()).build();
+		.content(content).contentType(AcceptTypeEnums.TEXT.getType())
+		.createTime(new Date()).build();
 		groupSendChatContentMapper.insertSelective(build);
 		return uuid;
 	}
+	
+	/**
+	 * 保存群聊发送图片
+	 * @param accepetChatContent
+	 * @return
+	 */
+	public String saveGroupSendImageContent(AccepetChatContent accepetChatContent) {
+		String uuid = RandomUtil.getUUID();
+		String senderId = accepetChatContent.getSenderId();
+		String groupId = accepetChatContent.getAcceptId();
+		String content = accepetChatContent.getContent();
+		GroupSendChatContent build = GroupSendChatContent.builder()
+		.id(uuid).sendUserId(senderId).acceptGroupId(groupId)
+		.content(content).contentType(AcceptTypeEnums.IMAGE.getType())
+		.createTime(new Date()).build();
+		groupSendChatContentMapper.insertSelective(build);
+		return uuid;
+	}
+	
 	
 	/**
 	 * 获取群友们的id
@@ -75,7 +96,7 @@ public class GroupChatMsgService {
 			.id(uuid).groupSendContentId(groupSendContentId)
 			.sendUserId(senderId)
 			.acceptGroupId(acceptGroupId).acceptUserId(memberId)
-			.content(content).signFlag(ChatMsgStatusEnum.NOSIGN.getStatusCode())
+			.content(content).contentType(AcceptTypeEnums.TEXT.getType()).signFlag(ChatMsgStatusEnum.NOSIGN.getStatusCode())
 			.createTime(new Date()).build();
 			AcceptMsgIdBindMember bind = AcceptMsgIdBindMember.builder()
 			.acceptMsgId(uuid).memberId(memberId).build();
@@ -85,6 +106,36 @@ public class GroupChatMsgService {
 		groupAcceptChatContentMapper.inertBatch(groupAcceptChatContentList);
 		return bindList;
 	}
+	
+	/**
+	 * 批量插入群聊接收消息图片
+	 * @param groupSendContentId
+	 * @param accepetChatContent
+	 * @param groupMemberIdList
+	 * @return
+	 */
+	public List<AcceptMsgIdBindMember> saveBatchGroupAcceptImageContent(String groupSendContentId, AccepetChatContent accepetChatContent, List<String> groupMemberIdList) {
+		List<AcceptMsgIdBindMember> bindList = Lists.newArrayList();
+		List<GroupAcceptChatContent> groupAcceptChatContentList = Lists.newArrayList();
+		String senderId = accepetChatContent.getSenderId();
+		String acceptGroupId = accepetChatContent.getAcceptId();
+		String content = accepetChatContent.getContent();
+		groupMemberIdList.stream().forEach(memberId -> {
+			String uuid = RandomUtil.getUUID();
+			GroupAcceptChatContent groupAcceptChatContent = GroupAcceptChatContent.builder()
+			.id(uuid).groupSendContentId(groupSendContentId)
+			.sendUserId(senderId)
+			.acceptGroupId(acceptGroupId).acceptUserId(memberId)
+			.content(content).contentType(AcceptTypeEnums.IMAGE.getType()).signFlag(ChatMsgStatusEnum.NOSIGN.getStatusCode())
+			.createTime(new Date()).build();
+			AcceptMsgIdBindMember bind = AcceptMsgIdBindMember.builder()
+			.acceptMsgId(uuid).memberId(memberId).build();
+			groupAcceptChatContentList.add(groupAcceptChatContent);
+			bindList.add(bind);
+		});
+		groupAcceptChatContentMapper.inertBatch(groupAcceptChatContentList);
+		return bindList;
+	} 
 	
 	/**
 	 * 获取未读的群聊消息

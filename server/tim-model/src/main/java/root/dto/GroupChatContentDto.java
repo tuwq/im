@@ -17,4 +17,6 @@ public class GroupChatContentDto {
 	private String groupId;
 	
 	private String content;
+	
+	private String contentType;
 }

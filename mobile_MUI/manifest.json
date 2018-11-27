@@ -338,7 +338,8 @@
 				"resources": [],
 				"refer": [
 					"pages/GroupInfo/groupInfo.html",
-					"pages/UserInfo/userInfo.html"
+					"pages/UserInfo/userInfo.html",
+					"pages/ImageResult/imageResult.html"
 				],
 				"priority": 0
 			}

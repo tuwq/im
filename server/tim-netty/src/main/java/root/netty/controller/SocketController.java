@@ -1,13 +1,11 @@
 package root.netty.controller;
 
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.alibaba.druid.pool.vendor.SybaseExceptionSorter;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -25,7 +23,6 @@ import root.netty.dto.SocketData;
 import root.netty.dto.SocketResult;
 import root.netty.enums.WebSocketRequestConstant;
 import root.netty.enums.WebSocketResultContant;
-import root.netty.plugin.service.QiNiuChatImageService;
 import root.netty.service.GroupAcceptChatContentService;
 import root.netty.service.GroupChatMsgService;
 import root.netty.service.SingleChatMsgService;
@@ -41,7 +38,6 @@ public class SocketController {
 	private GroupChatMsgService groupChatMsgService = ApplicationContextUtil.popBean(GroupChatMsgService.class);
 	private UsersMapper usersMapper = ApplicationContextUtil.popBean(UsersMapper.class);
 	private GroupAcceptChatContentService groupAcceptChatContentService = ApplicationContextUtil.popBean(GroupAcceptChatContentService.class);
-	private QiNiuChatImageService qiNiuChatImageService = ApplicationContextUtil.popBean(QiNiuChatImageService.class);
 	/**
 	 * 打开连接
 	 * 连接用户关系入concurrentHashMap
@@ -134,7 +130,6 @@ public class SocketController {
 	 */
 	@SocketMapping(WebSocketRequestConstant.GroupChatSendMsg)
 	public void groupChatMsg(SocketData socketData,ChannelHandlerContext ctx, TextWebSocketFrame msg) {
-		Channel currentChannel = ctx.channel();
 		AccepetChatContent accepetChatContent = socketData.getAccepetChatContent();
 		String groupSendContentId = groupChatMsgService.saveGroupSendMsgContent(accepetChatContent);
 		List<String> groupMemberIdList = groupChatMsgService.getGroupMemberList(accepetChatContent.getAcceptId());
@@ -203,5 +198,35 @@ public class SocketController {
 				
 			}
 		}
+	}
+	
+	/**
+	 * 发送群聊图片
+	 * @param socketData
+	 * @param ctx
+	 * @param msg
+	 */
+	@SocketMapping(WebSocketRequestConstant.GroupChatSendImage)
+	public void groupChatSendImage(SocketData socketData,ChannelHandlerContext ctx, TextWebSocketFrame msg) {
+		AccepetChatContent accepetChatContent = socketData.getAccepetChatContent();
+		String groupSendContentId = groupChatMsgService.saveGroupSendImageContent(accepetChatContent);
+		List<String> groupMemberIdList = groupChatMsgService.getGroupMemberList(accepetChatContent.getAcceptId());
+		List<AcceptMsgIdBindMember> acceptMsgBindMemberList = groupChatMsgService.saveBatchGroupAcceptImageContent(groupSendContentId, 
+				accepetChatContent, groupMemberIdList);
+		Users sender = usersMapper.selectByPrimaryKey(accepetChatContent.getSenderId());
+		acceptMsgBindMemberList.stream().forEach(item -> {
+			String memberId = item.getMemberId();
+			String acceptMsgId = item.getAcceptMsgId();
+			Channel memberChannel = NettyStorage.get(memberId);
+			if (memberChannel != null) {
+				Channel findChannel = NettyChannelGroup.groups.find(memberChannel.id());
+				if (findChannel != null) {
+					accepetChatContent.setContentId(acceptMsgId);
+					accepetChatContent.setSenderId(JsonUtils.objectToJson(DtoUtil.adapt(new UsersDto(), sender)));
+					SocketResult socketResult = SocketResult.success(WebSocketResultContant.AcceptGroupChatImage, accepetChatContent);
+					findChannel.writeAndFlush(new TextWebSocketFrame(JsonUtils.objectToJson(socketResult)));
+				}
+			}
+		});
 	}
 }

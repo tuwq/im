@@ -8,12 +8,13 @@ class SingleChatHistory {
 	}
 }
 class GroupChatHistory {
-	constructor(meId, sender, groupId, content, flag) {
+	constructor(meId, sender, groupId, content, flag, contentType) {
 	    this.meId = meId
 	    this.sender = sender
 	    this.groupId = groupId
 	    this.content = content
 	    this.flag = flag
+	    this.contentType = contentType
 	}
 }
 
@@ -58,11 +59,11 @@ window.cacheChatHistory = {
 		var singleChatKey = 'singleChat_' + meId + "-" + sideId
 		plus.storage.removeItem(singleChatKey)
 	},
-	setGroupChatHistory: function(meId, sender, groupId, content, flag) {
+	setGroupChatHistory: function(meId, sender, groupId, content, flag, contentType) {
 		var self = this
 		var groupChatKey = 'groupChat_' + meId + "-" + groupId
 		var groupChatHistoryList = self.getGroupChatHistory(meId, groupId)
-		var groupChatHistory = new GroupChatHistory(meId, sender, groupId, content, flag)
+		var groupChatHistory = new GroupChatHistory(meId, sender, groupId, content, flag, contentType)
 		groupChatHistoryList.push(groupChatHistory)
 		plus.storage.setItem(groupChatKey, JSON.stringify(groupChatHistoryList))
 	},

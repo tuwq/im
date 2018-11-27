@@ -24,6 +24,7 @@
     <include refid="Base_Column_List" />,<include refid="Blob_Column_List" />
     from single_chat_content
     where accept_user_id = #{acceptUserId} AND sign_flag = #{statusCode}
+    ORDER BY create_time
   </select>
   
   <update id="batchUpdateSignStatus" parameterType="map">

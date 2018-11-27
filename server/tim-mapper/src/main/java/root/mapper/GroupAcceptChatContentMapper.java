@@ -18,7 +18,10 @@ public interface GroupAcceptChatContentMapper {
 
     int updateByPrimaryKeySelective(GroupAcceptChatContent record);
 
+    int updateByPrimaryKeyWithBLOBs(GroupAcceptChatContent record);
+
     int updateByPrimaryKey(GroupAcceptChatContent record);
+    
     /**
      * 批量插入
      * @param groupAcceptChatContentList

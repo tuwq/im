@@ -7,14 +7,18 @@
     <result column="send_user_id" property="sendUserId" jdbcType="VARCHAR" />
     <result column="accept_user_id" property="acceptUserId" jdbcType="VARCHAR" />
     <result column="accept_group_id" property="acceptGroupId" jdbcType="VARCHAR" />
-    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="content_type" property="contentType" jdbcType="VARCHAR" />
     <result column="sign_flag" property="signFlag" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="root.model.GroupAcceptChatContent" extends="BaseResultMap" >
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
   </resultMap>
   <resultMap id="baseWithUsersMap" type="root.dto.GroupChatContentDto" >
   	<result column="contentId" property="contentId" jdbcType="VARCHAR"/>
     <result column="groupId" property="groupId" jdbcType="VARCHAR" />
     <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="contentType" property="contentType" jdbcType="VARCHAR" />
     <association property="sender" javaType="root.dto.UsersDto">
 		<result column="userId" property="id"/>
 		<result column="userNickname" property="nickname"/>
@@ -22,18 +26,21 @@
 	</association>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, group_send_content_id, send_user_id, accept_user_id, accept_group_id, content, 
+    id, group_send_content_id, send_user_id, accept_user_id, accept_group_id, content_type, 
     sign_flag, create_time
   </sql>
+  <sql id="Blob_Column_List" >
+    content
+  </sql>
   
-   <select id="getNoReadListByAcceptUserId" parameterType="map" resultMap="baseWithUsersMap">
-    SELECT gacc.id contentId, gacc.accept_group_id groupId, gacc.content content,
+  <select id="getNoReadListByAcceptUserId" parameterType="map" resultMap="baseWithUsersMap">
+    SELECT gacc.id contentId, gacc.accept_group_id groupId, gacc.content content,gacc.content_type contentType,
     u.id userId,u.nickname userNickname,u.face_image_cut userFaceImageCut
     FROM group_accept_chat_content gacc
     LEFT JOIN `users` u ON u.id = gacc.send_user_id
     WHERE accept_user_id = #{acceptUserId} AND sign_flag = #{signFlag}
+    ORDER BY gacc.create_time
   </select>
-  
   
   <update id="batchUpdateSignStatus" parameterType="map">
   	UPDATE group_accept_chat_content 
@@ -45,17 +52,20 @@
   </update>
   
   <insert id="inertBatch" parameterType="map" >
-	 insert into group_accept_chat_content(id, group_send_content_id, send_user_id, accept_user_id, 
-      accept_group_id, content, sign_flag, 
-      create_time)
+	 insert into group_accept_chat_content(id, group_send_content_id, send_user_id, 
+      accept_user_id, accept_group_id, content_type, 
+      sign_flag, create_time, content
+      )
   	 values <foreach collection="list" item="item" separator=",">
-		(#{item.id},#{item.groupSendContentId},#{item.sendUserId},#{item.acceptUserId},#{item.acceptGroupId},#{item.content},#{item.signFlag},#{item.createTime})
+		(#{item.id},#{item.groupSendContentId},#{item.sendUserId},#{item.acceptUserId},#{item.acceptGroupId},#{item.contentType},#{item.signFlag},#{item.createTime},#{item.content})
 	</foreach>
   </insert>
   
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
     from group_accept_chat_content
     where id = #{id,jdbcType=VARCHAR}
   </select>
@@ -65,11 +75,13 @@
   </delete>
   <insert id="insert" parameterType="root.model.GroupAcceptChatContent" >
     insert into group_accept_chat_content (id, group_send_content_id, send_user_id, 
-      accept_user_id, accept_group_id, content, 
-      sign_flag, create_time)
+      accept_user_id, accept_group_id, content_type, 
+      sign_flag, create_time, content
+      )
     values (#{id,jdbcType=VARCHAR}, #{groupSendContentId,jdbcType=VARCHAR}, #{sendUserId,jdbcType=VARCHAR}, 
-      #{acceptUserId,jdbcType=VARCHAR}, #{acceptGroupId,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
-      #{signFlag,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP})
+      #{acceptUserId,jdbcType=VARCHAR}, #{acceptGroupId,jdbcType=VARCHAR}, #{contentType,jdbcType=VARCHAR}, 
+      #{signFlag,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="root.model.GroupAcceptChatContent" >
     insert into group_accept_chat_content
@@ -89,14 +101,17 @@
       <if test="acceptGroupId != null" >
         accept_group_id,
       </if>
-      <if test="content != null" >
-        content,
+      <if test="contentType != null" >
+        content_type,
       </if>
       <if test="signFlag != null" >
         sign_flag,
       </if>
       <if test="createTime != null" >
         create_time,
+      </if>
+      <if test="content != null" >
+        content,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -115,14 +130,17 @@
       <if test="acceptGroupId != null" >
         #{acceptGroupId,jdbcType=VARCHAR},
       </if>
-      <if test="content != null" >
-        #{content,jdbcType=VARCHAR},
+      <if test="contentType != null" >
+        #{contentType,jdbcType=VARCHAR},
       </if>
       <if test="signFlag != null" >
         #{signFlag,jdbcType=INTEGER},
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
@@ -141,8 +159,8 @@
       <if test="acceptGroupId != null" >
         accept_group_id = #{acceptGroupId,jdbcType=VARCHAR},
       </if>
-      <if test="content != null" >
-        content = #{content,jdbcType=VARCHAR},
+      <if test="contentType != null" >
+        content_type = #{contentType,jdbcType=VARCHAR},
       </if>
       <if test="signFlag != null" >
         sign_flag = #{signFlag,jdbcType=INTEGER},
@@ -150,7 +168,22 @@
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
     </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="root.model.GroupAcceptChatContent" >
+    update group_accept_chat_content
+    set group_send_content_id = #{groupSendContentId,jdbcType=VARCHAR},
+      send_user_id = #{sendUserId,jdbcType=VARCHAR},
+      accept_user_id = #{acceptUserId,jdbcType=VARCHAR},
+      accept_group_id = #{acceptGroupId,jdbcType=VARCHAR},
+      content_type = #{contentType,jdbcType=VARCHAR},
+      sign_flag = #{signFlag,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      content = #{content,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="root.model.GroupAcceptChatContent" >
@@ -159,7 +192,7 @@
       send_user_id = #{sendUserId,jdbcType=VARCHAR},
       accept_user_id = #{acceptUserId,jdbcType=VARCHAR},
       accept_group_id = #{acceptGroupId,jdbcType=VARCHAR},
-      content = #{content,jdbcType=VARCHAR},
+      content_type = #{contentType,jdbcType=VARCHAR},
       sign_flag = #{signFlag,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}

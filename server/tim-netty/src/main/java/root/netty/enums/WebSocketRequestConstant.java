@@ -17,6 +17,8 @@ public class WebSocketRequestConstant {
 	public final static String SingleSigningMsg = "SingleSigningMsg";
 	// 发送群聊消息
 	public final static String GroupChatSendMsg = "GroupChatSendMsg";
+	// 发送群聊图片
+	public final static String GroupChatSendImage = "GroupChatSendImage";
 	// 签收群聊消息
 	public final static String GroupSigningMsg = "GroupSigningMsg";
 }

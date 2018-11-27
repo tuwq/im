@@ -13,5 +13,7 @@ public interface GroupAcceptChatContentMapper {
 
     int updateByPrimaryKeySelective(GroupAcceptChatContent record);
 
+    int updateByPrimaryKeyWithBLOBs(GroupAcceptChatContent record);
+
     int updateByPrimaryKey(GroupAcceptChatContent record);
 }

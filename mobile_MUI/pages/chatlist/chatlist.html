@@ -199,7 +199,9 @@
 					window.websocketUtil.sendGroupText(e.detail.senderId, e.detail.acceptId, e.detail.content, null)
 					refreshGroupChatSnapshot()
 				})
-				
+				window.addEventListener(window.websocketRequestContant.GroupChatSendImage, function(e) {
+					window.websocketUtil.senderGroupImage(e.detail.senderId, e.detail.acceptId, e.detail.content, null)
+				})
 				window.websocketUtil.subscribe(window.websocketResultContant.AcceptSingleChatMsg,function(result, accepetChatContent){				
 					var senderId = accepetChatContent.senderId
 					var acceptId = accepetChatContent.acceptId
@@ -245,10 +247,34 @@
 					var groupChattingWebview = plus.webview.getWebviewById('groupChatting_' + groupId)
 					var isRead = window.cacheChatSnapshot.chatSnapshotReadType.YesRead
 					if (sender.id != me.id) {
-						window.cacheChatHistory.setGroupChatHistory(me.id, sender, groupId, content, window.cacheChatHistory.chatHistoryFlagType.contentForSide)
+						window.cacheChatHistory.setGroupChatHistory(me.id, sender, groupId, content, window.cacheChatHistory.chatHistoryFlagType.contentForSide,
+							window.cacheChatHistory.chatHistoryContentType.textType)
 					}
 					if (groupChattingWebview != null && sender.id != me.id) {
 						mui.fire(groupChattingWebview, window.websocketResultContant.AcceptGroupChatMsg, {
+							content,sender
+						})
+					} else {
+						isRead = window.cacheChatSnapshot.chatSnapshotReadType.NoRead
+					}
+					window.websocketUtil.groupSigningMsg(contentId, null)
+					window.cacheChatSnapshot.setGroupChatSnapshot(me.id, groupId, content, isRead)
+					refreshGroupChatSnapshot()
+				})
+				window.websocketUtil.subscribe(window.websocketResultContant.AcceptGroupChatImage,function(result, accepetChatContent){
+					var me = window.TimUtil.getCacheNowUserInfo()
+					var sender = JSON.parse(accepetChatContent.senderId)
+					var groupId = accepetChatContent.acceptId
+					var content = accepetChatContent.content
+					var contentId = accepetChatContent.contentId
+					var groupChattingWebview = plus.webview.getWebviewById('groupChatting_' + groupId)
+					var isRead = window.cacheChatSnapshot.chatSnapshotReadType.YesRead
+					if (sender.id != me.id) {
+						window.cacheChatHistory.setGroupChatHistory(me.id, sender, groupId, content, window.cacheChatHistory.chatHistoryFlagType.contentForSide,
+							window.cacheChatHistory.chatHistoryContentType.imageType)
+					}
+					if (groupChattingWebview != null && sender.id != me.id) {
+						mui.fire(groupChattingWebview, window.websocketResultContant.AcceptGroupChatImage, {
 							content,sender
 						})
 					} else {
@@ -302,11 +328,17 @@
 						for (var i = 0; i < noReadGroupChatMsgList.length; i++) {
 							var noReadGroupChatMsgItem = noReadGroupChatMsgList[i]
 							window.cacheChatHistory.setGroupChatHistory(me.id, noReadGroupChatMsgItem.sender, 
-							noReadGroupChatMsgItem.groupId, noReadGroupChatMsgItem.content, window.cacheChatHistory.chatHistoryFlagType.contentForSide)
+								noReadGroupChatMsgItem.groupId, noReadGroupChatMsgItem.content, window.cacheChatHistory.chatHistoryFlagType.contentForSide,
+								noReadGroupChatMsgItem.contentType)
+							window.cacheChatSnapshot.setGroupChatSnapshot(me.id, 
+								noReadGroupChatMsgItem.groupId, noReadGroupChatMsgItem.content, 
+								window.cacheChatSnapshot.chatSnapshotReadType.NoRead
+							)
 							groupChatMsgIds += noReadGroupChatMsgItem.contentId
 							groupChatMsgIds += ","
 						}
 						window.websocketUtil.groupSigningMsg(groupChatMsgIds, null)
+						refreshGroupChatSnapshot()
 					}
 				})
 			}

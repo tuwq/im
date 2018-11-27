@@ -9,12 +9,14 @@ body {
 }
 .mui-content {
 	height: 100%;
+	max-width: 100%;
 	padding: 0px 0px 50px 0px;
 	overflow: auto;
 	background-color: #130E28;
 }
 #msg {
 	height: 100%;
+	max-width: 100%;
 	padding: 0px 0px 50px 0px;
 	overflow: auto;
 	background-color: #130E28;
@@ -97,6 +99,9 @@ body {
 .msg-wrapper.left {
 	text-align: right;
 }
+.msg-wrapper.left .sended-image {
+	right: 120px;
+}
 
 .text-left {
 	text-align: left;
@@ -152,13 +157,16 @@ footer {
 	position: absolute;
 	width: 60px;
 	height: 50px;
-	right: 0px;
+	right: 60px;
 	bottom: 0px;
 	text-align: center;
 	vertical-align: middle;
 	line-height: 100%;
 	padding: 8px 15px 0 0;
 	display: inline-block;
+}
+.margin-right {
+	right: 0px;
 }
 .footer-right .send-btn{
 	color: #FFF;
@@ -168,6 +176,9 @@ footer {
 .footer-center {
 	height: 100%;
 	padding: 5px 0px;
+	width: 100%;
+	box-sizing:border-box;
+    border-right: 60px solid transparent;
 }
 .footer-center [class*=input] {
 	width: 100%;
@@ -183,6 +194,8 @@ footer {
 	line-height: 18px !important;
 	font-family: verdana !important;
 	overflow: hidden;
+	width:100%;
+   
 }
 .footer-center .input-sound {
 	background-color: #eee;
