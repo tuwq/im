@@ -11,11 +11,15 @@
 5. 二维码添加好友更换剪切头像
 
 ## 效果
-![me.png](./showImage/me.png)![saoyisao.png](./showImage/saoyisao.png)  
-![noRead.png](./showImage/noRead.png)![request.png](./showImage/request.png)  
-![single1.png](./showImage/single1.png)![single2.png](./showImage/single2.png)  
-![group1.png](./showImage/group1.png)![group2.png](./showImage/group2.png)  
-![findGroup.png](./showImage/findGroup.png)![groupInfo.png](./showImage/groupInfo.png)
-
+<img src="./showImage/me.png" width ='500' height='800' />
+<img src="./showImage/saoyisao.png" width ='500' height='800' />
+<img src="./showImage/noRead.png" width ='500' height='800' />
+<img src="./showImage/request.png" width ='500' height='800' />
+<img src="./showImage/single1.png" width ='500' height='800' />
+<img src="./showImage/single2.png" width ='500' height='800' />
+<img src="./showImage/group1.png" width ='500' height='800' />
+<img src="./showImage/group2.png" width ='500' height='800' />
+<img src="./showImage/findGroup.png" width ='500' height='800' />
+<img src="./showImage/groupInfo.png" width ='500' height='800' />
 
 	
