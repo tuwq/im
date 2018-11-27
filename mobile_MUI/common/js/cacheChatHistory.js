@@ -1,9 +1,10 @@
 class SingleChatHistory {
-	constructor(meId, sideId, content, flag) {
+	constructor(meId, sideId, content, flag, contentType) {
 	    this.meId = meId
 	    this.sideId = sideId
 	    this.content = content
 	    this.flag = flag
+	    this.contentType = contentType
 	}
 }
 class GroupChatHistory {
@@ -21,6 +22,11 @@ window.cacheChatHistory = {
 		contentForMe: 1,	// 我发送的
 		contentForSide: 2	// 对方其他人发送的
 	},
+	chatHistoryContentType: {
+		imageType: 'image',
+		textType: 'text',
+		byteType: 'byte'
+	},
 	/**
 	 * 保存私聊记录
 	 * @param {Object} meId
@@ -28,11 +34,11 @@ window.cacheChatHistory = {
 	 * @param {Object} content
 	 * @param {Object} flag 本条消息是我还是朋友发送的, 1: 我, 2:对方
 	 */
-	setSingleChatHistory: function(meId, sideId, content, flag) {
+	setSingleChatHistory: function(meId, sideId, content, flag, contentType) {
 		var self = this
 		var singleChatKey = 'singleChat_' + meId + "-" + sideId
 		var singleChatHistoryList = self.getSingleChatHistory(meId, sideId)
-		var singleChatHistory = new SingleChatHistory(meId, sideId, content, flag)
+		var singleChatHistory = new SingleChatHistory(meId, sideId, content, flag, contentType)
 		singleChatHistoryList.push(singleChatHistory)
 		plus.storage.setItem(singleChatKey, JSON.stringify(singleChatHistoryList))
 	},

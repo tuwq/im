@@ -155,7 +155,8 @@
 	},
 	"pages/SingleChatting/singleChatting.html": {
 		"refer": [
-			"pages/UserInfo/userInfo.html"
+			"pages/UserInfo/userInfo.html",
+			"pages/ImageResult/imageResult.html"
 		]
 	},
 	"pages/GroupInfo/groupInfo.html": {

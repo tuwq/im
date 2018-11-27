@@ -5,17 +5,23 @@
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="send_user_id" property="sendUserId" jdbcType="VARCHAR" />
     <result column="accept_user_id" property="acceptUserId" jdbcType="VARCHAR" />
-    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="content_type" property="contentType" jdbcType="VARCHAR" />
     <result column="sign_flag" property="signFlag" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
   </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="root.model.SingleChatContent" extends="BaseResultMap" >
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+  </resultMap>
   <sql id="Base_Column_List" >
-    id, send_user_id, accept_user_id, content, sign_flag, create_time
+    id, send_user_id, accept_user_id, content_type, sign_flag, create_time
+  </sql>
+  <sql id="Blob_Column_List" >
+    content
   </sql>
   
-   <select id="getChatMsgListByStatus" parameterType="map" resultMap="BaseResultMap">
+  <select id="getChatMsgListByStatus" parameterType="map" resultMap="ResultMapWithBLOBs">
     select 
-    <include refid="Base_Column_List" />
+    <include refid="Base_Column_List" />,<include refid="Blob_Column_List" />
     from single_chat_content
     where accept_user_id = #{acceptUserId} AND sign_flag = #{statusCode}
   </select>
@@ -29,9 +35,11 @@
 	</foreach>
   </update>
   
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
     from single_chat_content
     where id = #{id,jdbcType=VARCHAR}
   </select>
@@ -41,11 +49,11 @@
   </delete>
   <insert id="insert" parameterType="root.model.SingleChatContent" >
     insert into single_chat_content (id, send_user_id, accept_user_id, 
-      content, sign_flag, create_time
-      )
+      content_type, sign_flag, create_time, 
+      content)
     values (#{id,jdbcType=VARCHAR}, #{sendUserId,jdbcType=VARCHAR}, #{acceptUserId,jdbcType=VARCHAR}, 
-      #{content,jdbcType=VARCHAR}, #{signFlag,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}
-      )
+      #{contentType,jdbcType=VARCHAR}, #{signFlag,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{content,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="root.model.SingleChatContent" >
     insert into single_chat_content
@@ -59,14 +67,17 @@
       <if test="acceptUserId != null" >
         accept_user_id,
       </if>
-      <if test="content != null" >
-        content,
+      <if test="contentType != null" >
+        content_type,
       </if>
       <if test="signFlag != null" >
         sign_flag,
       </if>
       <if test="createTime != null" >
         create_time,
+      </if>
+      <if test="content != null" >
+        content,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -79,14 +90,17 @@
       <if test="acceptUserId != null" >
         #{acceptUserId,jdbcType=VARCHAR},
       </if>
-      <if test="content != null" >
-        #{content,jdbcType=VARCHAR},
+      <if test="contentType != null" >
+        #{contentType,jdbcType=VARCHAR},
       </if>
       <if test="signFlag != null" >
         #{signFlag,jdbcType=INTEGER},
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
@@ -99,8 +113,8 @@
       <if test="acceptUserId != null" >
         accept_user_id = #{acceptUserId,jdbcType=VARCHAR},
       </if>
-      <if test="content != null" >
-        content = #{content,jdbcType=VARCHAR},
+      <if test="contentType != null" >
+        content_type = #{contentType,jdbcType=VARCHAR},
       </if>
       <if test="signFlag != null" >
         sign_flag = #{signFlag,jdbcType=INTEGER},
@@ -108,14 +122,27 @@
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
     </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="root.model.SingleChatContent" >
+    update single_chat_content
+    set send_user_id = #{sendUserId,jdbcType=VARCHAR},
+      accept_user_id = #{acceptUserId,jdbcType=VARCHAR},
+      content_type = #{contentType,jdbcType=VARCHAR},
+      sign_flag = #{signFlag,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      content = #{content,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="root.model.SingleChatContent" >
     update single_chat_content
     set send_user_id = #{sendUserId,jdbcType=VARCHAR},
       accept_user_id = #{acceptUserId,jdbcType=VARCHAR},
-      content = #{content,jdbcType=VARCHAR},
+      content_type = #{contentType,jdbcType=VARCHAR},
       sign_flag = #{signFlag,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}

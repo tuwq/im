@@ -11,6 +11,8 @@ public class WebSocketRequestConstant {
 	public final static String KeepALive = "KeepALive";
 	// 发送私聊消息
 	public final static String SingleChatSendMsg = "SingleChatSendMsg";
+	// 发送私聊图片
+	public final static String SingleChatSendImage = "SingleChatSendImage";
 	// 签收私聊消息
 	public final static String SingleSigningMsg = "SingleSigningMsg";
 	// 发送群聊消息

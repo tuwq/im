@@ -192,10 +192,14 @@
 					window.websocketUtil.sendSingleText(e.detail.senderId, e.detail.acceptId, e.detail.content, null)
 					refreshSingleChatSnapshot()
 				})
+				window.addEventListener(window.websocketRequestContant.SingleChatSendImage, function(e) {
+					window.websocketUtil.senderSingleImage(e.detail.senderId, e.detail.acceptId, e.detail.content, null)
+				})
 				window.addEventListener(window.websocketRequestContant.GroupChatSendMsg, function(e){
 					window.websocketUtil.sendGroupText(e.detail.senderId, e.detail.acceptId, e.detail.content, null)
 					refreshGroupChatSnapshot()
 				})
+				
 				window.websocketUtil.subscribe(window.websocketResultContant.AcceptSingleChatMsg,function(result, accepetChatContent){				
 					var senderId = accepetChatContent.senderId
 					var acceptId = accepetChatContent.acceptId
@@ -209,7 +213,26 @@
 						isRead = window.cacheChatSnapshot.chatSnapshotReadType.NoRead
 					}
 					window.websocketUtil.signingSingleMsg(contentId, null)
-					window.cacheChatHistory.setSingleChatHistory(acceptId, senderId, content, window.cacheChatHistory.chatHistoryFlagType.contentForSide)
+					window.cacheChatHistory.setSingleChatHistory(acceptId, senderId, content, window.cacheChatHistory.chatHistoryFlagType.contentForSide,
+						window.cacheChatHistory.chatHistoryContentType.textType)
+					window.cacheChatSnapshot.setSingleChatSnapshot(acceptId, senderId, content, isRead)
+					refreshSingleChatSnapshot()
+				})
+				window.websocketUtil.subscribe(window.websocketResultContant.AcceptSingleChatImage,function(result, accepetChatContent){
+					var senderId = accepetChatContent.senderId
+					var acceptId = accepetChatContent.acceptId
+					var content = accepetChatContent.content
+					var contentId = accepetChatContent.contentId
+					var acceptWebview = plus.webview.getWebviewById('singleChatting_' + senderId)
+					var isRead = window.cacheChatSnapshot.chatSnapshotReadType.YesRead
+					if (acceptWebview != null) {
+						mui.fire(acceptWebview, window.websocketResultContant.AcceptSingleChatImage, {content})
+					} else {
+						isRead = window.cacheChatSnapshot.chatSnapshotReadType.NoRead
+					}
+					window.websocketUtil.signingSingleMsg(contentId, null)
+					window.cacheChatHistory.setSingleChatHistory(acceptId, senderId, content, window.cacheChatHistory.chatHistoryFlagType.contentForSide, 
+						window.cacheChatHistory.chatHistoryContentType.imageType)
 					window.cacheChatSnapshot.setSingleChatSnapshot(acceptId, senderId, content, isRead)
 					refreshSingleChatSnapshot()
 				})
@@ -300,7 +323,8 @@
 							var noReadSingleChatMsgItem = noReadSingleChatMsgList[i]
 							window.cacheChatHistory.setSingleChatHistory(noReadSingleChatMsgItem.acceptUserId, 
 								noReadSingleChatMsgItem.sendUserId, noReadSingleChatMsgItem.content, 
-								window.cacheChatHistory.chatHistoryFlagType.contentForSide
+								window.cacheChatHistory.chatHistoryFlagType.contentForSide,
+								noReadSingleChatMsgItem.contentType
 							)
 							window.cacheChatSnapshot.setSingleChatSnapshot(noReadSingleChatMsgItem.acceptUserId, 
 								noReadSingleChatMsgItem.sendUserId, noReadSingleChatMsgItem.content, 

@@ -46,6 +46,9 @@
 				document.getElementById('image-content').addEventListener('longtap', function(){
 					 mui(sheetImageDOM).popover('toggle')
 				})
+				document.getElementById('image-content').addEventListener('tap', function(){
+					 mui(sheetImageDOM).popover('toggle')
+				})
 				document.getElementById('downloadPhoto-link').addEventListener('tap', function(e) {
 					plus.nativeUI.showWaiting('保存中..')
 					var dtask = plus.downloader.createDownload(imageURL, {}, 

@@ -313,7 +313,8 @@
 			"pages/SingleChatting/singleChatting.html": {
 				"resources": [],
 				"refer": [
-					"pages/UserInfo/userInfo.html"
+					"pages/UserInfo/userInfo.html",
+					"pages/ImageResult/imageResult.html"
 				],
 				"priority": 0
 			},

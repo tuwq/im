@@ -3,6 +3,8 @@ package root.netty.enums;
 public class WebSocketResultContant {
 	// 接收私聊消息
 	public final static String AcceptSingleChatMsg = "AcceptSingleChatMsg";
+	// 接收私聊图片
+	public final static String AcceptSingleChatImage = "AcceptSingleChatImage";
 	// 接收群聊消息
 	public final static String AcceptGroupChatMsg = "AcceptGroupChatMsg";
 	// 重新刷新通讯录

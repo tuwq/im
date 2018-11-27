@@ -13,5 +13,7 @@ public interface SingleChatContentMapper {
 
     int updateByPrimaryKeySelective(SingleChatContent record);
 
+    int updateByPrimaryKeyWithBLOBs(SingleChatContent record);
+
     int updateByPrimaryKey(SingleChatContent record);
 }

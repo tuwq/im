@@ -98,6 +98,10 @@ window.websocketUtil = {
 		let accepetChatContent = new AccepetChatContent(senderId,acceptId,content,null,window.websocketUtil.acceptTypeEnums.textType,null)
 		window.websocketUtil.emit(window.websocketRequestContant.SingleChatSendMsg, accepetChatContent, extendFields)
 	},
+	senderSingleImage: function(senderId, acceptId, content, extendFields) {
+		let accepetChatContent = new AccepetChatContent(senderId,acceptId,content,null,window.websocketUtil.acceptTypeEnums.imageType,null)
+		window.websocketUtil.emit(window.websocketRequestContant.SingleChatSendImage, accepetChatContent, extendFields)
+	},
 	signingSingleMsg: function(contentId, extendFields) {
 		let accepetChatContent = new AccepetChatContent(null, null, null, null, window.websocketUtil.acceptTypeEnums.textType, contentId)
 		window.websocketUtil.emit(window.websocketRequestContant.SingleSigningMsg, accepetChatContent, extendFields)

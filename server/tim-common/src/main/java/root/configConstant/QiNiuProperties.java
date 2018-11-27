@@ -12,4 +12,5 @@ public class QiNiuProperties {
 	private String avatarPrefix;
 	private String qrCodePrefix;
 	private String groupAvatarPrefix;
+	private String chatImagePrefix;
 }

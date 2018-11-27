@@ -1,11 +1,13 @@
 package root.netty.controller;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.alibaba.druid.pool.vendor.SybaseExceptionSorter;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -23,12 +25,15 @@ import root.netty.dto.SocketData;
 import root.netty.dto.SocketResult;
 import root.netty.enums.WebSocketRequestConstant;
 import root.netty.enums.WebSocketResultContant;
+import root.netty.plugin.service.QiNiuChatImageService;
 import root.netty.service.GroupAcceptChatContentService;
 import root.netty.service.GroupChatMsgService;
 import root.netty.service.SingleChatMsgService;
 import root.util.ApplicationContextUtil;
+import root.util.Base64Util;
 import root.util.DtoUtil;
 import root.util.JsonUtils;
+import root.util.RandomUtil;
 
 public class SocketController {
 	
@@ -36,6 +41,7 @@ public class SocketController {
 	private GroupChatMsgService groupChatMsgService = ApplicationContextUtil.popBean(GroupChatMsgService.class);
 	private UsersMapper usersMapper = ApplicationContextUtil.popBean(UsersMapper.class);
 	private GroupAcceptChatContentService groupAcceptChatContentService = ApplicationContextUtil.popBean(GroupAcceptChatContentService.class);
+	private QiNiuChatImageService qiNiuChatImageService = ApplicationContextUtil.popBean(QiNiuChatImageService.class);
 	/**
 	 * 打开连接
 	 * 连接用户关系入concurrentHashMap
@@ -172,4 +178,30 @@ public class SocketController {
 		}
 	}
 	
+	/**
+	 * 接收私聊图片
+	 * 保存私聊消息
+	 * @param socketData
+	 * @param ctx
+	 * @param msg
+	 */
+	@SocketMapping(WebSocketRequestConstant.SingleChatSendImage)
+	public void singleChatSendImage(SocketData socketData,ChannelHandlerContext ctx, TextWebSocketFrame msg) {
+		AccepetChatContent accepetChatContent = socketData.getAccepetChatContent();
+		String acceptId = accepetChatContent.getAcceptId();
+		String singleChatMsgId = singleChatMsgService.saveSingleChatImage(accepetChatContent);
+		Channel acceptChannel = NettyStorage.get(acceptId);
+		if (acceptChannel == null) {
+		} else {
+			ChannelId channelId = acceptChannel.id();
+			Channel findChannel = NettyChannelGroup.groups.find(channelId);
+			if (findChannel != null) {
+				accepetChatContent.setContentId(singleChatMsgId);
+				SocketResult socketResult = SocketResult.success(WebSocketResultContant.AcceptSingleChatImage, accepetChatContent);
+				findChannel.writeAndFlush(new TextWebSocketFrame(JsonUtils.objectToJson(socketResult)));
+			} else {
+				
+			}
+		}
+	}
 }

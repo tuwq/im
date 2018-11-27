@@ -9,11 +9,13 @@ public class SingleChatContent {
 
     private String acceptUserId;
 
-    private String content;
+    private String contentType;
 
     private Integer signFlag;
 
     private Date createTime;
+
+    private String content;
 
     public String getId() {
         return id;
@@ -39,12 +41,12 @@ public class SingleChatContent {
         this.acceptUserId = acceptUserId == null ? null : acceptUserId.trim();
     }
 
-    public String getContent() {
-        return content;
+    public String getContentType() {
+        return contentType;
     }
 
-    public void setContent(String content) {
-        this.content = content == null ? null : content.trim();
+    public void setContentType(String contentType) {
+        this.contentType = contentType == null ? null : contentType.trim();
     }
 
     public Integer getSignFlag() {
@@ -61,5 +63,13 @@ public class SingleChatContent {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content == null ? null : content.trim();
     }
 }

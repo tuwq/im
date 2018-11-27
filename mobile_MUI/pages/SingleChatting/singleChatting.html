@@ -32,8 +32,11 @@
 			<div class="footer-center">
 				<textarea id='msg-text' type="text" class='input-text'></textarea>
 			</div>
+			<label for="" class="footer-right margin-right">
+				<button type="button" class="mui-btn mui-btn-gray send-btn" id="send-image">图片</button>
+			</label>
 			<label for="" class="footer-right">
-				<button type="button" class="mui-btn mui-btn-gray send-btn" id="send">发送</button>
+				<button type="button" class="mui-btn mui-btn-gray send-btn" id="send-text">文字</button>
 			</label>
 		</footer>
 		<script type="text/javascript">
@@ -43,6 +46,7 @@
 			 * 滚动调整至底部
 			 * 发送消息
 			 * 加载本地记录
+			 * 发送base64格式的图片
 			 * ！ 判断网络状态
 			 * ! 清空消息文本框内容
 			 * ！ 缓存本地聊天记录和快照记录
@@ -69,7 +73,7 @@
 					resizeScreen()
 					document.getElementById('msg-outter').style.paddingBottom = '50px'
 				})
-				document.getElementById('send').addEventListener('tap', function(e){
+				document.getElementById('send-text').addEventListener('tap', function(e){
 					var me = window.TimUtil.getCacheNowUserInfo()
 					var connectionStatus = plus.networkinfo.getCurrentType()
 					if (connectionStatus == 0 || connectionStatus == 1) {
@@ -86,16 +90,59 @@
 						acceptId: sideUserId,
 						content: chat_text
 					})
-					window.cacheChatHistory.setSingleChatHistory(me.id, sideUserId, chat_text, window.cacheChatHistory.chatHistoryFlagType.contentForMe)
+					window.cacheChatHistory.setSingleChatHistory(me.id, sideUserId, chat_text, window.cacheChatHistory.chatHistoryFlagType.contentForMe,
+						window.cacheChatHistory.chatHistoryContentType.textType)
 					window.cacheChatSnapshot.setSingleChatSnapshot(me.id, sideUserId, chat_text, window.cacheChatSnapshot.chatSnapshotReadType.YesRead)
 					chatTextDOM.value = ''
+				})
+				document.getElementById('send-image').addEventListener('tap', function(){
+					var me = window.TimUtil.getCacheNowUserInfo()
+					var connectionStatus = plus.networkinfo.getCurrentType()
+					if (connectionStatus == 0 || connectionStatus == 1) {
+						window.TimUtil.showToast('当前网络状态不可用', 'error')
+						return
+					}
+					plus.gallery.pick(function(path){
+						var chooseImageDOM = document.createElement('img')
+						chooseImageDOM.src = path
+						chooseImageDOM.width = 100
+						chooseImageDOM.height = 100
+						chooseImageDOM.onload = function() {
+							var chooseImageBase64 = getBase64Image(chooseImageDOM)
+							sendImage(me, path)
+							mui.fire(chatlistWebview, window.websocketRequestContant.SingleChatSendImage, {
+								senderId: me.id,
+								acceptId: sideUserId,
+								content: chooseImageBase64
+							})
+							window.cacheChatHistory.setSingleChatHistory(me.id, sideUserId, chooseImageBase64, window.cacheChatHistory.chatHistoryFlagType.contentForMe, 
+								window.cacheChatHistory.chatHistoryContentType.imageType)
+							window.cacheChatSnapshot.setSingleChatSnapshot(me.id, sideUserId, chooseImageBase64, window.cacheChatSnapshot.chatSnapshotReadType.YesRead)
+						}
+					})
 				})
 				window.addEventListener(window.websocketResultContant.AcceptSingleChatMsg, function(e) {
 					var content = e.detail.content
 					acceptMsg({	id: sideUserId, faceImageCut: sideFaceImageCut}, content)
 					resizeScreen()
 				})
+				window.addEventListener(window.websocketResultContant.AcceptSingleChatImage, function(e) {
+					var content = e.detail.content
+					acceptImage({	id: sideUserId, faceImageCut: sideFaceImageCut}, content)
+					resizeScreen()
+				})
 			})
+			
+			function getBase64Image(img) {
+				var canvas = document.createElement("canvas")
+				canvas.width = img.width
+				canvas.height = img.height
+				var ctx = canvas.getContext("2d")
+				ctx.drawImage(img, 0, 0, img.width, img.height)
+				var ext = img.src.substring(img.src.lastIndexOf(".") + 1).toLowerCase()
+				var dataURL = canvas.toDataURL("image/" + ext)
+				return dataURL
+			}
 			
 			function refreshChatHistory() {
 				var msgDOM = document.getElementById('msg')
@@ -114,19 +161,58 @@
 				var data = {}
 				var msgTemplate
 				if (chatHistoryItem.flag == window.cacheChatHistory.chatHistoryFlagType.contentForMe) {
-					msgTemplate = $('#msgRightTemplate').html()
-					data.avatarPrefix = window.TimConfig.serverImageUrl + window.TimConfig.avatarPrefix
-					data.person = me
-					data.msg = chatHistoryItem.content
+					if (chatHistoryItem.contentType == window.cacheChatHistory.chatHistoryContentType.imageType) {
+						msgTemplate = $('#imageRightTemplate').html()
+						data.avatarPrefix = window.TimConfig.serverImageUrl + window.TimConfig.avatarPrefix
+						data.person = me
+						data.imageSrc = chatHistoryItem.content
+					} else {
+						msgTemplate = $('#msgRightTemplate').html()
+						data.avatarPrefix = window.TimConfig.serverImageUrl + window.TimConfig.avatarPrefix
+						data.person = me
+						data.msg = chatHistoryItem.content
+					}
 				} else if(chatHistoryItem.flag == window.cacheChatHistory.chatHistoryFlagType.contentForSide) {
-					msgTemplate = $('#msgLeftTemplate').html()
-					data.avatarPrefix = window.TimConfig.serverImageUrl + window.TimConfig.avatarPrefix
-					data.person = {	id: sideUserId, faceImageCut: sideFaceImageCut}
-					data.msg = chatHistoryItem.content
+					if (chatHistoryItem.contentType == window.cacheChatHistory.chatHistoryContentType.imageType) {
+						msgTemplate = $('#imageLeftTemplate').html()
+						data.avatarPrefix = window.TimConfig.serverImageUrl + window.TimConfig.avatarPrefix
+						data.person = {	id: sideUserId, faceImageCut: sideFaceImageCut}
+						data.imageSrc = chatHistoryItem.content
+					} else {
+						msgTemplate = $('#msgLeftTemplate').html()
+						data.avatarPrefix = window.TimConfig.serverImageUrl + window.TimConfig.avatarPrefix
+						data.person = {	id: sideUserId, faceImageCut: sideFaceImageCut}
+						data.msg = chatHistoryItem.content
+					}
 				}
 				var template = Handlebars.compile(msgTemplate)
 				var html = template(data)
 				return html
+			}
+			
+			function sendImage(person, imageSrc) {
+				var imageRightTemplate = $('#imageRightTemplate').html()
+				var template = Handlebars.compile(imageRightTemplate)
+				var data = {}
+				data.avatarPrefix = window.TimConfig.serverImageUrl + window.TimConfig.avatarPrefix
+				data.person = person
+				data.imageSrc = imageSrc
+				var html = template(data)
+				var msgDOM = document.getElementById('msg')
+				msgDOM.insertAdjacentHTML("beforeend", html)
+			}
+			
+			function acceptImage(person, imageSrc) {
+				var imageLeftTemplate = $('#imageLeftTemplate').html()
+				var template = Handlebars.compile(imageLeftTemplate)
+				var data = {}
+				data.avatarPrefix = window.TimConfig.serverImageUrl + window.TimConfig.avatarPrefix
+				data.person = person
+				data.imageSrc = imageSrc
+				var html = template(data)
+				var msgDOM = document.getElementById('msg')
+				msgDOM.insertAdjacentHTML("beforeend", html)
+				acceptMP3()
 			}
 			
 			function acceptMP3() {
@@ -172,6 +258,17 @@
 					}
 				})
 			}
+			
+			function goImageDetail(imageSrc) {
+				mui.openWindow({
+					url: '../ImageResult/imageResult.html',
+					id: 'imageResult.html',
+					show: {autoShow: true, aniShow: 'slide-in-top', duration:200},
+					extras: {
+						imageURL: imageSrc
+					}
+				})
+			}
 		</script>
 	</body>
 	<script type="text/template" id="msgLeftTemplate">
@@ -191,6 +288,30 @@
 			</div>
 			<div class="msg-wrapper left">
 				<p class="msg-right-green">{{msg}}</p>
+			</div>
+		</div>
+	</script>
+	<script type="text/template" id="imageLeftTemplate">
+	    <div class="friend_lists">
+			<div class="header_img">
+				<img src="{{avatarPrefix}}{{person.faceImageCut}}" width="40px" height="40px" onclick="goUserInfo('{{person.id}}')"/>
+			</div>
+			<div class="msg-wrapper right">
+				<p class="msg-left-white" onclick="goImageDetail('{{imageSrc}}')">
+					<img src="{{imageSrc}}"  width="80" height="80"/>
+				</p>
+			</div>
+		</div>
+	</script>
+	<script type="text/template" id="imageRightTemplate">
+		<div class="me_lists">
+			<div class="header_img">
+				<img src="{{avatarPrefix}}{{person.faceImageCut}}" width="40px" height="40px" onclick="goUserInfo('{{person.id}}')"/>
+			</div>
+			<div class="msg-wrapper left">
+				<p class="msg-right-green" onclick="goImageDetail('{{imageSrc}}')">
+					<img src="{{imageSrc}}"  width="80" height="80"/>
+				</p>
 			</div>
 		</div>
 	</script>
